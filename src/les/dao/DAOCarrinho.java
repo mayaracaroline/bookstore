@@ -42,14 +42,16 @@ public class DAOCarrinho extends AbstractDAO implements IDAO {
     
     sessaoUsuario.setAttribute("carrinho", carrinho);
 
-    HashMap<String, Carrinho> mapProdutosBloqueados;
-    mapProdutosBloqueados= (HashMap<String, Carrinho>) sessaoUsuario.getServletContext()
+    HashMap<String, Bloqueio> mapProdutosBloqueados;
+    mapProdutosBloqueados= (HashMap<String, Bloqueio>) sessaoUsuario.getServletContext()
         .getAttribute("bloqueio");
     
     if(mapProdutosBloqueados.containsValue(sessaoUsuario.getId())) {
-      mapProdutosBloqueados.get(sessaoUsuario.getId()).addItem(itemCarrinho);
+      mapProdutosBloqueados.get(sessaoUsuario.getId())
+      .getCarrinho()
+      .addItem(itemCarrinho);
     } else {
-      mapProdutosBloqueados.put(sessaoUsuario.getId(), carrinho);
+      mapProdutosBloqueados.put(sessaoUsuario.getId(), produtoBloqueado);
     }
     
     resultado.setResultado(produto);

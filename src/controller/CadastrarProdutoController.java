@@ -5,12 +5,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdSchedulerFactory;
+
+import dominio.Bloqueio;
 import dominio.Carrinho;
 import dominio.EntidadeDominio;
 import dominio.ItemCarrinho;
@@ -20,6 +34,7 @@ import les.command.CommandExcluir;
 import les.command.CommandInativar;
 import les.command.CommandSalvar;
 import les.command.ICommand;
+import les.negocio.StValidarItensCarrinhoComTempoExpirado;
 import util.Resultado;
 import viewhelper.IViewHelper;
 import viewhelper.VHBloqueio;
@@ -41,7 +56,7 @@ import viewhelper.VHCliente;
       "/Pages/lumino/carrinho"
     })
 
-public class CadastrarProdutoController extends HttpServlet {
+public class CadastrarProdutoController extends HttpServlet implements ServletContextListener {
 	private static final long serialVersionUID = 1L;
 	private Map<String, IViewHelper> mapViewHelper;
 	private Map<String, ICommand> mapCommand;
@@ -83,17 +98,18 @@ public class CadastrarProdutoController extends HttpServlet {
       return carrinho;
     }
     
-
+    
+    
+    
 	/**
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    
-	  if(getServletContext().getAttribute("bloqueio") == null) {
-      HashMap<String, Carrinho> mapProdutosBloqueados = new HashMap<>();     
+    if(getServletContext().getAttribute("bloqueio") == null) {
+      HashMap<String, Bloqueio> mapProdutosBloqueados = new HashMap<>();     
       getServletContext().setAttribute("bloqueio", mapProdutosBloqueados);
     }  
-
+    
 		String operacao = request.getParameter("operacao");
 		String vh = request.getRequestURI();
 		IViewHelper viewHelper = mapViewHelper.get(vh);
@@ -110,5 +126,43 @@ public class CadastrarProdutoController extends HttpServlet {
 	protected void doTrace(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
+
+  @Override
+  public void contextDestroyed(ServletContextEvent sce) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void init() {
+    System.out.println("contextInitialized");
+    SchedulerFactory shedFact = new StdSchedulerFactory();
+    try {
+           Scheduler scheduler = shedFact.getScheduler();
+           scheduler.start();
+         JobDataMap jobDataMap = new JobDataMap();
+         jobDataMap.put("servletContext", getServletContext());
+           JobDetail job = JobBuilder.newJob(StValidarItensCarrinhoComTempoExpirado.class)
+                         .withIdentity("validadorJOB", "grupo01")
+                         .usingJobData(jobDataMap)
+                         .build();
+           Trigger trigger = TriggerBuilder.newTrigger()
+                         .withIdentity("validadorTRIGGER","grupo01")
+                         .withSchedule(CronScheduleBuilder.cronSchedule("0/1 * * * * ?"))
+                         .build();
+           scheduler.scheduleJob(job, trigger);
+  } catch (SchedulerException e) {
+      e.printStackTrace();
+  }
+      
+      
+    
+  }
+
+  @Override
+  public void contextInitialized(ServletContextEvent sce) {
+    // TODO Auto-generated method stub
+    
+  }
 
 }

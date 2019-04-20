@@ -1,13 +1,13 @@
 package dominio;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpSession;
 
 public class Bloqueio extends EntidadeDominio {
   Carrinho carrinho;
   HttpSession sessaoUsuario; 
-  LocalDate horarioBloqueio;
+  LocalDateTime horarioBloqueio;
   
   public Carrinho getCarrinho() {
     return carrinho;
@@ -21,10 +21,10 @@ public class Bloqueio extends EntidadeDominio {
   public void setSessao(HttpSession sessao) {
     this.sessaoUsuario = sessao;
   }
-  public LocalDate getHorarioBloqueio() {
+  public LocalDateTime getHorarioBloqueio() {
     return horarioBloqueio;
   }
-  public void setHorarioBloqueio(LocalDate horarioBloqueio) {
+  public void setHorarioBloqueio(LocalDateTime horarioBloqueio) {
     this.horarioBloqueio = horarioBloqueio;
   }
 
