@@ -1,0 +1,771 @@
+{
+  "id": "7c2ef5c7-08f9-4b3e-8be8-8c310a61068f",
+  "version": "2.0",
+  "name": "livraria",
+  "url": "http://localhost:8080/livraria/Pages/lumino/excluiProduto.jsp",
+  "tests": [{
+    "id": "bd2b5f31-96a0-4335-8f2a-576bb903ed3a",
+    "name": "cadastrar_livro",
+    "commands": [{
+      "id": "73bd01a1-6b35-4811-b18b-09614524f118",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/livraria/Pages/lumino/cadastraProduto.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "fc092e21-dbde-4934-a6fe-78b9e65654d0",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x744",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6dc3bf81-4223-42c5-86f5-8e900b97986b",
+      "comment": "",
+      "command": "click",
+      "target": "name=codigo",
+      "targets": [
+        ["name=codigo", "name"],
+        ["css=.form-group:nth-child(2) > .form-control:nth-child(2)", "css:finder"],
+        ["xpath=//input[@name='codigo']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0f8bf180-7497-4dac-8b2b-c8de9584ba13",
+      "comment": "",
+      "command": "type",
+      "target": "name=codigo",
+      "targets": [
+        ["name=codigo", "name"],
+        ["css=.form-group:nth-child(2) > .form-control:nth-child(2)", "css:finder"],
+        ["xpath=//input[@name='codigo']", "xpath:attributes"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "7b6bed40-5813-4d86-a84e-2ae483944f2f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.panel-body",
+      "targets": [
+        ["css=.panel-body", "css:finder"],
+        ["xpath=//div[3]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3327934c-ca3a-48a2-a900-af3bfebd0fc4",
+      "comment": "",
+      "command": "click",
+      "target": "name=titulo",
+      "targets": [
+        ["name=titulo", "name"],
+        ["css=.form-control:nth-child(4)", "css:finder"],
+        ["xpath=//input[@name='titulo']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ab2c9a55-2782-4655-ac70-49992a78c435",
+      "comment": "",
+      "command": "type",
+      "target": "name=titulo",
+      "targets": [
+        ["name=titulo", "name"],
+        ["css=.form-control:nth-child(4)", "css:finder"],
+        ["xpath=//input[@name='titulo']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "Harry Potter"
+    }, {
+      "id": "b9ca12e3-fad9-46ac-8547-b11fb38b2f51",
+      "comment": "",
+      "command": "type",
+      "target": "name=titulo",
+      "targets": [
+        ["name=titulo", "name"],
+        ["css=.form-control:nth-child(4)", "css:finder"],
+        ["xpath=//input[@name='titulo']", "xpath:attributes"],
+        ["xpath=//input[2]", "xpath:position"]
+      ],
+      "value": "Harry Potter e a pedra filosofal"
+    }, {
+      "id": "145fa369-ae80-4d48-bca5-f519f374c25e",
+      "comment": "",
+      "command": "click",
+      "target": "name=autor",
+      "targets": [
+        ["name=autor", "name"],
+        ["css=.form-control:nth-child(6)", "css:finder"],
+        ["xpath=//input[@name='autor']", "xpath:attributes"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7ac4ffa0-719b-424e-af7b-fdc4a8f1b8e4",
+      "comment": "",
+      "command": "type",
+      "target": "name=autor",
+      "targets": [
+        ["name=autor", "name"],
+        ["css=.form-control:nth-child(6)", "css:finder"],
+        ["xpath=//input[@name='autor']", "xpath:attributes"],
+        ["xpath=//input[3]", "xpath:position"]
+      ],
+      "value": "JK Howlling"
+    }, {
+      "id": "40e0e85b-d7ed-4174-b34f-a74e3bba6bfb",
+      "comment": "",
+      "command": "click",
+      "target": "name=ano",
+      "targets": [
+        ["name=ano", "name"],
+        ["css=.form-control:nth-child(8)", "css:finder"],
+        ["xpath=//input[@name='ano']", "xpath:attributes"],
+        ["xpath=//input[4]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "86470aa4-41e5-44de-8e61-1b87fc960591",
+      "comment": "",
+      "command": "type",
+      "target": "name=ano",
+      "targets": [
+        ["name=ano", "name"],
+        ["css=.form-control:nth-child(8)", "css:finder"],
+        ["xpath=//input[@name='ano']", "xpath:attributes"],
+        ["xpath=//input[4]", "xpath:position"]
+      ],
+      "value": "2000"
+    }, {
+      "id": "83e80306-ad3f-4268-a4cc-2b9c543c9d2e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.checkbox:nth-child(17) > label",
+      "targets": [
+        ["css=.checkbox:nth-child(17) > label", "css:finder"],
+        ["xpath=//div[8]/label", "xpath:position"],
+        ["xpath=//label[contains(.,'Ficção fantasiosa')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "1719d711-91a7-4928-9323-e647c6164ae5",
+      "comment": "",
+      "command": "click",
+      "target": "name=editora",
+      "targets": [
+        ["name=editora", "name"],
+        ["css=.form-control:nth-child(22)", "css:finder"],
+        ["xpath=//input[@name='editora']", "xpath:attributes"],
+        ["xpath=//input[5]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "52498b18-0722-4240-8afc-dff09ac3dbb7",
+      "comment": "",
+      "command": "type",
+      "target": "name=editora",
+      "targets": [
+        ["name=editora", "name"],
+        ["css=.form-control:nth-child(22)", "css:finder"],
+        ["xpath=//input[@name='editora']", "xpath:attributes"],
+        ["xpath=//input[5]", "xpath:position"]
+      ],
+      "value": "Rocco"
+    }, {
+      "id": "8e6cb197-656e-447a-8ea3-3d79c04d6a86",
+      "comment": "",
+      "command": "click",
+      "target": "name=edicao",
+      "targets": [
+        ["name=edicao", "name"],
+        ["css=.form-control:nth-child(24)", "css:finder"],
+        ["xpath=//input[@name='edicao']", "xpath:attributes"],
+        ["xpath=//input[6]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "172032aa-cea6-401e-ab90-eb9f01f3ea59",
+      "comment": "",
+      "command": "type",
+      "target": "name=edicao",
+      "targets": [
+        ["name=edicao", "name"],
+        ["css=.form-control:nth-child(24)", "css:finder"],
+        ["xpath=//input[@name='edicao']", "xpath:attributes"],
+        ["xpath=//input[6]", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "96025eae-3899-474b-9368-c36d308f9f7e",
+      "comment": "",
+      "command": "click",
+      "target": "name=isbn",
+      "targets": [
+        ["name=isbn", "name"],
+        ["css=.form-control:nth-child(26)", "css:finder"],
+        ["xpath=//input[@name='isbn']", "xpath:attributes"],
+        ["xpath=//input[7]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cbcb926a-c40b-4be1-846b-cd5058e66866",
+      "comment": "",
+      "command": "type",
+      "target": "name=isbn",
+      "targets": [
+        ["name=isbn", "name"],
+        ["css=.form-control:nth-child(26)", "css:finder"],
+        ["xpath=//input[@name='isbn']", "xpath:attributes"],
+        ["xpath=//input[7]", "xpath:position"]
+      ],
+      "value": "1245879211400"
+    }, {
+      "id": "de55413c-422c-40d3-be3e-9cb964f5c892",
+      "comment": "",
+      "command": "click",
+      "target": "name=sinopse",
+      "targets": [
+        ["name=sinopse", "name"],
+        ["css=.form-control:nth-child(28)", "css:finder"],
+        ["xpath=//textarea[@name='sinopse']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5d88c140-5fec-4671-856f-1bd1ba32a632",
+      "comment": "",
+      "command": "type",
+      "target": "name=sinopse",
+      "targets": [
+        ["name=sinopse", "name"],
+        ["css=.form-control:nth-child(28)", "css:finder"],
+        ["xpath=//textarea[@name='sinopse']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "Teste cadastrar livro"
+    }, {
+      "id": "4f1914e1-a681-4468-8ac6-061c2e8b9cab",
+      "comment": "",
+      "command": "click",
+      "target": "name=altura",
+      "targets": [
+        ["name=altura", "name"],
+        ["css=.form-control:nth-child(30)", "css:finder"],
+        ["xpath=//input[@name='altura']", "xpath:attributes"],
+        ["xpath=//input[8]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "50362743-d71a-45ee-93be-5c5279b4ade5",
+      "comment": "",
+      "command": "type",
+      "target": "name=altura",
+      "targets": [
+        ["name=altura", "name"],
+        ["css=.form-control:nth-child(30)", "css:finder"],
+        ["xpath=//input[@name='altura']", "xpath:attributes"],
+        ["xpath=//input[8]", "xpath:position"]
+      ],
+      "value": "21.00"
+    }, {
+      "id": "67beb307-0e00-49e8-9bd0-b2004a5bd445",
+      "comment": "",
+      "command": "click",
+      "target": "name=largura",
+      "targets": [
+        ["name=largura", "name"],
+        ["css=.form-control:nth-child(32)", "css:finder"],
+        ["xpath=//input[@name='largura']", "xpath:attributes"],
+        ["xpath=//input[9]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dc4987f2-9794-4155-86a1-c9a4fc5d1554",
+      "comment": "",
+      "command": "type",
+      "target": "name=largura",
+      "targets": [
+        ["name=largura", "name"],
+        ["css=.form-control:nth-child(32)", "css:finder"],
+        ["xpath=//input[@name='largura']", "xpath:attributes"],
+        ["xpath=//input[9]", "xpath:position"]
+      ],
+      "value": "14.00"
+    }, {
+      "id": "1a05c65f-31c5-4b41-98a9-1dcfed23bb0a",
+      "comment": "",
+      "command": "click",
+      "target": "name=peso",
+      "targets": [
+        ["name=peso", "name"],
+        ["css=.form-control:nth-child(34)", "css:finder"],
+        ["xpath=//input[@name='peso']", "xpath:attributes"],
+        ["xpath=//input[10]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cb21820d-a22c-453e-8c53-02892e8aff28",
+      "comment": "",
+      "command": "type",
+      "target": "name=peso",
+      "targets": [
+        ["name=peso", "name"],
+        ["css=.form-control:nth-child(34)", "css:finder"],
+        ["xpath=//input[@name='peso']", "xpath:attributes"],
+        ["xpath=//input[10]", "xpath:position"]
+      ],
+      "value": "0.240"
+    }, {
+      "id": "6f548eac-bef8-4e66-a8dd-544f6f0f2678",
+      "comment": "",
+      "command": "click",
+      "target": "name=profundidade",
+      "targets": [
+        ["name=profundidade", "name"],
+        ["css=.form-control:nth-child(36)", "css:finder"],
+        ["xpath=//input[@name='profundidade']", "xpath:attributes"],
+        ["xpath=//input[11]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e6f21f01-e6f7-4d33-970e-9ba9e02be285",
+      "comment": "",
+      "command": "type",
+      "target": "name=profundidade",
+      "targets": [
+        ["name=profundidade", "name"],
+        ["css=.form-control:nth-child(36)", "css:finder"],
+        ["xpath=//input[@name='profundidade']", "xpath:attributes"],
+        ["xpath=//input[11]", "xpath:position"]
+      ],
+      "value": "1.00"
+    }, {
+      "id": "fcd8c8cc-92c6-4ec0-bf58-02abe7e0daf4",
+      "comment": "",
+      "command": "click",
+      "target": "name=quantidadePaginas",
+      "targets": [
+        ["name=quantidadePaginas", "name"],
+        ["css=.form-control:nth-child(38)", "css:finder"],
+        ["xpath=//input[@name='quantidadePaginas']", "xpath:attributes"],
+        ["xpath=//input[12]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b9c16024-4c7b-4478-9764-3ea2b74c0e44",
+      "comment": "",
+      "command": "type",
+      "target": "name=quantidadePaginas",
+      "targets": [
+        ["name=quantidadePaginas", "name"],
+        ["css=.form-control:nth-child(38)", "css:finder"],
+        ["xpath=//input[@name='quantidadePaginas']", "xpath:attributes"],
+        ["xpath=//input[12]", "xpath:position"]
+      ],
+      "value": "224"
+    }, {
+      "id": "051ce15d-51b0-439a-88e6-4d444ef17b6e",
+      "comment": "",
+      "command": "click",
+      "target": "name=codBarras",
+      "targets": [
+        ["name=codBarras", "name"],
+        ["css=.form-control:nth-child(40)", "css:finder"],
+        ["xpath=//input[@name='codBarras']", "xpath:attributes"],
+        ["xpath=//input[13]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e8a213a6-4f24-4ba2-a816-a03d88052b8c",
+      "comment": "",
+      "command": "type",
+      "target": "name=codBarras",
+      "targets": [
+        ["name=codBarras", "name"],
+        ["css=.form-control:nth-child(40)", "css:finder"],
+        ["xpath=//input[@name='codBarras']", "xpath:attributes"],
+        ["xpath=//input[13]", "xpath:position"]
+      ],
+      "value": "9788532511010"
+    }, {
+      "id": "b0c29dd2-bba6-442f-85b3-3927c2b00ae2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-group:nth-child(41) > label",
+      "targets": [
+        ["css=.form-group:nth-child(41) > label", "css:finder"],
+        ["xpath=//div[12]/label", "xpath:position"],
+        ["xpath=//label[contains(.,'Ativo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "24cc43bb-5a6d-43a4-afcc-18e562eac986",
+      "comment": "",
+      "command": "click",
+      "target": "name=categoriaAtivacao",
+      "targets": [
+        ["name=categoriaAtivacao", "name"],
+        ["css=.form-group:nth-child(42) > .form-control", "css:finder"],
+        ["xpath=//select[@name='categoriaAtivacao']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "493bc780-d80a-4501-86a1-7309e236b709",
+      "comment": "",
+      "command": "select",
+      "target": "name=categoriaAtivacao",
+      "targets": [],
+      "value": "label=Categoria 1"
+    }, {
+      "id": "50cdcbe2-4f19-4034-af54-2c6b470af4f4",
+      "comment": "",
+      "command": "click",
+      "target": "name=categoriaAtivacao",
+      "targets": [
+        ["name=categoriaAtivacao", "name"],
+        ["css=.form-group:nth-child(42) > .form-control", "css:finder"],
+        ["xpath=//select[@name='categoriaAtivacao']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "727d45b2-ae3b-4b0e-9bfc-1d65ad3b1468",
+      "comment": "",
+      "command": "click",
+      "target": "name=motivoAtivacao",
+      "targets": [
+        ["name=motivoAtivacao", "name"],
+        ["css=.form-group:nth-child(43) > .form-control", "css:finder"],
+        ["xpath=//input[@name='motivoAtivacao']", "xpath:attributes"],
+        ["xpath=//div[14]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eba74691-e027-4a7f-abf2-0aca34dd4c61",
+      "comment": "",
+      "command": "type",
+      "target": "name=motivoAtivacao",
+      "targets": [
+        ["name=motivoAtivacao", "name"],
+        ["css=.form-group:nth-child(43) > .form-control", "css:finder"],
+        ["xpath=//input[@name='motivoAtivacao']", "xpath:attributes"],
+        ["xpath=//div[14]/input", "xpath:position"]
+      ],
+      "value": "Cadastro"
+    }, {
+      "id": "017d487b-fe83-4a34-a357-0d77ada22cd0",
+      "comment": "",
+      "command": "click",
+      "target": "name=operacao",
+      "targets": [
+        ["name=operacao", "name"],
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@name='operacao']", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Salvar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "196f1de0-9134-4c8d-b68d-04c6ca689475",
+      "comment": "",
+      "command": "click",
+      "target": "css=html",
+      "targets": [
+        ["css=html", "css:finder"],
+        ["xpath=//html", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "d10aaca5-6fbf-4611-b00a-ca07788c215c",
+    "name": "alterar_livro",
+    "commands": [{
+      "id": "eb6b998e-91b6-4964-8e29-2003e08d3f75",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/livraria/Pages/lumino/consultaProduto.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "fc41405a-1590-4fe1-bc7c-a906fa27a41b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x744",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f8386dce-69af-4741-ab25-77ad14f6987e",
+      "comment": "",
+      "command": "click",
+      "target": "name=codigo",
+      "targets": [
+        ["name=codigo", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='codigo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1e4d4444-aabe-4241-b30c-7c80e386336d",
+      "comment": "",
+      "command": "type",
+      "target": "name=codigo",
+      "targets": [
+        ["name=codigo", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='codigo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "93ff4238-e313-4e9c-998e-439791e01790",
+      "comment": "",
+      "command": "click",
+      "target": "name=operacao",
+      "targets": [
+        ["name=operacao", "name"],
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@name='operacao']", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Consultar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b6a86769-325e-4b70-a749-7de9b1584e8c",
+      "comment": "",
+      "command": "click",
+      "target": "name=ano",
+      "targets": [
+        ["name=ano", "name"],
+        ["css=.form-control:nth-child(7)", "css:finder"],
+        ["xpath=//input[@name='ano']", "xpath:attributes"],
+        ["xpath=//input[4]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c70f22c4-dc23-4fe3-8736-2b6061251b09",
+      "comment": "",
+      "command": "type",
+      "target": "name=ano",
+      "targets": [
+        ["name=ano", "name"],
+        ["css=.form-control:nth-child(7)", "css:finder"],
+        ["xpath=//input[@name='ano']", "xpath:attributes"],
+        ["xpath=//input[4]", "xpath:position"]
+      ],
+      "value": "2002"
+    }, {
+      "id": "ab4872fa-eb04-48b0-be83-ba6e27c40d01",
+      "comment": "",
+      "command": "click",
+      "target": "css=.checkbox:nth-child(19) > label",
+      "targets": [
+        ["css=.checkbox:nth-child(19) > label", "css:finder"],
+        ["xpath=//div[8]/label", "xpath:position"],
+        ["xpath=//label[contains(.,'Ficção fantasiosa')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "459b5f18-cf68-4147-8fbc-341aa2627a33",
+      "comment": "",
+      "command": "click",
+      "target": "css=.checkbox:nth-child(16) > label",
+      "targets": [
+        ["css=.checkbox:nth-child(16) > label", "css:finder"],
+        ["xpath=//div[5]/label", "xpath:position"],
+        ["xpath=//label[contains(.,'Contos e crônicas')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "1bf91cfd-0980-4e13-b88d-4fbe0e677fe3",
+      "comment": "",
+      "command": "click",
+      "target": "name=sinopse",
+      "targets": [
+        ["name=sinopse", "name"],
+        ["css=.form-control:nth-child(8)", "css:finder"],
+        ["xpath=//textarea[@name='sinopse']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "70aa49f7-e921-4387-be24-7a7b520d74ef",
+      "comment": "",
+      "command": "type",
+      "target": "name=sinopse",
+      "targets": [
+        ["name=sinopse", "name"],
+        ["css=.form-control:nth-child(8)", "css:finder"],
+        ["xpath=//textarea[@name='sinopse']", "xpath:attributes"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "\t\t\t\t\t\t\t\t\t\tTeste alterar livro\\n\t\t\t\t\t\t\t\t\t"
+    }, {
+      "id": "78895dc4-7e97-4f68-ba6f-e3965070c94e",
+      "comment": "",
+      "command": "click",
+      "target": "name=operacao",
+      "targets": [
+        ["name=operacao", "name"],
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@name='operacao']", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Alterar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f01460bf-914d-44cf-9333-0002ac1ca2f8",
+      "comment": "",
+      "command": "click",
+      "target": "css=html",
+      "targets": [
+        ["css=html", "css:finder"],
+        ["xpath=//html", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "709c8614-46ae-4841-baf4-5ed0e287d64a",
+    "name": "excluir_livro",
+    "commands": [{
+      "id": "77513a5f-1ac6-4671-9fd1-d963ebe413dd",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/livraria/Pages/lumino/excluiProduto.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7149b664-3922-4a78-960c-ed40b771e3d3",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x744",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ac4cbd7c-01a0-4e56-8fec-a0936ff884f1",
+      "comment": "",
+      "command": "click",
+      "target": "name=codigo",
+      "targets": [
+        ["name=codigo", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='codigo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "32abb7e0-fa85-4286-bb44-5775ef601b2f",
+      "comment": "",
+      "command": "type",
+      "target": "name=codigo",
+      "targets": [
+        ["name=codigo", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='codigo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "9f634474-4ba3-47d2-b593-148b74cca0b7",
+      "comment": "",
+      "command": "click",
+      "target": "name=operacao",
+      "targets": [
+        ["name=operacao", "name"],
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@name='operacao']", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Excluir')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "26f7486f-123c-4527-9127-dad20d725da7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.panel-body",
+      "targets": [
+        ["css=.panel-body", "css:finder"],
+        ["xpath=//div[3]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "6e8dcff2-fb29-47d5-9841-0f26f18f4ca6",
+    "name": "consultar_livro",
+    "commands": [{
+      "id": "cadc7525-c409-422e-9a2b-d79a3db42d7a",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:8080/livraria/Pages/lumino/consultaProduto.jsp",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b05e4fa0-fed7-4223-8bf0-80ce4695d5d5",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x744",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "43016405-be84-4b97-8de6-5bbb0655e7f1",
+      "comment": "",
+      "command": "click",
+      "target": "name=codigo",
+      "targets": [
+        ["name=codigo", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='codigo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7e33436d-80cf-4a70-a43a-32b864ee436c",
+      "comment": "",
+      "command": "type",
+      "target": "name=codigo",
+      "targets": [
+        ["name=codigo", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='codigo']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "b10b3b2e-e524-4440-96f8-73d013110965",
+      "comment": "",
+      "command": "click",
+      "target": "name=operacao",
+      "targets": [
+        ["name=operacao", "name"],
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//button[@name='operacao']", "xpath:attributes"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Consultar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e25bacdd-cad1-4a4f-a058-461262e0260f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.panel-body",
+      "targets": [
+        ["css=.panel-body", "css:finder"],
+        ["xpath=//div[3]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "a5ac1c46-4057-4cf0-9b53-f32de7402e49",
+    "name": "Livro",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["bd2b5f31-96a0-4335-8f2a-576bb903ed3a", "6e8dcff2-fb29-47d5-9841-0f26f18f4ca6", "d10aaca5-6fbf-4611-b00a-ca07788c215c", "709c8614-46ae-4841-baf4-5ed0e287d64a"]
+  }],
+  "urls": ["http://localhost:8080/", "http://localhost:8080/livraria/Pages/lumino/excluiProduto.jsp", "http://localhost:8080/livraria/Pages/lumino/consultaProduto.jsp", "http://localhost:8080/livraria/Pages/lumino/cadastraProduto.jsp"],
+  "plugins": []
+}
