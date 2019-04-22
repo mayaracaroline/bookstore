@@ -57,7 +57,7 @@ public class VHBloqueio implements IViewHelper {
         ItemCarrinho item = this.carrinho.getItensCarrinho().get(i);
         // Coloca o item como último da lista (para controle na Strategy e DAO)
         this.carrinho.getItensCarrinho().add(item);
-        // Adiciona o atual para não haver duplicidade
+        // Exclui o atual para não haver duplicidade
         this.carrinho.getItensCarrinho().remove(i);
         contemProduto = true;
         break;

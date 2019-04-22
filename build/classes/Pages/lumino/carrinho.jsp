@@ -42,7 +42,7 @@
         <div class="shop-menu clearfix pull-right">
           <ul class="nav navbar-nav">
             <li><a href="../../area-do-cliente/lumino/meus-pedidos.html"><i class="fa fa-user"></i> Minha conta</a></li>
-            <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Meu carrinho(${fn:length(sessionScope.carrinho.itensCarrinho)})</a></li>
+            <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Meu carrinho</a></li>
             <li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
           </ul>
         </div>
@@ -102,7 +102,7 @@
       </thead>
       <tbody>
        <c:forEach var="itemCarrinho" items="${sessionScope.carrinho.itensCarrinho}">
-          <tr>
+          <tr data-cod="${itemCarrinho.produto.id}" >
             <td class="cart_product">
               <a href=""><img src="images/cart/one.png" alt=""></a>
             </td>
@@ -115,16 +115,14 @@
             </td>
             <td class="cart_quantity">
               <div class="cart_quantity_button">
-                <a class="cart_quantity_up" href="/livraria/Pages/lumino/carrinho?operacao=ALTERAR&codigo=${itemCarrinho.produto.id}"> + </a>
-                <input class="cart_quantity_input" type="text" name="quantity" min="1" autocomplete="off" size="2" value="${itemCarrinho.quantidade}" readOnly>
-                <a href="/livraria/Pages/lumino/carrinho?operacao=ALTERAR&codigo=${itemCarrinho.produto.id}" class="cart_quantity_down"> - </a>
+                <input class="cart_quantity_input" type="text" name="quantidade" min="1" autocomplete="off" size="2" value="${itemCarrinho.quantidade}" onchange="alterarQuantidadeItensCarrinho(${itemCarrinho.produto.id},this.value)">
               </div>
             </td>
             <td class="cart_total">
               <p class="cart_total_price">R$${itemCarrinho.produto.preco * itemCarrinho.quantidade }</p>
             </td>
             <td class="cart_delete">
-              <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+              <button type="submit" class="cart_quantity_delete" onclick="excluirItemCarrinho(${itemCarrinho.produto.id})"><i class="fa fa-times"></i></button>
             </td>
           </tr>
        </c:forEach>

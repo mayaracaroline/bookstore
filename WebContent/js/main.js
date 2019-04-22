@@ -77,9 +77,24 @@ function salvarAlteracoesEndereco() {
 }
 
 
-async function obterDados(id) {
-	console.log('obterDados '+ id)
-	const dados = await fetch('/livraria/Pages/lumino/ConsultaProduto?page=product&operacao=CONSULTAR&codigo='+id, {method: 'get'})
+async function buscarProdutosAtivos() {
+	
+	const dados = await fetch('/livraria/Pages/lumino/ConsultaProduto?page=product&operacao=CONSULTAR&codigo=0', {method: 'get'})
 	console.log(dados)
+	return dados;
+}
+
+async function alterarQuantidadeItensCarrinho(id, quantidade) {
+	console.log('quantidade: '+quantidade)
+	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=ALTERAR&codigo='+id+'&quantidade='+quantidade, {method: 'get'})
+	console.log(dados)
+	return dados;
+}
+
+async function excluirItemCarrinho(id) {
+	
+	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=EXCLUIR&codigo='+id, {method: 'get'})
+	console.log(dados)
+	document.querySelector("[data-cod="+"'"+id+"'"+"]").style.display="none";
 	return dados;
 }

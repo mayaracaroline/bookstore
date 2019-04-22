@@ -110,10 +110,6 @@ public class CadastrarProdutoController extends HttpServlet implements ServletCo
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    if(getServletContext().getAttribute("bloqueio") == null) {
-      HashMap<String, Bloqueio> mapProdutosBloqueados = new HashMap<>();     
-      getServletContext().setAttribute("bloqueio", mapProdutosBloqueados);
-    }  
     
 		String operacao = request.getParameter("operacao");
 		String vh = request.getRequestURI();
@@ -134,13 +130,21 @@ public class CadastrarProdutoController extends HttpServlet implements ServletCo
 
   @Override
   public void contextDestroyed(ServletContextEvent sce) {
-    // TODO Auto-generated method stub
+    System.out.println("Contexto destruído");
     
   }
 
   @Override
   public void init() {
     System.out.println("contextInitialized");
+
+    HashMap<String, Bloqueio> mapProdutosBloqueados = new HashMap<>();     
+    getServletContext().setAttribute("bloqueio", mapProdutosBloqueados);
+
+
+    HashMap<String, Carrinho> mapProdutosDesbloqueados = new HashMap<>();     
+    getServletContext().setAttribute("desbloqueio", mapProdutosDesbloqueados);
+
     SchedulerFactory shedFact = new StdSchedulerFactory();
     try {
            Scheduler scheduler = shedFact.getScheduler();

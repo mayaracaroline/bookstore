@@ -2,4 +2,4 @@
  * 
  */
 
-	obterDados(0)
+	buscarProdutosAtivos()

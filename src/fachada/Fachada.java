@@ -25,6 +25,7 @@ import les.negocio.StValidarIdInserido;
 import les.negocio.StValidarLivroExclusaoEAlteracao;
 import les.negocio.StValidarMotivoAtivacao;
 import les.negocio.StValidarMotivoCategoriaInativacao;
+import les.negocio.StValidarQuantidadeAIncluirOuExcluirCarrinho;
 import util.Resultado;
 
 public class Fachada implements IFachada  {
@@ -44,6 +45,8 @@ public class Fachada implements IFachada  {
 	private List<IStrategy> listStrategySalvarCliente;
 	private List<IStrategy> listStrategyConsultarCliente;
 	private List<IStrategy> listStrategySalvarBloqueioProduto;
+	private List<IStrategy> listStrategyAlterarBloqueioProduto;
+	private List<IStrategy> listStrategyExcluirBloqueioProduto;
 	
 	public Fachada() {
 	  rns = new HashMap<String, Map<String, List<IStrategy>>>();
@@ -63,6 +66,8 @@ public class Fachada implements IFachada  {
 		listStrategyAlterarProduto = new ArrayList<IStrategy>();
 		listStrategyInativarProduto = new ArrayList<IStrategy>();
     listStrategySalvarBloqueioProduto = new ArrayList<IStrategy>(); 
+    listStrategyAlterarBloqueioProduto = new ArrayList<IStrategy>();
+    listStrategyExcluirBloqueioProduto = new ArrayList<IStrategy>();
 		
 		listStrategySalvarProduto.add(new StValidarDadosObrigatoriosLivro());
 		listStrategySalvarProduto.add(new StValidarMotivoAtivacao());
@@ -84,6 +89,8 @@ public class Fachada implements IFachada  {
 		
 		listStrategySalvarBloqueioProduto.add(new StConsultarQuantidadeEstoque());
 		
+		listStrategyAlterarBloqueioProduto.add(new StValidarQuantidadeAIncluirOuExcluirCarrinho());
+		
 		listStrategySalvarCliente = new ArrayList<IStrategy>();
 		listStrategySalvarCliente.add(new StComplementarCidade());
     listStrategySalvarCliente.add(new StValidarDadosObrigatoriosCliente());
@@ -99,6 +106,8 @@ public class Fachada implements IFachada  {
 		rnsProduto.put("INATIVAR", listStrategyInativarProduto);
 		
 		rnsBloqueioProduto.put("SALVAR", listStrategySalvarBloqueioProduto);
+		rnsBloqueioProduto.put("ALTERAR", listStrategyAlterarBloqueioProduto);
+		rnsBloqueioProduto.put("EXCLUIR", listStrategyExcluirBloqueioProduto);
 		
 		rnsCliente.put("SALVAR", listStrategySalvarCliente);
 		rnsCliente.put("CONSULTAR", listStrategyConsultarCliente);
@@ -188,6 +197,7 @@ public class Fachada implements IFachada  {
 		if (!resultado.getErro()) {
 			IDAO dao = mapDAO.get(entidade.getClass().getSimpleName().toUpperCase());
 			resultado = dao.alterar(entidade);
+			
 		}
 		
 		return resultado;	
