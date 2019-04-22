@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,37 +23,65 @@ public class DAOCarrinho extends AbstractDAO implements IDAO {
     Carrinho carrinho = produtoBloqueado.getCarrinho();
     // Index do último produto adicionado
     Integer indexProdutoAdicionado = carrinho.getItensCarrinho().size() - 1;
-    HttpSession sessaoUsuario = produtoBloqueado.getSessao();
     ItemCarrinho itemCarrinho = carrinho.getItensCarrinho().get(indexProdutoAdicionado);
     Produto produto = itemCarrinho.getProduto();
+    Integer quantidadeReservados = 0;
+    HttpSession sessaoUsuario = produtoBloqueado.getSessao();
+    Carrinho carrinhoSessao = (Carrinho) sessaoUsuario.getAttribute("carrinho");
+    ArrayList<ItemCarrinho> itensCarrinho = carrinhoSessao.getItensCarrinho();
+
     Resultado resultado = new Resultado();
-    String sql = "UPDATE estoque SET est_quantidade = est_quantidade - ? WHERE est_pro_id = ? ;";
-    
-    try {
-      
-      PreparedStatement pst = conexao.prepareStatement(sql);
-      pst.setInt(1, itemCarrinho.getQuantidade());
-      pst.setInt(2, produto.getId().intValue());
-      
-      pst.executeUpdate();
-      
-    } catch (Exception e) {
-      resultado.erro("Erro ao inserir produto no carrinho, tente novamente");
+
+    for (int i= 0; i < carrinhoSessao.getItensCarrinho().size();i++) {
+      Produto produtoSessao = carrinhoSessao
+          .getItensCarrinho()
+          .get(i).getProduto();
+      // Armazenar a quantidade atual de um determinado produto
+      if(produtoSessao.getId().equals(produto.getId())) {
+        quantidadeReservados = carrinhoSessao
+            .getItensCarrinho()
+            .get(i).getQuantidade();
+      }      
     }
+    Integer totalDeProdutosAInserir = quantidadeReservados + itemCarrinho.getQuantidade();
     
-    sessaoUsuario.setAttribute("carrinho", carrinho);
+    Carrinho novoCarrinho = new Carrinho();
+    ItemCarrinho novoItem = new ItemCarrinho();
+    
+    if (itensCarrinho.size() > indexProdutoAdicionado ) {
+      itensCarrinho.get(indexProdutoAdicionado).setQuantidade(totalDeProdutosAInserir);
+    } else {
+      novoItem.setProduto(produto);
+      novoItem.setQuantidade(totalDeProdutosAInserir);
+      itensCarrinho.add(novoItem);     
+    }
+
+    novoCarrinho.setItensCarrinho(itensCarrinho);
+    novoCarrinho.setStatus(true);
+    
+    sessaoUsuario.setAttribute("carrinho", novoCarrinho);
 
     HashMap<String, Bloqueio> mapProdutosBloqueados;
-    mapProdutosBloqueados= (HashMap<String, Bloqueio>) sessaoUsuario.getServletContext()
+    mapProdutosBloqueados = (HashMap<String, Bloqueio>) sessaoUsuario.getServletContext()
         .getAttribute("bloqueio");
     
-    if(mapProdutosBloqueados.containsValue(sessaoUsuario.getId())) {
-      mapProdutosBloqueados.get(sessaoUsuario.getId())
-      .getCarrinho()
-      .addItem(itemCarrinho);
-    } else {
-      mapProdutosBloqueados.put(sessaoUsuario.getId(), produtoBloqueado);
+    Integer quantidadeDeItensBloqueados = 0;
+    
+    for(Map.Entry<String, Bloqueio> entry : mapProdutosBloqueados.entrySet()) {
+      
+      Bloqueio bloqueioCarrinho = (Bloqueio) entry.getValue();
+       
+      for(int i = 0; i < bloqueioCarrinho.getCarrinho().getItensCarrinho().size(); i++) {
+         ItemCarrinho itemBloqueado = bloqueioCarrinho.getCarrinho().getItensCarrinho().get(i);
+         if(itemBloqueado.getProduto().getId().equals(produto.getId())) {
+           quantidadeDeItensBloqueados += itemBloqueado.getQuantidade();
+         }  
+       }
     }
+    
+    produtoBloqueado.setCarrinho(novoCarrinho);
+    mapProdutosBloqueados.put(sessaoUsuario.getId(), produtoBloqueado);
+
     
     resultado.setResultado(produto);
     resultado.sucesso("Produto inserido com sucesso");

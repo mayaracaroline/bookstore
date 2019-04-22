@@ -30,7 +30,7 @@
 
 <body>
     <jsp:useBean id="carrinho" class="controller.CarrinhoController"/>
-    
+        
 	<header id="header"><!--header-->
 		
 		<div class="header-middle"><!--header-middle-->

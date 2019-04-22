@@ -117,7 +117,7 @@
               <div class="cart_quantity_button">
                 <a class="cart_quantity_up" href="/livraria/Pages/lumino/carrinho?operacao=ALTERAR&codigo=${itemCarrinho.produto.id}"> + </a>
                 <input class="cart_quantity_input" type="text" name="quantity" min="1" autocomplete="off" size="2" value="${itemCarrinho.quantidade}" readOnly>
-                <a href="/livraria/Pages/lumino/carrinho?operacao=ALTERAR&codigo=${itemCaprrinho.produto.id}" class="cart_quantity_down"> - </a>
+                <a href="/livraria/Pages/lumino/carrinho?operacao=ALTERAR&codigo=${itemCarrinho.produto.id}" class="cart_quantity_down"> - </a>
               </div>
             </td>
             <td class="cart_total">

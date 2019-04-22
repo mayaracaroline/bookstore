@@ -1,6 +1,10 @@
 package les.negocio;
 
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import dominio.Bloqueio;
 import dominio.Carrinho;
@@ -21,25 +25,44 @@ public class StConsultarQuantidadeEstoque implements IStrategy {
     // Index do último produto adicionado
     Integer indexProdutoAdicionado = carrinho.getItensCarrinho().size() - 1;
     ItemCarrinho itemCarrinho = carrinho.getItensCarrinho().get(indexProdutoAdicionado);
-
+    HttpSession sessaoUsuario = produtoBloqueado.getSessao();
     
     Produto produto = itemCarrinho.getProduto();
     
-    int quantidadeProdutoCarrinho = itemCarrinho.getQuantidade();
+    Integer quantidadeAInserir = itemCarrinho.getQuantidade();      
     
     DAOEstoque daoEstoque = new DAOEstoque();
     Resultado resultado = daoEstoque.consultar(produto);
     
+    Integer quantidadeDeItensBloqueados = 0;
+    HashMap<String, Bloqueio> mapProdutosBloqueados;
+    mapProdutosBloqueados = (HashMap<String, Bloqueio>) sessaoUsuario.getServletContext()
+        .getAttribute("bloqueio");
+    
+    for(Map.Entry<String, Bloqueio> entry : mapProdutosBloqueados.entrySet()) {
+      
+      Bloqueio bloqueioCarrinho = (Bloqueio) entry.getValue();
+       
+      for(int i = 0; i < bloqueioCarrinho.getCarrinho().getItensCarrinho().size(); i++) {
+         ItemCarrinho itemBloqueado = bloqueioCarrinho.getCarrinho().getItensCarrinho().get(i);
+         if(itemBloqueado.getProduto().getId().equals(produto.getId())) {
+           quantidadeDeItensBloqueados += itemBloqueado.getQuantidade();
+         }  
+       }
+    }
+ 
     Estoque estoque = (Estoque) resultado.getResultado();
     Integer quantidadeEmEstoque = estoque.getQuantidade(); 
-    
-    if(quantidadeProdutoCarrinho > quantidadeEmEstoque) {
+    Integer quantidadeDisponivel = quantidadeEmEstoque - quantidadeDeItensBloqueados ;
+   
+    if(quantidadeAInserir > quantidadeDisponivel) {
       BigInteger idProduto = itemCarrinho.getProduto().getId();
       mensagem = "Não há itens suficiente em estoque."
-          + "Você solicitou " +  quantidadeProdutoCarrinho +
-          ", mas nós só temos " + estoque.getQuantidade() + " :(";
+          + "Você solicitou " +  quantidadeAInserir +
+          ", mas nós só temos " + quantidadeDisponivel + " :(";
       carrinho.removeItem(idProduto);        
     }
+    
     resultado.erro(mensagem);   
     return mensagem;
   }

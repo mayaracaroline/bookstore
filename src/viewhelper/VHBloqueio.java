@@ -32,11 +32,12 @@ public class VHBloqueio implements IViewHelper {
       this.carrinho = carrinho;
     }
     
-    if (request.getAttribute("carrinho") != null) {
-      System.out.println("getAttribute(carrinho)");
-      carrinho = (Carrinho) request.getSession().getAttribute("carrinho");
-    } else {
-      request.getSession().setAttribute("carrinho", carrinho);
+      if (request.getSession().getAttribute("carrinho") == null) {
+      Carrinho novoCarrinho = new Carrinho();
+      ArrayList<ItemCarrinho> itensCarrinho = new ArrayList<>();
+      novoCarrinho.setItensCarrinho(itensCarrinho);
+      novoCarrinho.setStatus(true);      
+      request.getSession().setAttribute("carrinho", novoCarrinho);
     }
     
     Bloqueio bloqueio = new Bloqueio();
@@ -52,22 +53,11 @@ public class VHBloqueio implements IViewHelper {
     for ( int i = 0; i < this.carrinho.getItensCarrinho().size(); i++) {
       Produto prod = this.carrinho.getItensCarrinho().get(i).getProduto();
       if(prod.getId().equals(idProduto)) {
-        int quantidadeProdutosCarrinho = this.carrinho.getItensCarrinho().get(i).getQuantidade();
-//        
-//        if(quantidadeProdutosCarrinho >= quantidade) {
-//          int quantidadeAserExcluida = quantidadeProdutosCarrinho - quantidade;
-//          carrinho.getItensCarrinho().get(i)
-//          .setQuantidade(quantidadeProdutosCarrinho 
-//              - quantidadeAserExcluida);
-//        } else {
-//          int quantidadeAserAdicionada = quantidade - quantidadeProdutosCarrinho;
-//          carrinho.getItensCarrinho().get(i)
-//          .setQuantidade(quantidadeProdutosCarrinho 
-//              + quantidadeAserAdicionada);
-//        }
-        this.carrinho.getItensCarrinho().get(i).setQuantidade(quantidadeProdutosCarrinho + 1);
+        this.carrinho.getItensCarrinho().get(i).setQuantidade(quantidade);
         ItemCarrinho item = this.carrinho.getItensCarrinho().get(i);
+        // Coloca o item como último da lista (para controle na Strategy e DAO)
         this.carrinho.getItensCarrinho().add(item);
+        // Adiciona o atual para não haver duplicidade
         this.carrinho.getItensCarrinho().remove(i);
         contemProduto = true;
         break;
@@ -84,11 +74,9 @@ public class VHBloqueio implements IViewHelper {
     }
     
     HttpSession sessaoUsuario = request.getSession();
-   
     bloqueio.setCarrinho(this.carrinho);
     bloqueio.setHorarioBloqueio(horarioBloqueio);
     bloqueio.setSessao(sessaoUsuario);    
-    
     return bloqueio;
   }
 
