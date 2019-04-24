@@ -27,6 +27,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+
 </head><!--/head-->
 <body>
 <header id="header"><!--header-->   
@@ -88,6 +89,7 @@
       <li class="active">Carrinho de compra</li>
     </ol>
   </div>
+ <form action="/livraria/Pages/lumino/comprar" METHOD="POST"> 
   <div class="table-responsive cart_info">
     <table class="table table-condensed">
       <thead>
@@ -194,7 +196,8 @@
           </div>
         </div>
         
-              <button style="margin-bottom:30px" class="btn btn-primary">Finalizar compra</button>
+        <button type="submit" style="margin-bottom:30px" class="btn btn-primary">Comprar</button>
+       </form>
     </div>
   </div> <!--container-->
 </section><!--/#do_action-->
@@ -217,7 +220,6 @@
 
 	<jsp:include page= "./footer.jsp" />
 	<jsp:include page= "./scripts.jsp" />
-	<script src="<c:url value="/js/shop.js"/>"></script>
 
 </body>
 </html>

@@ -61,7 +61,7 @@ import viewhelper.VHCliente;
       "/Pages/lumino/carrinho"
     })
 
-public class CadastrarProdutoController extends HttpServlet implements ServletContextListener, Filter {
+  public class CadastrarProdutoController extends HttpServlet implements ServletContextListener {
 	private static final long serialVersionUID = 1L;
 	private Map<String, IViewHelper> mapViewHelper;
 	private Map<String, ICommand> mapCommand;
@@ -173,18 +173,8 @@ public class CadastrarProdutoController extends HttpServlet implements ServletCo
     // TODO Auto-generated method stub
     
   }
+  
 
-  @Override
-  public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)
-      throws IOException, ServletException {
-    // TODO Auto-generated method stub
-    
-  }
 
-  @Override
-  public void init(FilterConfig arg0) throws ServletException {
-    // TODO Auto-generated method stub
-    
-  }
 
 }

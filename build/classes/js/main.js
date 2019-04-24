@@ -98,3 +98,40 @@ async function excluirItemCarrinho(id) {
 	document.querySelector("[data-cod="+"'"+id+"'"+"]").style.display="none";
 	return dados;
 }
+
+async function calcularFrete() {
+	
+
+	
+	const params = 
+	{
+	  "nCdEmpresa": "",
+	  "sDsSenha": "",
+	  "nCdServico": "40010",
+	  "sCepOrigem": "37410220",
+	  "sCepDestino": "05311900",
+	  "nVlPeso": "1",
+	  "nCdFormato": "1",
+	  "nVlComprimento": "20",
+	  "nVlAltura": "5",
+	  "nVlLargura": "15",
+	  "nVlDiametro": "0",
+	  "sCdMaoPropria": "n",
+	  "nVlValorDeclarado": "100",
+	  "sCdAvisoRecebimento": "n"
+	}
+	
+	const options = {
+			  method: "POST",
+			  body: params
+			}
+	
+	const dados = await correios.calcPreco(args)
+	
+	console.log(dados)
+	
+	return dados;
+}
+
+
+

@@ -41,7 +41,7 @@
                                   <input name="data-nasc" type="date" class="form-control">
                                   <label>Gênero:</label>
                                   <select name="genero" class="form-control">
-                                    <option value="">Selecione</option>
+                                    <option value="SELECIONE">Selecione</option>
                                     <option value="FEMININO">Feminino</option>
                                     <option value="MASCULINO">Masculino</option>
                                     <option value="INDEFINIDO">Não desejo informar</option>
@@ -58,7 +58,7 @@
                                   <label>Telefone</label><br>
                                   <label>Tipo:</label>
                                   <select name="tipo-telefone" class="form-control">
-                                    <option value="">Selecione</option>
+                                    <option value="SELECIONE">Selecione</option>
                                     <option value="RESIDENCIAL">Residencial</option>
                                     <option value="COMERCIAL">Comercial</option>
                                     <option value="CELULAR">Celular</option>
@@ -86,7 +86,7 @@
                                 <div class="form-group">
                                    <label>Tipo de residência: *</label>
                                     <select name="tipo-residencia0" class="form-control"  >
-                                      <option value="">Selecione</option>
+                                      <option value="SELECIONE">Selecione</option>
                                       <option value="CASA">Casa</option>
                                       <option value="APARTAMENTO">Apartamento</option>
                                       <option value="CONDOMINIO">Condomínio</option>
