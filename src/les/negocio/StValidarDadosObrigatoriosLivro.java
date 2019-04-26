@@ -42,7 +42,7 @@ public class StValidarDadosObrigatoriosLivro implements IStrategy {
 		}
 		
 		if(livro.getEditora().equals(".")){
-			mensagem.append("Numero é obrigatório\n");
+			mensagem.append("Formatter é obrigatório\n");
 		}
 		
 		if(livro.getIsbn().equals(".")){

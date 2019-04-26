@@ -1,12 +1,15 @@
 package dominio;
 
-public class Cartao extends EntidadeDominio {
+import java.time.LocalDate;
+
+public class Cartao extends EntidadeDominio implements IFormaDePagamento {
   
   private Bandeira bandeira;
   private int codSeguranca;
   private String nomeTitular;
   private String numero;
   private boolean preferencial;
+  LocalDate dataDeValidade;
   
   public Bandeira getBandeira() {
     return bandeira;
@@ -37,6 +40,12 @@ public class Cartao extends EntidadeDominio {
   }
   public void setNomeTitular(String nomeTitular) {
     this.nomeTitular = nomeTitular;
+  }
+    
+  @Override
+  public void processarPagamento() {
+    // TODO Auto-generated method stub
+    
   }
 
 }

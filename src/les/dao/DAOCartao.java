@@ -50,8 +50,40 @@ public class DAOCartao extends AbstractDAO implements IDAO {
 
   @Override
   public Resultado consultar(EntidadeDominio entidade) {
-    // TODO Auto-generated method stub
-    return null;
+    Cartao cartao = (Cartao) entidade;
+    Resultado resultado = new Resultado();
+    String sql = "SELECT * FROM cartoes WHERE car_id = ?";
+    
+    try {
+      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst.setInt(1, cartao.getId().intValue());
+      
+      ResultSet rs = pst.executeQuery();
+      
+      while(rs.next()) {
+        cartao.setCodSeguranca(rs.getInt("car_cod_seguranca"));
+        cartao.getBandeira().setId(rs.getInt("car_ban_id"));
+        cartao.setNomeTitular(rs.getString("car_nome_titular"));
+        cartao.setNumero(rs.getString("car_numero"));
+        cartao.setPreferencial(rs.getBoolean("car_preferencial"));
+        
+        //Complementar dados bandeira
+        String sql1 = "SELECT ban_nome FROM bandeiras WHERE ban_id = ?";
+        PreparedStatement pst1 = conexao.prepareStatement(sql1);
+        pst1.setInt(1, cartao.getBandeira().getId().intValue());
+        ResultSet rs1 = pst1.executeQuery();
+        cartao.getBandeira().setNome(rs1.getString("ban_nome"));       
+      }
+      
+      resultado.sucesso("Cartão encontrado");
+      resultado.setResultado(cartao);
+      
+    } catch (Exception e) {
+      resultado.erro("Cartão não encontrado");
+      e.printStackTrace();
+    }
+    
+    return resultado;
   }
 
   @Override

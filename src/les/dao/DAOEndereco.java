@@ -3,9 +3,7 @@ package les.dao;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import dominio.Cidade;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
 import dominio.Pais;
@@ -20,7 +18,7 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
     Resultado resultado = new Resultado();
     Endereco endereco = (Endereco) entidade;
     
-    String sql = "INSERT INTO enderecos(end_logradouro,end_bairro, end_cep, end_descricao, end_observacao, end_tipo_residencia, end_tipo, end_tpl_id, end_cid_id, end_est_id, end_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
+    String sql = "INSERT INTO enderecos(end_logradouro,end_bairro, end_cep, end_descricao, end_observacao, end_tipo_residencia, end_tipo, end_tpl_id, end_cidade, end_estado, end_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
     
     try {
       
@@ -33,8 +31,8 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
       pst.setString(6, endereco.getTipoResidencia().toString());
       pst.setString(7, endereco.getTipoEndereco());
       pst.setInt(8, endereco.getTipoLogradouro().getId().intValue());
-      pst.setInt(9, endereco.getCidade().getId().intValue());
-      pst.setInt(10, endereco.getEstado().getId().intValue());
+      pst.setString(9, endereco.getCidade());
+      pst.setString(10, endereco.getEstado());
       pst.setBoolean(11, true);
       
       pst.execute();
@@ -75,35 +73,26 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
       
       while(rs.next()) {
         endereco.setBairro(rs.getString("end_bairro"));
-        endereco.setCep(rs.getString("end_cep"));
-        
-        Cidade cidade = new Cidade();
-        cidade.setId(rs.getInt("end_cid_id"));
-        DAOCidade daoCidade = new DAOCidade();
-        
-        cidade = (Cidade) daoCidade.consultar(cidade).getResultado();
-        
-        endereco.setCidade(cidade);
-        
+        endereco.setCep(rs.getString("end_cep"));    
+        endereco.setCidade(rs.getString("end_cidade"));
         endereco.setDescricao(rs.getString("end_descricao"));
-        endereco.setEstado(cidade.getEstado());
+        endereco.setEstado(rs.getString("end_estado"));
         endereco.setLogradouro(rs.getString("end_logradouro"));
-        endereco.setNumero(93); //acrescentar campo número
+        endereco.setNumero(rs.getInt("end_numero")); 
         endereco.setObservacao(rs.getString("end_observacao"));
         
         Pais pais = new Pais();
         pais.setId(1); // Refatorar: associar endereco ao estado
         
-        DAOPais daoPais = new DAOPais();
-        
-        pais = (Pais) daoPais.consultar(pais).getResultado();
-        
-        endereco.setPais(pais);
+        endereco.setPais(rs.getString("end_pais"));
         endereco.setTipoEndereco(rs.getString("end_tipo"));
         
-        TipoLogradouro tipoLogradouro = new TipoLogradouro(); //Criar DAO para tipo logradouro
-        tipoLogradouro.setId(1);
-        tipoLogradouro.setTipo("RUA");
+        DAOTipoLogradouro DAOtipoLogradouro = new DAOTipoLogradouro();
+        Resultado res = DAOtipoLogradouro.consultar(endereco.getTipoLogradouro());
+        TipoLogradouro tpTipoLogradouro = (TipoLogradouro) res.getResultado();
+        TipoLogradouro tipoLogradouro = new TipoLogradouro();
+        tipoLogradouro.setId(tpTipoLogradouro.getId().intValue());
+        tipoLogradouro.setTipo(tpTipoLogradouro.getTipo());
         endereco.setTipoLogradouro(tipoLogradouro);
         endereco.setTipoResidencia(TipoResidencia.valueOf(rs.getString("end_tipo_residencia")));
 

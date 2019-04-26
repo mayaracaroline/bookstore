@@ -92,11 +92,12 @@
 				<div class="col-sm-4 col-sm-offset-1">
 					<div class="login-form"><!--login form-->
 						<h2>Login com sua conta</h2>
-						<form action="/livraria/Pages/lumino/loginCliente" method="POST">
+						<form action="/livraria/Pages/lumino/autenticaCliente" method="POST">
+                            <input type="hidden" name="formName" value="loginCliente">
 							<input name="email" type="email" placeholder="E-mail" />
 							<input name="senha" type="password" placeholder="Senha" />
 							<span>
-							<button type="submit" class="btn btn-default">Login</button>                              
+							<button name="operacao" value="CONSULTAR" type="submit" class="btn btn-default">Login</button>                              
 						</form>
                         <c:if test="${not empty usuario}">
                             <div class="alert alert-danger" role="alert">

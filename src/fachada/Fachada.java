@@ -9,9 +9,11 @@ import dominio.Bloqueio;
 import dominio.Cliente;
 import dominio.EntidadeDominio;
 import dominio.Livro;
+import dominio.Usuario;
 import les.dao.DAOCarrinho;
 import les.dao.DAOCliente;
 import les.dao.DAOLivro;
+import les.dao.DAOUsuario;
 import les.dao.IDAO;
 import les.negocio.IStrategy;
 import les.negocio.StComplementarCidade;
@@ -26,6 +28,7 @@ import les.negocio.StValidarLivroExclusaoEAlteracao;
 import les.negocio.StValidarMotivoAtivacao;
 import les.negocio.StValidarMotivoCategoriaInativacao;
 import les.negocio.StValidarQuantidadeAIncluirOuExcluirCarrinho;
+import les.negocio.StValidarUsuarioExistente;
 import util.Resultado;
 
 public class Fachada implements IFachada  {
@@ -33,6 +36,7 @@ public class Fachada implements IFachada  {
 	private Map<String, List<IStrategy>> rnsProduto;
 	private Map<String, List<IStrategy>> rnsCliente;
 	private Map<String, List<IStrategy>> rnsBloqueioProduto;
+	private Map<String, List<IStrategy>> rnsAutenticarUsuario;
 	private Map<String, IDAO> mapDAO;
 	private Map<String, Map<String, List<IStrategy>>> rns;
 	
@@ -48,17 +52,21 @@ public class Fachada implements IFachada  {
 	private List<IStrategy> listStrategyAlterarBloqueioProduto;
 	private List<IStrategy> listStrategyExcluirBloqueioProduto;
 	
+	 private List<IStrategy> listStrategyAutenticarUsuario;
+	
 	public Fachada() {
 	  rns = new HashMap<String, Map<String, List<IStrategy>>>();
 		rnsProduto = new HashMap<String, List<IStrategy>>();
 		rnsCliente = new HashMap<String, List<IStrategy>>();
 		rnsBloqueioProduto = new HashMap<String, List<IStrategy>>();
+    rnsAutenticarUsuario = new HashMap<String, List<IStrategy>>();
 		
 		mapDAO = new HashMap<String, IDAO>();
 		
 		mapDAO.put("LIVRO", new DAOLivro());
 		mapDAO.put("CLIENTE", new DAOCliente());
 		mapDAO.put("BLOQUEIO", new DAOCarrinho());
+		mapDAO.put("USUARIO", new DAOUsuario());
 
 		listStrategySalvarProduto = new ArrayList<IStrategy>();
 		listStrategyConsultarProduto = new ArrayList<IStrategy>();
@@ -92,12 +100,13 @@ public class Fachada implements IFachada  {
 		listStrategyAlterarBloqueioProduto.add(new StValidarQuantidadeAIncluirOuExcluirCarrinho());
 		
 		listStrategySalvarCliente = new ArrayList<IStrategy>();
-		listStrategySalvarCliente.add(new StComplementarCidade());
     listStrategySalvarCliente.add(new StValidarDadosObrigatoriosCliente());
 		
     listStrategyConsultarCliente = new ArrayList<IStrategy>();				
 		listStrategyConsultarCliente.add(new StValidarIdConsultaCliente());
-
+		
+		listStrategyAutenticarUsuario = new ArrayList<IStrategy>();
+		listStrategyAutenticarUsuario.add(new StValidarUsuarioExistente());
 		
 		rnsProduto.put("SALVAR", listStrategySalvarProduto);
 		rnsProduto.put("CONSULTAR", listStrategyConsultarProduto);
@@ -112,9 +121,12 @@ public class Fachada implements IFachada  {
 		rnsCliente.put("SALVAR", listStrategySalvarCliente);
 		rnsCliente.put("CONSULTAR", listStrategyConsultarCliente);
 		
+		rnsAutenticarUsuario.put("CONSULTAR",listStrategyAutenticarUsuario);
+		
     rns.put(Livro.class.getSimpleName().toUpperCase(), rnsProduto);
     rns.put(Cliente.class.getSimpleName().toUpperCase(), rnsCliente);
     rns.put(Bloqueio.class.getSimpleName().toUpperCase(), rnsBloqueioProduto);
+    rns.put(Usuario.class.getSimpleName().toUpperCase(), rnsAutenticarUsuario);
 				
 	}
 	

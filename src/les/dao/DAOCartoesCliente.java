@@ -1,8 +1,10 @@
 package les.dao;
 
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
+import dominio.Cartao;
 import dominio.Cliente;
 import dominio.EntidadeDominio;
 import util.Resultado;
@@ -35,8 +37,37 @@ public class DAOCartoesCliente extends AbstractDAO implements IDAO {
 
   @Override
   public Resultado consultar(EntidadeDominio entidade) {
-    // TODO Auto-generated method stub
-    return null;
+    Resultado resultado = new Resultado();
+    ArrayList<EntidadeDominio> cartoes = new ArrayList<EntidadeDominio>();
+    Cliente cliente = (Cliente) entidade;
+    String sql = "SELECT * FROM cartoes_cliente WHERE ctc_cli_id = ?";
+    
+    try {
+      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst.setInt(1, cliente.getId().intValue());
+      
+      ResultSet rs = pst.executeQuery();
+      
+      while(rs.next()) {
+        Cartao cartaoEncontrado = new Cartao();
+        cartaoEncontrado.setId(rs.getInt("ctc_cli_id"));
+        DAOCartao daoCartao = new DAOCartao();
+        
+        Resultado resCartao = daoCartao.consultar(cartaoEncontrado);
+        cartaoEncontrado = (Cartao) resCartao.getResultado();
+        
+        cartoes.add((Cartao)cartaoEncontrado);
+      }
+      
+      resultado.setListaResultado(cartoes);
+      resultado.sucesso("Lista de cartões");
+      
+    } catch (Exception e) {
+      resultado.sucesso("Erro ao consultar em DAOCartoesCliente");
+      e.printStackTrace();
+    }
+    
+    return resultado;
   }
 
   @Override

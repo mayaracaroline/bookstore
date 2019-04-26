@@ -24,7 +24,7 @@ import dominio.TipoLogradouro;
 import dominio.TipoResidencia;
 import dominio.TipoTelefone;
 import dominio.Usuario;
-import util.Numero;
+import util.Formatter;
 import util.Resultado;
 
 public class VHCliente implements IViewHelper {
@@ -36,7 +36,7 @@ public class VHCliente implements IViewHelper {
     
     int codigo = null != request.getParameter("codigo") 
         && !"".equals(request.getParameter("codigo"))
-        && Numero.isNumeric(request.getParameter("codigo").trim()) 
+        && Formatter.isNumeric(request.getParameter("codigo").trim()) 
         ?  Integer.parseInt(request.getParameter("codigo")) : 0;
     
     String nome = null != request.getParameter("nome") && 
@@ -94,7 +94,7 @@ public class VHCliente implements IViewHelper {
 
     int idTipoLogradouro = null != request.getParameter("tipo-logradouro0") 
         && !"".equals(request.getParameter("tipo-logradouro0"))
-        && Numero.isNumeric(request.getParameter("tipo-logradouro0").trim()) 
+        && Formatter.isNumeric(request.getParameter("tipo-logradouro0").trim()) 
         ?  Integer.parseInt(request.getParameter("tipo-logradouro0")) : 0;
    
     String logradouro = null != request.getParameter("logradouro0") ? 
@@ -102,22 +102,16 @@ public class VHCliente implements IViewHelper {
 
     int numero = null != request.getParameter("numero0") 
         && !"".equals(request.getParameter("numero0"))
-        && Numero.isNumeric(request.getParameter("numero0").trim()) 
+        && Formatter.isNumeric(request.getParameter("numero0").trim()) 
         ?  Integer.parseInt(request.getParameter("numero0")) : 0;
         
     String bairro = null != request.getParameter("bairro0") 
             && !"".equals(request.getParameter("bairro0"))
             ?  request.getParameter("bairro0") : "";  
             
-    int idEstado = null != request.getParameter("estado0") 
-      && !"".equals(request.getParameter("estado0"))
-      && Numero.isNumeric(request.getParameter("estado0").trim()) 
-      ?  Integer.parseInt(request.getParameter("estado0")) : 0;     
+    String estado = Formatter.formatString(request.getParameter("estado0"));     
       
-    int idPais = null != request.getParameter("pais0") 
-      && !"".equals(request.getParameter("pais0"))
-      && Numero.isNumeric(request.getParameter("pais0").trim())
-      ?  Integer.parseInt(request.getParameter("pais0")) : 0;             
+    String pais = Formatter.formatString(request.getParameter("pais0"));             
     
     String observacoes = null != request.getParameter("observacoes0") 
         && !"".equals(request.getParameter("observacoes0"))
@@ -127,20 +121,8 @@ public class VHCliente implements IViewHelper {
         && !"".equals(request.getParameter("cep0"))
         ?  request.getParameter("cep0") : "";
         
-    int idCidade = null != request.getParameter("cidade0") 
-        && !"".equals(request.getParameter("cidade0"))
-        && Numero.isNumeric(request.getParameter("cidade0").trim())
-        ?  Integer.parseInt(request.getParameter("cidade0")) : 0;
-        
-    Estado estado = new Estado();
-    estado.setId(idEstado);
+    String cidade = Formatter.formatString(request.getParameter("cidade0"));
     
-    Pais pais = new Pais();
-    pais.setId(idPais);
-    
-    Cidade cidade = new Cidade();
-    cidade.setId(idCidade);
-    cidade.setEstado(estado);
     
     TipoLogradouro tipoLogradouro = new TipoLogradouro();
     tipoLogradouro.setId(idTipoLogradouro);        
@@ -195,7 +177,7 @@ public class VHCliente implements IViewHelper {
 
       idTipoLogradouro = null != request.getParameter("tipo-logradouro2") 
           && !"".equals(request.getParameter("tipo-logradouro2"))
-          && Numero.isNumeric(request.getParameter("tipo-logradouro2").trim()) 
+          && Formatter.isNumeric(request.getParameter("tipo-logradouro2").trim()) 
           ?  Integer.parseInt(request.getParameter("tipo-logradouro2")) : 0;
      
       logradouro = null != request.getParameter("logradouro2") ? 
@@ -203,22 +185,16 @@ public class VHCliente implements IViewHelper {
 
       numero = null != request.getParameter("numero2") 
           && !"".equals(request.getParameter("numero2"))
-          && Numero.isNumeric(request.getParameter("numero2").trim()) 
+          && Formatter.isNumeric(request.getParameter("numero2").trim()) 
           ?  Integer.parseInt(request.getParameter("numero2")) : 0;
           
       bairro = null != request.getParameter("bairro2") 
               && !"".equals(request.getParameter("bairro2"))
               ?  request.getParameter("bairro2") : "";  
               
-      idEstado = null != request.getParameter("estado2") 
-        && !"".equals(request.getParameter("estado2"))
-        && Numero.isNumeric(request.getParameter("estado2").trim()) 
-        ?  Integer.parseInt(request.getParameter("estado2")) : 0;     
+      estado = Formatter.formatString(request.getParameter("estado2"));     
         
-      idPais = null != request.getParameter("pais2") 
-        && !"".equals(request.getParameter("pais2"))
-        && Numero.isNumeric(request.getParameter("pais2").trim())
-        ?  Integer.parseInt(request.getParameter("pais2")) : 0;             
+      pais = Formatter.formatString(request.getParameter("pais2") );             
       
       observacoes = null != request.getParameter("observacoes2") 
           && !"".equals(request.getParameter("observacoes2"))
@@ -228,20 +204,7 @@ public class VHCliente implements IViewHelper {
           && !"".equals(request.getParameter("cep2"))
           ?  request.getParameter("cep2") : "";
           
-      idCidade = null != request.getParameter("cidade2") 
-          && !"".equals(request.getParameter("cidade2"))
-          && Numero.isNumeric(request.getParameter("cidade2").trim())
-          ?  Integer.parseInt(request.getParameter("cidade2")) : 0;
-          
-      estado = new Estado();
-      estado.setId(idEstado);
-      
-      pais = new Pais();
-      pais.setId(idPais);
-      
-      cidade = new Cidade();
-      cidade.setId(idCidade);
-      cidade.setEstado(estado);
+      cidade = Formatter.formatString(request.getParameter("cidade2"));
       
       tipoLogradouro = new TipoLogradouro();
       tipoLogradouro.setId(idTipoLogradouro);              
@@ -271,7 +234,7 @@ public class VHCliente implements IViewHelper {
 
       idTipoLogradouro = null != request.getParameter("tipo-logradouro1") 
           && !"".equals(request.getParameter("tipo-logradouro1"))
-          && Numero.isNumeric(request.getParameter("tipo-logradouro1").trim()) 
+          && Formatter.isNumeric(request.getParameter("tipo-logradouro1").trim()) 
           ?  Integer.parseInt(request.getParameter("tipo-logradouro1")) : 0;
      
       logradouro = null != request.getParameter("logradouro2") ? 
@@ -279,22 +242,16 @@ public class VHCliente implements IViewHelper {
 
       numero = null != request.getParameter("numero1") 
           && !"".equals(request.getParameter("numero1"))
-          && Numero.isNumeric(request.getParameter("numero1").trim()) 
+          && Formatter.isNumeric(request.getParameter("numero1").trim()) 
           ?  Integer.parseInt(request.getParameter("numero1")) : 0;
           
       bairro = null != request.getParameter("bairro1") 
               && !"".equals(request.getParameter("bairro1"))
               ?  request.getParameter("bairro1") : "";  
               
-      idEstado = null != request.getParameter("estado1") 
-        && !"".equals(request.getParameter("estado1"))
-        && Numero.isNumeric(request.getParameter("estado1").trim()) 
-        ?  Integer.parseInt(request.getParameter("estado1")) : 0;     
+      estado = Formatter.formatString(request.getParameter("estado1") );     
         
-      idPais = null != request.getParameter("pais1") 
-        && !"".equals(request.getParameter("pais1"))
-        && Numero.isNumeric(request.getParameter("pais1").trim())
-        ?  Integer.parseInt(request.getParameter("pais1")) : 0;             
+      pais = Formatter.formatString(request.getParameter("pais1"));             
       
       observacoes = null != request.getParameter("observacoes1") 
           && !"".equals(request.getParameter("observacoes1"))
@@ -304,20 +261,7 @@ public class VHCliente implements IViewHelper {
           && !"".equals(request.getParameter("cep1"))
           ?  request.getParameter("cep1") : "";
           
-      idCidade = null != request.getParameter("cidade1") 
-          && !"".equals(request.getParameter("cidade1"))
-          && Numero.isNumeric(request.getParameter("cidade1").trim())
-          ?  Integer.parseInt(request.getParameter("cidade1")) : 0;
-          
-      estado = new Estado();
-      estado.setId(idEstado);
-      
-      pais = new Pais();
-      pais.setId(idPais);
-      
-      cidade = new Cidade();
-      cidade.setId(idCidade);
-      cidade.setEstado(estado);
+      cidade = Formatter.formatString(request.getParameter("cidade1"));
       
       tipoLogradouro = new TipoLogradouro();
       tipoLogradouro.setId(idTipoLogradouro);              
@@ -346,7 +290,7 @@ public class VHCliente implements IViewHelper {
   
         idTipoLogradouro = null != request.getParameter("tipo-logradouro"+i) 
             && !"".equals(request.getParameter("tipo-logradouro"+i))
-            && Numero.isNumeric(request.getParameter("tipo-logradouro"+i).trim()) 
+            && Formatter.isNumeric(request.getParameter("tipo-logradouro"+i).trim()) 
             ?  Integer.parseInt(request.getParameter("tipo-logradouro"+i)) : 0;
        
         logradouro = null != request.getParameter("logradouro"+i) ? 
@@ -354,22 +298,16 @@ public class VHCliente implements IViewHelper {
   
         numero = null != request.getParameter("numero"+i) 
             && !"".equals(request.getParameter("numero"+i))
-            && Numero.isNumeric(request.getParameter("numero"+i).trim()) 
+            && Formatter.isNumeric(request.getParameter("numero"+i).trim()) 
             ?  Integer.parseInt(request.getParameter("numero"+i)) : 0;
             
         bairro = null != request.getParameter("bairro"+i) 
                 && !"".equals(request.getParameter("bairro"+i))
                 ?  request.getParameter("bairro"+i) : "";  
                 
-        idEstado = null != request.getParameter("estado"+i) 
-          && !"".equals(request.getParameter("estado"+i))
-          && Numero.isNumeric(request.getParameter("estado"+i).trim()) 
-          ?  Integer.parseInt(request.getParameter("estado"+i)) : 0;     
+        estado = Formatter.formatString(request.getParameter("estado"+i) );              
           
-        idPais = null != request.getParameter("pais"+i) 
-          && !"".equals(request.getParameter("pais"))
-          && Numero.isNumeric(request.getParameter("pais"+i).trim())
-          ?  Integer.parseInt(request.getParameter("pais"+i)) : 0;             
+        pais = Formatter.formatString(request.getParameter("pais"+i));             
         
         observacoes = null != request.getParameter("observacoes"+i) 
             && !"".equals(request.getParameter("observacoes"+i))
@@ -379,39 +317,24 @@ public class VHCliente implements IViewHelper {
             && !"".equals(request.getParameter("cep"+i))
             ?  request.getParameter("cep"+i) : "";
             
-        idCidade = null != request.getParameter("cidade"+i) 
-            && !"".equals(request.getParameter("cidade"+i))
-            && Numero.isNumeric(request.getParameter("cidade"+i).trim())
-            ?  Integer.parseInt(request.getParameter("cidade"+i)) : 0;
+        cidade = Formatter.formatString(request.getParameter("cidade"+i) );
             
-            estado = new Estado();
-            estado.setId(idEstado);
-            
-            pais = new Pais();
-            pais.setId(idPais);
-            
-            cidade = new Cidade();
-            cidade.setId(idCidade);
-            cidade.setEstado(estado);
-            
-            tipoLogradouro = new TipoLogradouro();
-            tipoLogradouro.setId(idTipoLogradouro);              
-            
-            Endereco end = new Endereco();
-            end.setBairro(bairro);
-            end.setCep(cep);
-            end.setCidade(cidade);
-            end.setLogradouro(logradouro);
-            end.setNumero(numero);
-            end.setObservacao(observacoes);
-            end.setPais(pais);
-            end.setTipoLogradouro(tipoLogradouro);
-            end.setTipoResidencia(TipoResidencia.valueOf(tipoResidencia));
-            
-            enderecos.add(i,end);
+        tipoLogradouro = new TipoLogradouro();
+        tipoLogradouro.setId(idTipoLogradouro);              
         
-      }
-  
+        Endereco end = new Endereco();
+        end.setBairro(bairro);
+        end.setCep(cep);
+        end.setCidade(cidade);
+        end.setLogradouro(logradouro);
+        end.setNumero(numero);
+        end.setObservacao(observacoes);
+        end.setPais(pais);
+        end.setTipoLogradouro(tipoLogradouro);
+        end.setTipoResidencia(TipoResidencia.valueOf(tipoResidencia));
+        
+        enderecos.add(i,end);        
+      }  
     }
     
     enderecos.get(0).setTipoEndereco("RESIDENCIAL");
@@ -447,12 +370,12 @@ public class VHCliente implements IViewHelper {
     
     int codBandeira = null != request.getParameter("bandeira") 
         && !"".equals(request.getParameter("bandeira"))
-        && Numero.isNumeric(request.getParameter("bandeira")) 
+        && Formatter.isNumeric(request.getParameter("bandeira")) 
         ? Integer.parseInt(request.getParameter("bandeira")) : 0;
 
     int codSeguranca = null != request.getParameter("cod-seguranca") 
         && !"".equals(request.getParameter("cod-seguranca"))
-        && Numero.isNumeric(request.getParameter("cod-seguranca")) 
+        && Formatter.isNumeric(request.getParameter("cod-seguranca")) 
         ? Integer.parseInt(request.getParameter("cod-seguranca")) : 0;
         
     boolean cartaoPreferencial = null == request.getParameter("checkbox-cartao-preferencial") ? false : true;

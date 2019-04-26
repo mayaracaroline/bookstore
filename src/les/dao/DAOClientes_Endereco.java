@@ -86,14 +86,7 @@ public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.erro("Erro ao consultar: clientes_endereco");
       e.printStackTrace();
-    } finally {      
-      try {
-        conexao.close();
-      } catch (SQLException e) {
-        // LOGGING
-        e.printStackTrace();
-      }
-    }
+    } 
     
     return resultado;
   }

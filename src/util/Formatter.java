@@ -1,6 +1,8 @@
 package util;
 
-public class Numero {
+import java.util.ArrayList;
+
+public class Formatter {
 
 	public static boolean isNumeric (String number) {
 	    try {
@@ -18,4 +20,20 @@ public class Numero {
 	      Integer.parseInt(string) : 0; 	  
 	  return parsedNumber;
 	}
+	
+	 public static double formatDouble (String string) {
+	    double parsedNumber = null != string && 
+	        !"".equals(string) &&
+	        isNumeric(string) ? 
+	        Double.parseDouble(string) : 0;     
+	    return parsedNumber;
+	  }
+
+   public static String formatString (String string) {
+     String parsedString =  null != string  ? string: ""; 
+     return parsedString;
+   }
+  
+   
+
 }

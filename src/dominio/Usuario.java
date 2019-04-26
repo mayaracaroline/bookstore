@@ -1,6 +1,6 @@
 package dominio;
 
-public class Usuario {
+public class Usuario extends EntidadeDominio {
   private String username;
   private String password;
   

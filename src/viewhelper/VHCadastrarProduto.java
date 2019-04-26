@@ -12,7 +12,7 @@ import dominio.EntidadeDominio;
 import dominio.GeneroLiterario;
 import dominio.Livro;
 import util.Resultado;
-import util.Numero;
+import util.Formatter;
 
 public class VHCadastrarProduto implements IViewHelper {
 	
@@ -48,52 +48,52 @@ public class VHCadastrarProduto implements IViewHelper {
 		
 		categoriaAtivacao = null != request.getParameter("categoriaAtivacao") && 
 				!"".equals(request.getParameter("categoriaAtivacao")) &&
-				Numero.isNumeric(request.getParameter("categoriaAtivacao")) ? 
+				Formatter.isNumeric(request.getParameter("categoriaAtivacao")) ? 
 				Integer.parseInt(request.getParameter("categoriaAtivacao")) : 0;
 				
 		categoriaInativacao = null != request.getParameter("categoriaInativacao") && 
 				!"".equals(request.getParameter("categoriaInativacao")) &&
-				Numero.isNumeric(request.getParameter("categoriaInativacao")) ? 
+				Formatter.isNumeric(request.getParameter("categoriaInativacao")) ? 
 				Integer.parseInt(request.getParameter("categoriaInativacao")) : 0;
 					
 		ano = null != request.getParameter("ano") && 
 				!"".equals(request.getParameter("ano")) &&
-				Numero.isNumeric(request.getParameter("ano")) ? 
+				Formatter.isNumeric(request.getParameter("ano")) ? 
 				Integer.parseInt(request.getParameter("ano")) : 0;
 		
 		codigo = null != request.getParameter("codigo") && 
 				!"".equals(request.getParameter("codigo")) && 
-				Numero.isNumeric(request.getParameter("codigo")) ?	
+				Formatter.isNumeric(request.getParameter("codigo")) ?	
 				Integer.parseInt(request.getParameter("codigo")) : -1;
 				
 		altura = null != request.getParameter("altura") && 
 				!"".equals(request.getParameter("altura")) &&
-				Numero.isNumeric(request.getParameter("altura")) ?
+				Formatter.isNumeric(request.getParameter("altura")) ?
 				Double.parseDouble(request.getParameter("altura").replace(",",".")) : 0;				
 		
 	    quantidadePaginas = null != request.getParameter("quantidadePaginas") && 
 	    		!"".equals(request.getParameter("quantidadePaginas")) &&
-	    		Numero.isNumeric(request.getParameter("quantidadePaginas")) ?
+	    		Formatter.isNumeric(request.getParameter("quantidadePaginas")) ?
 	    		Integer.parseInt(request.getParameter("quantidadePaginas")) : 0;
 		
 	    largura = null != request.getParameter("largura") && 
 	    		!"".equals(request.getParameter("largura"))	&&
-	    		Numero.isNumeric(request.getParameter("largura")) ?	
+	    		Formatter.isNumeric(request.getParameter("largura")) ?	
 				Double.parseDouble(request.getParameter("largura").replace(",",".")) : 0;
 	
 	    peso = null != request.getParameter("peso") && 
 	    		!"".equals(request.getParameter("peso")) &&
-	    		Numero.isNumeric(request.getParameter("peso")) ?	
+	    		Formatter.isNumeric(request.getParameter("peso")) ?	
 				Double.parseDouble(request.getParameter("peso").replace(",",".")) : 0;
 				
 	    profundidade = null != request.getParameter("profundidade") && 
 	    		!"".equals(request.getParameter("profundidade")) &&
-	    		Numero.isNumeric(request.getParameter("profundidade")) ?	
+	    		Formatter.isNumeric(request.getParameter("profundidade")) ?	
 				Double.parseDouble(request.getParameter("profundidade").replace(",",".")) : 0;
 			
 			preco = null != request.getParameter("preco") && 
           !"".equals(request.getParameter("preco")) &&
-          Numero.isNumeric(request.getParameter("preco")) ?  
+          Formatter.isNumeric(request.getParameter("preco")) ?  
         Double.parseDouble(request.getParameter("preco").replace(",",".")) : 0;
 		
 			
@@ -150,7 +150,7 @@ public class VHCadastrarProduto implements IViewHelper {
 		} else {			
 			for (String genero : generos ) {
 				GeneroLiterario generoLiterario = new GeneroLiterario();
-				int idGenero = Numero.format(genero);
+				int idGenero = Formatter.format(genero);
 				generoLiterario.setId(idGenero);
 				generosLiterarios.add(generoLiterario);
 			}

@@ -1,13 +1,15 @@
 package util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import dominio.EntidadeDominio;
-import dominio.GeneroLiterario;
 
 public class Resultado {
 
 	private List<EntidadeDominio> listaResultado;
+	private HashMap<String, ArrayList<EntidadeDominio>> mapResultado;
 	private EntidadeDominio resultado;
 	private boolean erro;
 	private String mensagem;
@@ -50,5 +52,11 @@ public class Resultado {
 	public void setResultado(EntidadeDominio resultado) {
 		this.resultado = resultado;
 	}
+  public HashMap<String, ArrayList<EntidadeDominio>> getMapResultado() {
+    return mapResultado;
+  }
+  public void setMapResultado(HashMap<String, ArrayList<EntidadeDominio>> mapResultado) {
+    this.mapResultado = mapResultado;
+  }
 	
 }

@@ -5,14 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +40,7 @@ import viewhelper.IViewHelper;
 import viewhelper.VHBloqueio;
 import viewhelper.VHCadastrarProduto;
 import viewhelper.VHCliente;
+import viewhelper.VHUsuario;
 
 /**
  * Servlet implementation class CadastrarProdutoController
@@ -102,9 +98,6 @@ import viewhelper.VHCliente;
       
       return carrinho;
     }
-    
-    
-    
     
 	/**
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)

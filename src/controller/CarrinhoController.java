@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import dominio.Carrinho;
 import dominio.ItemCarrinho;
 import dominio.Livro;
-import util.Numero;
+import util.Formatter;
 import viewhelper.VHCadastrarProduto;
 
 /**
@@ -79,7 +79,7 @@ public class CarrinhoController extends HttpServlet {
     VHCadastrarProduto vh = new VHCadastrarProduto();
     
     Livro  produto = (Livro) vh.getEntidade(req);
-    int quantidade = Numero.format(req.getParameter("quantidade"));
+    int quantidade = Formatter.format(req.getParameter("quantidade"));
         
     ItemCarrinho item = new ItemCarrinho();
     

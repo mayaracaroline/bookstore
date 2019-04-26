@@ -15,7 +15,7 @@ import dominio.EntidadeDominio;
 import dominio.ItemCarrinho;
 import dominio.Livro;
 import dominio.Produto;
-import util.Numero;
+import util.Formatter;
 import util.Resultado;
 
 public class VHBloqueio implements IViewHelper {
@@ -46,7 +46,7 @@ public class VHBloqueio implements IViewHelper {
     VHCadastrarProduto vh = new VHCadastrarProduto();
     
     Livro  produto = (Livro) vh.getEntidade(request);
-    int quantidade = Numero.format(request.getParameter("quantidade"));
+    int quantidade = Formatter.format(request.getParameter("quantidade"));
     
     BigInteger idProduto = produto.getId();
     boolean contemProduto = false;
@@ -84,7 +84,7 @@ public class VHBloqueio implements IViewHelper {
   public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) {
     String operacao = request.getParameter("operacao");
     String page = null != request.getParameter("page") ? request.getParameter("page") : "product" ;
-    int codigo = Numero.format(request.getParameter("codigo"));   
+    int codigo = Formatter.format(request.getParameter("codigo"));   
     String mensagem[] = resultado.getMensagem().split("\n");
     
     if(resultado.getErro())
