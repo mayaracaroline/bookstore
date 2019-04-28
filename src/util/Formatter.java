@@ -1,6 +1,7 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 public class Formatter {
 
@@ -34,6 +35,6 @@ public class Formatter {
      return parsedString;
    }
   
-   
+
 
 }

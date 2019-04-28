@@ -127,18 +127,6 @@ public class VHCadastrarProduto implements IViewHelper {
       
 		// Tratamento de String
 		
-		ArrayList<String> parameters = new ArrayList<String>();
-		
-
-		parameters.add(codigoBarras);
-		parameters.add(motivoInativacao);
-		parameters.add(motivoAtivacao);
-		
-		for (String parameter : parameters) {
-			if (parameter == null) {
-				parameter = ".";
-			}
-		}
 		
 		if (generos == null || generos.length == 0) {
 			GeneroLiterario generoLiterario = new GeneroLiterario();
