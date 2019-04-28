@@ -145,6 +145,7 @@ public class VHCliente implements IViewHelper {
         end1.setBairro(bairro);
         end1.setCep(cep);
         end1.setCidade(cidade);
+        end1.setEstado(estado);
         end1.setLogradouro(logradouro);
         end1.setNumero(numero);
         end1.setObservacao(observacoes);
@@ -160,6 +161,7 @@ public class VHCliente implements IViewHelper {
         end1.setBairro(bairro);
         end1.setCep(cep);
         end1.setCidade(cidade);
+        end1.setEstado(estado);
         end1.setLogradouro(logradouro);
         end1.setNumero(numero);
         end1.setObservacao(observacoes);
@@ -326,6 +328,7 @@ public class VHCliente implements IViewHelper {
         end.setBairro(bairro);
         end.setCep(cep);
         end.setCidade(cidade);
+        end.setEstado(estado);
         end.setLogradouro(logradouro);
         end.setNumero(numero);
         end.setObservacao(observacoes);

@@ -44,7 +44,7 @@ public class VHUsuario implements IViewHelper {
     for(int i = 0; i < resultados.size(); i++) {
       enderecos.add((Endereco)resultados.get(i));    
     }
-    
+
     resultados =  mapUsuario.get("CARTAO");
 
     for(int i = 0; i < resultados.size(); i++) {

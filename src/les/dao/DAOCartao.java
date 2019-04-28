@@ -3,8 +3,8 @@ package les.dao;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
+import dominio.Bandeira;
 import dominio.Cartao;
 import dominio.EntidadeDominio;
 import util.Resultado;
@@ -62,18 +62,26 @@ public class DAOCartao extends AbstractDAO implements IDAO {
       
       while(rs.next()) {
         cartao.setCodSeguranca(rs.getInt("car_cod_seguranca"));
-        cartao.getBandeira().setId(rs.getInt("car_ban_id"));
+        Bandeira bandeira = new Bandeira();
+        bandeira.setId(rs.getInt("car_ban_id"));
+        cartao.setBandeira(bandeira);
         cartao.setNomeTitular(rs.getString("car_nome_titular"));
         cartao.setNumero(rs.getString("car_numero"));
         cartao.setPreferencial(rs.getBoolean("car_preferencial"));
-        
-        //Complementar dados bandeira
-        String sql1 = "SELECT ban_nome FROM bandeiras WHERE ban_id = ?";
-        PreparedStatement pst1 = conexao.prepareStatement(sql1);
-        pst1.setInt(1, cartao.getBandeira().getId().intValue());
-        ResultSet rs1 = pst1.executeQuery();
-        cartao.getBandeira().setNome(rs1.getString("ban_nome"));       
+              
       }
+      
+      //Complementar dados bandeira
+      String sql1 = "SELECT * FROM bandeiras WHERE ban_id = ?";
+      PreparedStatement pst1 = conexao.prepareStatement(sql1);
+      pst1.setInt(1, cartao.getBandeira().getId().intValue());
+      ResultSet rs1 = pst1.executeQuery();
+      
+      while(rs1.next()) {
+        String a = rs1.getString("ban_nome");
+        cartao.getBandeira().setNome(a); 
+      }
+
       
       resultado.sucesso("Cartão encontrado");
       resultado.setResultado(cartao);

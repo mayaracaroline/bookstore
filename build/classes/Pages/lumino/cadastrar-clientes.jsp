@@ -105,7 +105,6 @@
                                     <option value="1">Rua</option>
                                     <option value="2">Avenida</option>
                                     <option value="3">Estrada</option>                                      
-                                    <option value="1">Rua</option>
                                   </select>
                                   </label><br>
                                   <label for="logradouro0">
@@ -131,7 +130,7 @@
                                    <br>
                                   <label>País: *</label>
                                   <select name="pais0" class="form-control" >
-                                    <option value="BRASIL" selected disabled>Brasil</option>
+                                    <option value="BRASIL" selected>Brasil</option>
                                   </select>   
                                           
                                   <label>Observações:</label>
@@ -190,7 +189,7 @@
                                     </label><br>                                      
                                     <label>País: *</label>
                                     <select name="pais1" class="form-control" >
-                                      <option value="BRASIL" selected disabled>Brasil</option>
+                                      <option value="BRASIL" selected>Brasil</option>
                                     </select>                                     
                                     <label>Observações:</label>
                                     <input class="form-control" type="text" name="observacoes1" placeholder="Ex: Ap. 25, Fundos etc." >
@@ -239,7 +238,7 @@
                                     </label><br> 
                                     <label>País: *</label>
                                     <select name="pais2" class="form-control" >
-                                      <option value="BRASIL" selected disabled>Brasil</option>
+                                      <option value="BRASIL" selected>Brasil</option>
                                     </select>                                                                                                            
                                     <label>Observações:</label>
                                     <input class="form-control" type="text" name="observacoes2" placeholder="Ex: Ap. 25, Fundos etc." >
@@ -303,7 +302,7 @@
   			
   		} else {
           //CEP não Encontrado.
-          limpa_formulário_cep(number);
+          limpa_formulario_cep(number);
           alert("CEP inválido.");
         }
 

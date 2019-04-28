@@ -50,7 +50,7 @@ public class DAOCartoesCliente extends AbstractDAO implements IDAO {
       
       while(rs.next()) {
         Cartao cartaoEncontrado = new Cartao();
-        cartaoEncontrado.setId(rs.getInt("ctc_cli_id"));
+        cartaoEncontrado.setId(rs.getInt("ctc_car_id"));
         DAOCartao daoCartao = new DAOCartao();
         
         Resultado resCartao = daoCartao.consultar(cartaoEncontrado);

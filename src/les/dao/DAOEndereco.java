@@ -18,7 +18,7 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
     Resultado resultado = new Resultado();
     Endereco endereco = (Endereco) entidade;
     
-    String sql = "INSERT INTO enderecos(end_logradouro,end_bairro, end_cep, end_descricao, end_observacao, end_tipo_residencia, end_tipo, end_tpl_id, end_cidade, end_estado, end_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
+    String sql = "INSERT INTO enderecos(end_logradouro,end_bairro, end_cep, end_descricao, end_observacao, end_tipo_residencia, end_tipo, end_tpl_id, end_cidade, end_estado, end_status,end_numero, end_pais) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?);";
     
     try {
       
@@ -34,6 +34,8 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
       pst.setString(9, endereco.getCidade());
       pst.setString(10, endereco.getEstado());
       pst.setBoolean(11, true);
+      pst.setInt(12, endereco.getNumero());
+      pst.setString(13,endereco.getPais());
       
       pst.execute();
       
@@ -81,12 +83,13 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
         endereco.setNumero(rs.getInt("end_numero")); 
         endereco.setObservacao(rs.getString("end_observacao"));
         
-        Pais pais = new Pais();
-        pais.setId(1); // Refatorar: associar endereco ao estado
-        
         endereco.setPais(rs.getString("end_pais"));
         endereco.setTipoEndereco(rs.getString("end_tipo"));
         
+        int a = rs.getInt("end_tpl_id");
+        TipoLogradouro tpl = new TipoLogradouro ();
+        tpl.setId(a);
+        endereco.setTipoLogradouro(tpl);
         DAOTipoLogradouro DAOtipoLogradouro = new DAOTipoLogradouro();
         Resultado res = DAOtipoLogradouro.consultar(endereco.getTipoLogradouro());
         TipoLogradouro tpTipoLogradouro = (TipoLogradouro) res.getResultado();

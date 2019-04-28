@@ -5,12 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import dominio.Cartao;
 import dominio.Cliente;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
+import dominio.TipoLogradouro;
 import dominio.Usuario;
 import util.Resultado;
 
@@ -44,23 +44,40 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
       cliente.setId(idCliente);
       
       DAOClientes_Endereco DAOClientesEndereco = new DAOClientes_Endereco();
-      Resultado resultadoCliente = DAOClientesEndereco.consultar(cliente);
-      enderecos = (ArrayList<EntidadeDominio>) resultadoCliente.getListaResultado();
+      Resultado resultadoDAOEndCliente = DAOClientesEndereco.consultar(cliente);
+      enderecos = (ArrayList<EntidadeDominio>) resultadoDAOEndCliente.getListaResultado();
      
-            
+      DAOEndereco  daoEndereco = new DAOEndereco();  
+      
+      for (int i = 0; i < enderecos.size(); i++) {
+        Endereco novoEndereco = new Endereco();
+        Endereco end = new Endereco();
+        TipoLogradouro tpl = new TipoLogradouro ();
+        end.setTipoLogradouro(tpl);
+        end = (Endereco) enderecos.get(i);
+        // Monta um novo endereco de acordo com o id 
+        novoEndereco = (Endereco) daoEndereco
+            .consultar(end)
+            .getResultado();
+        enderecos.set(i, novoEndereco);     
+      }
       
       DAOCartoesCliente daoCartoes = new DAOCartoesCliente();
       Resultado resultadoCli = daoCartoes.consultar(cliente);
       ArrayList<EntidadeDominio> cartoes = new ArrayList<>();
-      
+      DAOCartao daoCartao = new DAOCartao();
       for (int i = 0; i < resultadoCli.getListaResultado().size(); i++) {
-        Cartao umCartao = (Cartao) resultadoCli.getListaResultado().get(i);
-        cartoes.add(umCartao);        
+        Cartao umCartao = new Cartao();
+        Cartao novoCartao = new Cartao();
+        umCartao = (Cartao) resultadoCli.getListaResultado().get(i);
+        novoCartao = (Cartao) daoCartao
+            .consultar(umCartao)
+            .getResultado();
+        cartoes.add(novoCartao);        
       }
       
       mapUsuario.put("ENDERECO", enderecos);
       mapUsuario.put("CARTAO", cartoes);
-      System.out.println("DAO");
       resultado.setContagem(1);
       resultado.setMapResultado(mapUsuario);
       resultado.sucesso("SUCESSO");

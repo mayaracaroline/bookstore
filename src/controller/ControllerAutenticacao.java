@@ -74,7 +74,6 @@ public class ControllerAutenticacao implements Filter  {
     boolean usuarioLogado = false;
     String vh = req.getRequestURI();
     if(mapVHelper.containsKey(vh)) {
-      System.out.println("mapVHelper.containsKey(vh)");
       
       String operacao = request.getParameter("operacao");
       

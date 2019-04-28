@@ -242,10 +242,11 @@
 								</div>
 								<div class="panel-body">
 									<select name="endereco-entrega" class="form-control">
-										<option class="cep-entrega" value="${enderecoEntrega.cep}">
-											${enderecoEntrega.tipoLogradouro.tipo} ${enderecoEntrega.logradouro}, ${enderecoEntrega.numero} - 
-											${enderecoEntrega.numero} - ${enderecoEntrega.cidade} ${enderecoEntrega.estado}
-										<option>
+                                        <c:forEach var="endereco" items="${sessionScope.enderecos}">
+    										<option class="cep-entrega" value="${enderecoEntrega.cep}">
+    											 ${endereco.logradouro}, ${endereco.numero} - ${endereco.cidade} - ${endereco.estado}
+    										<option>
+                                        </c:forEach>
 									</select>
 									<!-- Fazer requisição para VHCliente com parametro Consultar e formName carrinho
 									Colocar um atributo na requisição ou sessão
@@ -273,9 +274,11 @@
 								  <input name="nome-titular" type="text" class="form-control" aria-describedby="basic-addon1">
 								</div>
 								<select name="numero-cartao" class="form-control">
-									<option>
-										${cartao.bandeira} | ${enderecoEntrega.numero}
-									<option>
+                                    <c:forEach var="cartao" items="${sessionScope.cartoes}">
+    									<option>
+    										${cartao.bandeira.nome} | ${cartao.numero}
+    									<option>
+                                    </c:forEach>
 								</select>
 								<div class="input-group">
 								  <span class="input-group-addon" id="basic-addon1">Cod. de segurança</span>
