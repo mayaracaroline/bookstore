@@ -47,7 +47,8 @@ public class VHBloqueio implements IViewHelper {
     
     Livro  produto = (Livro) vh.getEntidade(request);
     int quantidade = Formatter.format(request.getParameter("quantidade"));
-    
+    double preco = Formatter.formatDouble(request.getParameter("preco"));
+    produto.setPreco(preco);
     BigInteger idProduto = produto.getId();
     boolean contemProduto = false;
     for ( int i = 0; i < this.carrinho.getItensCarrinho().size(); i++) {

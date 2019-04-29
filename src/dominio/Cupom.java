@@ -7,7 +7,8 @@ public class Cupom extends EntidadeDominio implements IFormaDePagamento {
   Double valor;
   String codigo;
   TipoCupom tipo;
-  LocalDate dataDeValidade;  
+  LocalDate dataDeValidade; 
+  boolean status;
 
   @Override
   public void processarPagamento() {
@@ -45,6 +46,14 @@ public class Cupom extends EntidadeDominio implements IFormaDePagamento {
 
   public void setDataDeValidade(LocalDate dataDeValidade) {
     this.dataDeValidade = dataDeValidade;
+  }
+
+  public boolean isStatus() {
+    return status;
+  }
+
+  public void setStatus(boolean status) {
+    this.status = status;
   }  
 
 }

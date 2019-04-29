@@ -12,10 +12,9 @@ import dominio.Cupom;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
 import dominio.ItemCarrinho;
+import dominio.Pagamento;
 import dominio.PedidoDeCompra;
-import dominio.TipoEndereco;
-import dominio.TipoLogradouro;
-import dominio.TipoResidencia;
+import dominio.TipoCupom;
 import util.Formatter;
 import util.Resultado;
 
@@ -25,38 +24,73 @@ public class VHPedidoDeCompra implements IViewHelper {
   public EntidadeDominio getEntidade(HttpServletRequest request) {
     
     PedidoDeCompra pedido = new PedidoDeCompra();
+ 
+    // Cartão
     Cartao cartao1 = new Cartao();
     Cartao cartao2 = new Cartao();
-    List<Cupom> cupons = new ArrayList<>();
-    List<ItemCarrinho> itens = new ArrayList<>();
-    Carrinho carrinho = new Carrinho();
+    int idCartao1 = Formatter.format(request.getParameter("numero-cartao1"));
+    int idCartao2 = Formatter.format(request.getParameter("numero-cartao2"));
+    double valorCartao1 = Formatter.formatDouble(request.getParameter("valor-cartao1"));
+    double valorCartao2 = Formatter.formatDouble(request.getParameter("valor-cartao2"));
+    cartao1.setId(idCartao1);
+    cartao2.setId(idCartao2);  
+    
     Double frete = 0.0;
+    frete = Formatter.formatDouble(request.getParameter("frete")); 
+    
     Endereco endereco = new Endereco();
-    TipoLogradouro tipoLogradouro;
-    int idTipoLogradouro;
-
+    int idEnderecoEntrega = Formatter.format(request.getParameter("cep-entrega"));
+    endereco.setId(idEnderecoEntrega);    
     
+    
+    // Itens de Carrinho
+    Carrinho carrinho = new Carrinho();   
     carrinho = (Carrinho) request.getSession().getAttribute("carrinho");
-    itens = (ArrayList<ItemCarrinho>) carrinho.getItensCarrinho();
-    frete = Formatter.formatDouble(request.getParameter("frete"));
-    idTipoLogradouro = Formatter.format(request.getParameter("idTipoLogradouro"));
-    String logradouro = Formatter.formatString(request.getParameter("logradouro"));
-    int numero = Formatter.format("numero");
-    String bairro = Formatter.formatString("bairro");
-    String cep = Formatter.formatString("cep");
-    String cidade = Formatter.formatString("cidade");
-    String estado = Formatter.formatString("estado");
-    String descricao = Formatter.formatString("descricao");
-    String observacao = Formatter.formatString("observacao");
-    TipoResidencia tipoResidencia = TipoResidencia.valueOf(Formatter.formatString("tipoResidencia"));
-    String pais = Formatter.formatString("pais");
-    String tipoEndereco = Formatter.formatString("tipoEndereco");
-    endereco.setBairro(bairro);
-    endereco.setCep(cep);
-    endereco.setCidade(cidade);
+    List<ItemCarrinho> itens = new ArrayList<>();
     
+    itens.addAll(carrinho.getItensCarrinho());
     
+    String[] strIdCuponsTroca = request.getParameterValues("cupom-troca");
+    List<Cupom> cuponsTroca = new ArrayList<>();
+  
+    for (int i = 0; i < strIdCuponsTroca.length; i++) {
+      Cupom cup = new Cupom();
+      cup.setId(Formatter.format(strIdCuponsTroca[i]));
+      cup.setTipo(TipoCupom.TROCA);
+      cuponsTroca.add(cup);
+    }
     
+    Cupom cupomPromocional = new Cupom();
+    Integer idCupomPromocional = Formatter.format(request.getParameter("cupom-promocional"));
+    cupomPromocional.setId(idCupomPromocional);
+    cupomPromocional.setTipo(TipoCupom.PROMOCIONAL); 
+    
+    double subtotal = 0;
+    
+    for (int i = 0; i < itens.size(); i++) {
+      double preco = itens.get(i).getProduto().getPreco();
+      int quantidade = itens.get(i).getQuantidade();
+      
+      subtotal += (preco * quantidade);
+    }
+    
+    Pagamento pagamentoCartao1 = new Pagamento();
+    Pagamento pagamentoCartao2 = new Pagamento();
+    pagamentoCartao1.setFormaDePagamento(cartao1);
+    pagamentoCartao1.setValor(valorCartao1);
+    pagamentoCartao2.setFormaDePagamento(cartao2);
+    pagamentoCartao2.setValor(valorCartao2);
+    ArrayList<Pagamento> pagamentos = new ArrayList<>();
+    pagamentos.add(pagamentoCartao1);
+    pagamentos.add(pagamentoCartao2);
+    
+    pedido.setPagamento(pagamentos);
+    pedido.setCupomPromocional(cupomPromocional);
+    pedido.setCuponsTroca(cuponsTroca);
+    pedido.setEnderecoDeEntrega(endereco);
+    pedido.setFrete(frete);
+    pedido.setItens(itens);
+
     return pedido;
   }
 
@@ -67,3 +101,6 @@ public class VHPedidoDeCompra implements IViewHelper {
   }
 
 }
+
+
+

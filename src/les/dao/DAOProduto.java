@@ -35,8 +35,26 @@ public class DAOProduto extends AbstractDAO implements IDAO {
 
   @Override
   public Resultado consultar(EntidadeDominio entidade) {
-    // TODO Auto-generated method stub
-    return null;
+    Resultado resultado = new Resultado();
+    Produto produto = (Produto) entidade;
+    String sql = "SELECT * FROM produtos WHERE pro_cod_barras = ?";
+    
+    try {
+      
+      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst.setString(1, produto.getCodigoBarras());
+      
+      pst.executeQuery();     
+      
+      resultado.setResultado(produto);
+      resultado.sucesso("Consulta realizada com sucesso");
+      
+    } catch (Exception e) {
+      resultado.erro("Erro ao consultar produto");
+      e.printStackTrace();
+    }
+    
+    return resultado;
   }
 
   @Override

@@ -172,7 +172,6 @@
 								<td class="image">Item</td>
 								<td class="description">Descrição</td>
 								<td class="price">Preço</td>
-								<td class="quantity">Quantidade</td>
 								<td class="total">Total</td>
 								<td></td>
 							</tr>
@@ -180,6 +179,7 @@
 						<tbody>
 						   <c:forEach var="itemCarrinho" items="${sessionScope.carrinho.itensCarrinho}">
 							  <tr data-cod="${itemCarrinho.produto.id}" >
+                                <input type="hidden" name="id-produto" value="${itemCarrinho.produto.id}">
 								<td class="cart_product">
 								  <a href=""><img src="images/cart/one.png" alt=""></a>
 								</td>
@@ -190,39 +190,34 @@
 								<td class="cart_price">
 								  <p>${itemCarrinho.produto.preco}</p>
 								</td>
-								<td class="cart_quantity">
-								  <div class="cart_quantity_button">
-									<input class="cart_quantity_input" type="text" name="quantidade" min="1" autocomplete="off" size="2" value="${itemCarrinho.quantidade}" onchange="alterarQuantidadeItensCarrinho(${itemCarrinho.produto.id},this.value)">
-								  </div>
-								</td>
 								<td class="cart_total">
 								  <p class="cart_total_price">R$${itemCarrinho.produto.preco * itemCarrinho.quantidade }</p>
-								</td>
-								<td class="cart_delete">
-								  <button type="submit" class="cart_quantity_delete" onclick="excluirItemCarrinho(${itemCarrinho.produto.id})"><i class="fa fa-times"></i></button>
 								</td>
 							  </tr>
 						   </c:forEach>
 							<tr>
-								<td colspan="4">
-                                </td>
 								<td colspan="2">
+                                    <div class="total_area">
+                                        <h4>Frete</h4>                                                                   
+                                        <div class="alert alert-info col-sm-6" id="calculo-frete" role="alert">
+                                          <input type="radio" value="16.5" onclick="showSelectedValue(this)" name="tipo-entrega" id="economica">
+                                          <label for="economica">Econômica - até 6 dias úteis - R$ 16,50</label><br>
+                                          <input value="24.00" onclick="showSelectedValue(this)" type="radio" name="tipo-entrega" id="express">
+                                          <label for="express">Express - até 3 dias úteis - R$ 24,00</label>    
+                                        </div>
+                                    </div>
+                                </td>
+								<td colspan="6">
+                      
 									<table class="table table-condensed total-result">
+                                        <tr>Subtotal</tr>
 										<tr>
-											<td>Cart Sub Total</td>
-											<td>R$59,00</td>
+											<td>Frete</td>
+											<td id="valorFrete"></td>
 										</tr>
-										<tr>
-											<td>Exo Tax</td>
-											<td>R$2,00</td>
-										</tr>
-										<tr class="shipping-cost">
-											<td>Cupons</td>
-											<td>Free</td>										
-										</tr>
-										<tr>
-											<td>Total</td>
-											<td><span>$61</span></td>
+										<tr id="total">
+											<td style="display:none">Total</td>
+											<td id="soma-total"></td>
 										</tr>
 									</table>
 								</td>
@@ -243,7 +238,7 @@
 								<div class="panel-body">
 									<select name="endereco-entrega" class="form-control">
                                         <c:forEach var="endereco" items="${sessionScope.enderecos}">
-    										<option class="cep-entrega" value="${enderecoEntrega.cep}">
+    										<option class="cep-entrega" value="${enderecoEntrega.id}">
     											 ${endereco.logradouro}, ${endereco.numero} - ${endereco.cidade} - ${endereco.estado}
     										<option>
                                         </c:forEach>
@@ -273,19 +268,19 @@
 								  <span class="input-group-addon" id="basic-addon1">Nome do titular</span>
 								  <input name="nome-titular" type="text" class="form-control" aria-describedby="basic-addon1">
 								</div>
-								<select name="numero-cartao" class="form-control">
+								<select name="numero-cartao1" class="form-control">
                                     <c:forEach var="cartao" items="${sessionScope.cartoes}">
-    									<option>
-    										${cartao.bandeira.nome} | ${cartao.numero}
-    									<option>
+    									<option value="${cartao.id}">
+    										${cartao.bandeira.nome} - ${cartao.numero} - ${cartao.nomeTitular}
+    									</option>
                                     </c:forEach>
 								</select>
 								<div class="input-group">
-								  <span class="input-group-addon" id="basic-addon1">Cod. de segurança</span>
+								  <span class="input-group-addon" name="cod-seguranca1" id="basic-addon1">Cod. de segurança</span>
 								  <input name="cod-seguranca" type="text" class="form-control" aria-describedby="basic-addon1">
 								</div>
 								<div class="input-group">
-								  <span class="input-group-addon" id="basic-addon1">R$</span>
+								  <span class="input-group-addon"  id="basic-addon1">R$</span>
 								  <input name="valor1" type="text" class="form-control" aria-describedby="basic-addon1">
 								</div>
 							</div>
@@ -299,10 +294,12 @@
 								  <span class="input-group-addon" id="basic-addon1">Nome do titular</span>
 								  <input name="nome-titular" type="text" class="form-control" aria-describedby="basic-addon1">
 								</div>	
-								<select name="numero-cartao" class="form-control">
-									<option>
-										${cartao.bandeira} | ${enderecoEntrega.numero}
-									<option>
+								<select name="numero-cartao2" class="form-control">
+                                   <c:forEach var="cartao" items="${sessionScope.cartoes}">
+									 <option value="${cartao.id}">
+										${cartao.bandeira.nome} - ${cartao.numero} - ${cartao.nomeTitular}
+									 </option>
+                                    </c:forEach>
 								</select>										
 								<div class="input-group">
 								  <span class="input-group-addon" id="basic-addon1">Cod. de segurança</span>
@@ -323,36 +320,31 @@
 								<h2>Cupons</h2>
 							</div>
 								<div class="panel panel-default">
-									<ul class="list-group">
-										<li class="list-group-item">
-											<input type="radio" id="cartao1" name="cuponsPromo">
-											<strong>Tipo: </strong>Promocional<br>
-											<strong>Código:</strong> HACXKF4BIPCD<br>
-											<strong>Valor:</strong>R$50,00<br>
-											<label>Validade:</label> 15/03/2019<br>
-										</li>
-										<li class="list-group-item">
-												<input type="radio" id="cartao2" name="cuponsPromo">
-												<strong>Tipo: </strong>Promocional<br>
-												<strong>Código:</strong> HACXKF4BIPCD<br>
-												<strong>Valor:</strong>R$50,00<br>
-												<label>Validade:</label> 15/03/2019<br>
-										</li>
-										<li class="list-group-item">
-											<input type="checkbox" id="cartao3" name="cuponsTroca">
-											<strong>Tipo: </strong>Troca<br>
-											<strong>Código:</strong> HACXKF4BIPCD<br>
-											<strong>Valor:</strong>R$50,00<br>
-											<label>Validade:</label> 25/08/2019<br>
-										</li>
-										<li class="list-group-item">
-											<input type="checkbox" id="cartao4" name="cuponsDiferenca">
-											<strong>Tipo: </strong>Diferença<br>
-											<strong>Código:</strong> HACXKF4BIPCD<br>
-											<strong>Valor:</strong>R$50,00<br>
-											<label>Validade:</label> 25/08/2019<br>
-										</li>               														
-									</ul>
+                                   <c:forEach var="cupom" items="${sessionScope.cuponsPromocionais}">
+                                        <h4 class="panel-heading">Promocionais</h4>
+    									<ul class="list-group">
+    										<li class="list-group-item">
+    											<input type="radio" value="${cupom.id}" onclick="cupomPromocionalSelecionado(this,${cupom.valor})" id="cupomPromo" name="cupom-promocional">
+    											<strong>Tipo: </strong>${cupom.tipo}<br>
+    											<strong>Código:</strong>${cupom.codigo}<br>
+    											<strong>Valor:</strong>${cupom.valor}<br>
+    											<label>Validade:</label> ${cupom.dataDeValidade}<br>
+    										</li>
+                                        </ul>
+                                    </c:forEach>
+                                    
+                                    <c:forEach var="cupomT" items="${sessionScope.cuponsTroca}">
+                                        <h4 class="panel-heading">Troca</h4>
+                                        <ul class="list-group">
+    										<li class="list-group-item">
+    											<input type="checkbox" value="${cupomT.id}" onclick="cupomTrocaSelecionado(this,${cupomT.valor})" id="cupomTroca" name="cupom-troca">
+    											<strong>Tipo: </strong>${cupomT.tipo}<br>
+    											<strong>Código:</strong>${cupomT.codigo}<br>
+    											<strong>Valor:</strong>${cupomT.valor}<br>
+    											<label>Validade:</label> ${cupomT.dataDeValidade}<br>
+    										</li>              														
+									   </ul>
+                                    </c:forEach>
 								</div>
 						</div>
                         <button  name="operacao" value="SALVAR" type="submit" class="btn btn-fefault cart right">

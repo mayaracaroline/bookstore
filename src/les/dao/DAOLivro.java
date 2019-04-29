@@ -3,13 +3,13 @@ package les.dao;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import dominio.EntidadeDominio;
 import dominio.GeneroLiterario;
 import dominio.Livro;
+import dominio.Produto;
 import util.Resultado;
 
 public class DAOLivro extends AbstractDAO implements IDAO {
@@ -95,10 +95,10 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 		try {
 		  
       if(livro.getId().equals(BigInteger.ZERO)) {
-        sql = "SELECT * FROM LIVROS ;";
+        sql = "SELECT * FROM LIVROS A INNER JOIN PRODUTOS B ON A.liv_cod_barras = B.pro_cod_barras;";
         statement = conexao.prepareStatement(sql);
       } else {
-        sql =  "SELECT * FROM LIVROS WHERE liv_id = ?";
+        sql =  "SELECT * FROM livros A INNER JOIN produtos B  ON A.liv_cod_barras = B.pro_cod_barras WHERE liv_id = ?";
         statement = conexao.prepareStatement(sql);
         statement.setInt(1, livro.getId().intValue());
       }
@@ -119,6 +119,11 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 				DAOGenerosLivro daoGenero = new DAOGenerosLivro();
 				Resultado generosEncontrados = daoGenero.consultar(livro);
 				
+//				DAOProduto daoProduto = new DAOProduto();
+//				
+//				Resultado resProduto = daoProduto.consultar(livro);
+//				Produto produto = (Produto) resProduto.getResultado();			
+				
 							
 				Livro novoLivro = (Livro) generosEncontrados.getResultado();
 				livroEncontrado.setCategorias((ArrayList<GeneroLiterario>) novoLivro.getCategorias());
@@ -135,6 +140,7 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 				livroEncontrado.setCategoriaAtivacao(resultadoConsulta.getInt("liv_categoria_ativacao_id"));
 				livroEncontrado.setAltura(resultadoConsulta.getDouble("liv_altura"));
 				livroEncontrado.setPeso(resultadoConsulta.getDouble("liv_peso"));
+				livroEncontrado.setPreco(resultadoConsulta.getDouble("pro_preco"));
 				livroEncontrado.setProfundidade(resultadoConsulta.getDouble("liv_profundidade"));
 				
 				contagem++;

@@ -196,7 +196,8 @@
 								<p>Web ID: 1089772</p>
 								<img src="images/product-details/rating.png" alt="" />
 								<span>
-									<span>R$59,00</span>
+									<span>R$${livro.preco}</span>
+                                    <input type="hidden" name="preco" value="${livro.preco}">
 									<label>Quantidade:</label>
 									<input name="quantidade" type="text" value="1" />
 									<button

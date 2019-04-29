@@ -1,6 +1,8 @@
 package viewhelper;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +17,12 @@ public class VHCupom implements IViewHelper {
 
   @Override
   public EntidadeDominio getEntidade(HttpServletRequest request) {
+    
     Cupom cupom = new Cupom();
     LocalDate dataDeEmissao = LocalDate.now();  
     LocalDate dataDeValidade = dataDeEmissao.plusMonths(6);
+    Double valor = Formatter.formatDouble(request.getParameter("valor")); 
+      
     TipoCupom tipo = null != request.getParameter("tipo-cupom") 
         && !"".equals(request.getParameter("tipo-cupom")) ? 
             TipoCupom.valueOf(request.getParameter("tipo-cupom")) : 
@@ -29,19 +34,10 @@ public class VHCupom implements IViewHelper {
       dataDeValidade = dataDeEmissao.plusMonths(12);
     }
     
-    String codigoCupom = Formatter.formatString(request.getParameter("codigo-cupom"));
-    Double valor = Formatter.formatDouble(request.getParameter("valor-cupom"));
-    // Pegar o id de dos os cupons de troca selecionados
-    request.getParameterValues("cupom-troca");
-    
-    cupom.setCodigo(codigoCupom);
+    Integer idCupom = -1;
+    cupom.setId(idCupom);
     cupom.setDataDeValidade(dataDeValidade);
-    cupom.setTipo(tipo);
     cupom.setValor(valor);
-    
-    
-    
-    //Retornar uma lista, pois mais de um cupom pode ser selecionado pelo usuário.
     
     return cupom;
   }

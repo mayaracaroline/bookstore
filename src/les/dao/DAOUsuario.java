@@ -3,13 +3,17 @@ package les.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import dominio.Cartao;
 import dominio.Cliente;
+import dominio.Cupom;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
+import dominio.TipoCupom;
 import dominio.TipoLogradouro;
 import dominio.Usuario;
 import util.Resultado;
@@ -26,6 +30,7 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
   public Resultado consultar(EntidadeDominio entidade) {
     Resultado resultado = new Resultado();
     Usuario usuario = (Usuario) entidade;
+
     String sql = "SELECT cli_id FROM clientes WHERE cli_email = ?";
     HashMap<String, ArrayList<EntidadeDominio>> mapUsuario = new HashMap<>();
     ArrayList<EntidadeDominio> enderecos = new ArrayList<>();
@@ -76,8 +81,27 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
         cartoes.add(novoCartao);        
       }
       
+      DAOCupom daoCupom = new DAOCupom();
+      Resultado resultadoCupom = daoCupom.consultar(cliente);
+      List<EntidadeDominio> cupons = resultadoCupom.getListaResultado();
+      ArrayList<EntidadeDominio> cuponsTroca = new ArrayList<>();
+      ArrayList<EntidadeDominio> cuponsPromocionais = new ArrayList<>();
+      
+      for(int i = 0; i < cupons.size(); i++) {
+        Cupom cupom = (Cupom) cupons.get(i);
+        
+        if (cupom.getTipo().equals(TipoCupom.PROMOCIONAL)) {
+          cuponsPromocionais.add(cupom);
+        } else if (cupom.getTipo().equals(TipoCupom.TROCA)) {
+          cuponsTroca.add(cupom);
+        }        
+      }
+      
       mapUsuario.put("ENDERECO", enderecos);
       mapUsuario.put("CARTAO", cartoes);
+      mapUsuario.put("CUPOMPROMOCIONAL", cuponsPromocionais);
+      mapUsuario.put("CUPOMTROCA", cuponsTroca);
+      
       resultado.setContagem(1);
       resultado.setMapResultado(mapUsuario);
       resultado.sucesso("SUCESSO");

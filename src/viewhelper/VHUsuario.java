@@ -3,12 +3,11 @@ package viewhelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dominio.Cartao;
-import dominio.Cliente;
+import dominio.Cupom;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
 import dominio.Usuario;
@@ -40,6 +39,8 @@ public class VHUsuario implements IViewHelper {
     ArrayList<EntidadeDominio> resultados =  mapUsuario.get("ENDERECO");
     ArrayList<Endereco> enderecos = new ArrayList<>();
     ArrayList<Cartao> cartoes = new ArrayList<>();
+    ArrayList<Cupom> cuponsPromocionais = new ArrayList<>();
+    ArrayList<Cupom> cuponsTroca = new ArrayList<>();
     
     for(int i = 0; i < resultados.size(); i++) {
       enderecos.add((Endereco)resultados.get(i));    
@@ -51,6 +52,19 @@ public class VHUsuario implements IViewHelper {
       cartoes.add((Cartao)resultados.get(i));    
     }
     
+    resultados =  mapUsuario.get("CUPOMPROMOCIONAL");
+    
+    for(int i = 0; i < resultados.size(); i++) {
+      cuponsPromocionais.add((Cupom)resultados.get(i));    
+    }
+    System.out.println(cuponsPromocionais.size());
+    resultados =  mapUsuario.get("CUPOMTROCA");
+    
+
+    for(int i = 0; i < resultados.size(); i++) {
+      cuponsTroca.add((Cupom)resultados.get(i));    
+    }
+    System.out.println(cuponsTroca.size());
     if(resultado.getErro())
       request.setAttribute("erro", mensagem);
     else
@@ -58,8 +72,10 @@ public class VHUsuario implements IViewHelper {
     
     if(operacao.equals("CONSULTAR")){
         if(!resultado.getErro()){
-          request.getSession().setAttribute("enderecos", enderecos);
-          request.getSession().setAttribute("cartoes", cartoes);
+          request.getSession().setAttribute("enderecos", (ArrayList<Endereco>) enderecos);
+          request.getSession().setAttribute("cartoes", (ArrayList<Cartao>) cartoes);
+          request.getSession().setAttribute("cuponsPromocionais", (ArrayList<Cupom>) cuponsPromocionais);
+          request.getSession().setAttribute("cuponsTroca",(ArrayList<Cupom>) cuponsTroca);
         } 
     }
     try {

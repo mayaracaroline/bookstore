@@ -68,7 +68,6 @@ public class ControllerAutenticacao implements Filter  {
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain arg2)
       throws IOException, ServletException {
     
-    request.removeAttribute("clienteLogado");
     HttpServletRequest req = (HttpServletRequest) request;
     HttpServletResponse res = (HttpServletResponse) response;
     boolean usuarioLogado = false;
@@ -96,6 +95,7 @@ public class ControllerAutenticacao implements Filter  {
     if(req.getCookies()!=null){
       for(Cookie cookie : req.getCookies()){
         if(cookie.getName().equals("clienteLogado")) {
+          System.out.println("clienteLogado");
           usuarioLogado = true;
           res.sendRedirect("checkout.jsp");
 
@@ -104,10 +104,8 @@ public class ControllerAutenticacao implements Filter  {
       }
     }
     if(!usuarioLogado){
-        
         //Redireciona para a página de login
         res.sendRedirect("loginCliente.jsp");
-
       }
     
     

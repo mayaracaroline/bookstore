@@ -76,11 +76,47 @@ function salvarAlteracoesEndereco() {
 
 }
 
+let radioEntregaEconomica = document.getElementById('economica')
+
+let radioEntregaExpress = document.getElementById('express')
+
+function showSelectedValue(element){
+	
+	let textValorFrete = document.getElementById('valorFrete')
+	
+	let innerText = document.createTextNode('');
+	textValorFrete.appendChild(innerText);
+	textValorFrete.innerText = 'R$' + element.value;
+	let somaTotal = parseFloat(document.getElementById('soma-total').innerText);
+	somaTotal += parseFloat(element.value);
+	
+
+}
+
+function cupomPromocionalSelecionado(element, valor){
+	
+	let trDescPromocional = document.createElement('tr');
+	let trTotal = document.getElementById('total')
+	trTotal.insertAdjacentHTML('beforebegin', '<td>Cupom promocional</td><td>R$-'+valor+"</td>");
+	let somaTotal = parseFloat(document.getElementById('soma-total').innerText);
+	somaTotal += parseFloat(valor);
+}
+
+function cupomTrocaSelecionado(element, valor){
+	
+	let trTotal = document.getElementById('total')
+	trTotal.insertAdjacentHTML('beforebegin', '<td>Cupom troca</td><td>R$-'+valor+"</td>");
+	let somaTotal = parseFloat(document.getElementById('soma-total').innerText);
+	somaTotal += parseFloat(valor);
+}
+
+document.getElementById('total');
+
+
 
 async function buscarProdutosAtivos() {
 	
 	const dados = await fetch('/livraria/Pages/lumino/ConsultaProduto?page=product&operacao=CONSULTAR&codigo=0', {method: 'get'})
-	console.log(dados)
 	return dados;
 }
 
