@@ -1,7 +1,13 @@
 package dominio;
 
-public class TipoLogradouro extends EntidadeDominio {
+import java.io.Serializable;
+
+public class TipoLogradouro extends EntidadeDominio implements Serializable {
   
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   private String tipo;
 
   public String getTipo() {

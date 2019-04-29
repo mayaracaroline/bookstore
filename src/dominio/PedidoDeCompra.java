@@ -1,5 +1,6 @@
 package dominio;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class PedidoDeCompra extends EntidadeDominio {
   Double frete;
   ArrayList<Pagamento> pagamento;
   Double valorTotal;
+  BigInteger idCliente;
   
   public List<Cupom> getCuponsTroca() {
     return cuponsTroca;
@@ -54,6 +56,12 @@ public class PedidoDeCompra extends EntidadeDominio {
   }
   public void setPagamento(ArrayList<Pagamento> pagamento) {
     this.pagamento = pagamento;
+  }
+  public BigInteger getIdCliente() {
+    return idCliente;
+  }
+  public void setIdCliente(BigInteger idCliente) {
+    this.idCliente = idCliente;
   }
    
 }

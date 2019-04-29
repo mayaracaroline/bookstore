@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dominio.Cartao;
+import dominio.Cliente;
 import dominio.Cupom;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
@@ -57,21 +58,24 @@ public class VHUsuario implements IViewHelper {
     for(int i = 0; i < resultados.size(); i++) {
       cuponsPromocionais.add((Cupom)resultados.get(i));    
     }
-    System.out.println(cuponsPromocionais.size());
+    
     resultados =  mapUsuario.get("CUPOMTROCA");
     
 
     for(int i = 0; i < resultados.size(); i++) {
       cuponsTroca.add((Cupom)resultados.get(i));    
     }
-    System.out.println(cuponsTroca.size());
+
+    Cliente cliente = (Cliente) resultado.getResultado(); 
+    
     if(resultado.getErro())
       request.setAttribute("erro", mensagem);
     else
       request.setAttribute("sucesso", mensagem);
     
-    if(operacao.equals("CONSULTAR")){
+    if(operacao.equals("CONSULTAR") || operacao.equals("SALVAR") ){
         if(!resultado.getErro()){
+          request.getSession().setAttribute("clientes", (Cliente) cliente);
           request.getSession().setAttribute("enderecos", (ArrayList<Endereco>) enderecos);
           request.getSession().setAttribute("cartoes", (ArrayList<Cartao>) cartoes);
           request.getSession().setAttribute("cuponsPromocionais", (ArrayList<Cupom>) cuponsPromocionais);

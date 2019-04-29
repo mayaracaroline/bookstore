@@ -97,6 +97,7 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
         }        
       }
       
+     
       mapUsuario.put("ENDERECO", enderecos);
       mapUsuario.put("CARTAO", cartoes);
       mapUsuario.put("CUPOMPROMOCIONAL", cuponsPromocionais);
@@ -104,6 +105,8 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
       
       resultado.setContagem(1);
       resultado.setMapResultado(mapUsuario);
+      resultado.setResultado(cliente);
+      System.out.println(cliente.getId().intValue());
       resultado.sucesso("SUCESSO");
                  
     } catch (Exception e) {

@@ -80,7 +80,7 @@ public class ControllerAutenticacao implements Filter  {
       ICommand command = mapaCommand.get(operacao);  
       EntidadeDominio entidade = viewHelper.getEntidade(req);
       Resultado resultado = command.executar(entidade);
-      
+      System.out.println(resultado.getContagem());
       if(!resultado.getErro() && resultado.getContagem() > 0) {
         Cookie logado = new Cookie("clienteLogado","true");
         res.addCookie(logado);

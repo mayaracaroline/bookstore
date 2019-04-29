@@ -9,17 +9,21 @@ import dominio.Bloqueio;
 import dominio.Cliente;
 import dominio.EntidadeDominio;
 import dominio.Livro;
+import dominio.PedidoDeCompra;
 import dominio.Usuario;
 import les.dao.DAOCarrinho;
 import les.dao.DAOCliente;
 import les.dao.DAOLivro;
+import les.dao.DAOPedidoCompra;
 import les.dao.DAOUsuario;
 import les.dao.IDAO;
 import les.negocio.IStrategy;
-import les.negocio.StComplementarCidade;
+import les.negocio.StComplementarCupom;
 import les.negocio.StComplementarGeneroLiterario;
 import les.negocio.StConsultarQuantidadeEstoque;
+import les.negocio.StInativarCupom;
 import les.negocio.StValidarDadosObrigatoriosCliente;
+import les.negocio.StValidarDadosObrigatoriosCompra;
 import les.negocio.StValidarDadosObrigatoriosLivro;
 import les.negocio.StValidarExistencia;
 import les.negocio.StValidarIdConsultaCliente;
@@ -29,6 +33,7 @@ import les.negocio.StValidarMotivoAtivacao;
 import les.negocio.StValidarMotivoCategoriaInativacao;
 import les.negocio.StValidarQuantidadeAIncluirOuExcluirCarrinho;
 import les.negocio.StValidarUsuarioExistente;
+import les.negocio.StValidarValorExcendenteAoPagamento;
 import util.Resultado;
 
 public class Fachada implements IFachada  {
@@ -37,6 +42,7 @@ public class Fachada implements IFachada  {
 	private Map<String, List<IStrategy>> rnsCliente;
 	private Map<String, List<IStrategy>> rnsBloqueioProduto;
 	private Map<String, List<IStrategy>> rnsAutenticarUsuario;
+	private Map<String, List<IStrategy>> rnsValidarDadosCompra;
 	private Map<String, IDAO> mapDAO;
 	private Map<String, Map<String, List<IStrategy>>> rns;
 	
@@ -52,6 +58,8 @@ public class Fachada implements IFachada  {
 	private List<IStrategy> listStrategyAlterarBloqueioProduto;
 	private List<IStrategy> listStrategyExcluirBloqueioProduto;
 	
+	private List<IStrategy> listStrategySalvarCompra;
+	
 	 private List<IStrategy> listStrategyAutenticarUsuario;
 	
 	public Fachada() {
@@ -60,6 +68,7 @@ public class Fachada implements IFachada  {
 		rnsCliente = new HashMap<String, List<IStrategy>>();
 		rnsBloqueioProduto = new HashMap<String, List<IStrategy>>();
     rnsAutenticarUsuario = new HashMap<String, List<IStrategy>>();
+    rnsValidarDadosCompra = new HashMap<String, List<IStrategy>>();
 		
 		mapDAO = new HashMap<String, IDAO>();
 		
@@ -67,6 +76,7 @@ public class Fachada implements IFachada  {
 		mapDAO.put("CLIENTE", new DAOCliente());
 		mapDAO.put("BLOQUEIO", new DAOCarrinho());
 		mapDAO.put("USUARIO", new DAOUsuario());
+		mapDAO.put("PEDIDODECOMPRA", new DAOPedidoCompra());
 
 		listStrategySalvarProduto = new ArrayList<IStrategy>();
 		listStrategyConsultarProduto = new ArrayList<IStrategy>();
@@ -108,6 +118,12 @@ public class Fachada implements IFachada  {
 		listStrategyAutenticarUsuario = new ArrayList<IStrategy>();
 		listStrategyAutenticarUsuario.add(new StValidarUsuarioExistente());
 		
+		listStrategySalvarCompra = new ArrayList<IStrategy>();
+		listStrategySalvarCompra.add(new StValidarDadosObrigatoriosCompra());
+		listStrategySalvarCompra.add(new StComplementarCupom()); 
+		listStrategySalvarCompra.add(new StValidarValorExcendenteAoPagamento());
+		listStrategySalvarCompra.add(new StInativarCupom());
+		
 		rnsProduto.put("SALVAR", listStrategySalvarProduto);
 		rnsProduto.put("CONSULTAR", listStrategyConsultarProduto);
 		rnsProduto.put("EXCLUIR", listStrategyExcluirProduto);
@@ -123,10 +139,14 @@ public class Fachada implements IFachada  {
 		
 		rnsAutenticarUsuario.put("CONSULTAR",listStrategyAutenticarUsuario);
 		
+		rnsValidarDadosCompra.put("SALVAR", listStrategySalvarCompra);
+		
+		
     rns.put(Livro.class.getSimpleName().toUpperCase(), rnsProduto);
     rns.put(Cliente.class.getSimpleName().toUpperCase(), rnsCliente);
     rns.put(Bloqueio.class.getSimpleName().toUpperCase(), rnsBloqueioProduto);
     rns.put(Usuario.class.getSimpleName().toUpperCase(), rnsAutenticarUsuario);
+    rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsValidarDadosCompra);
 				
 	}
 	

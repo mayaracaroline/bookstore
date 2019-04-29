@@ -1,9 +1,14 @@
 package dominio;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Cartao extends EntidadeDominio implements IFormaDePagamento {
+public class Cartao extends EntidadeDominio implements IFormaDePagamento, Serializable {
   
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   private Bandeira bandeira;
   private int codSeguranca;
   private String nomeTitular;

@@ -1,6 +1,12 @@
 package dominio;
 
-public class Endereco extends EntidadeDominio {
+import java.io.Serializable;
+
+public class Endereco extends EntidadeDominio implements Serializable {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   private TipoLogradouro tipoLogradouro;
   private String logradouro;
   private int numero;

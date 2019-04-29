@@ -1,5 +1,6 @@
 package viewhelper;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dominio.Carrinho;
 import dominio.Cartao;
+import dominio.Cliente;
 import dominio.Cupom;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
@@ -44,26 +46,54 @@ public class VHPedidoDeCompra implements IViewHelper {
     
     
     // Itens de Carrinho
-    Carrinho carrinho = new Carrinho();   
-    carrinho = (Carrinho) request.getSession().getAttribute("carrinho");
+
     List<ItemCarrinho> itens = new ArrayList<>();
+//    
+    if(request.getSession().getAttribute("carrinho") != null) {
+      Carrinho carrinho = new Carrinho();
+      carrinho = (Carrinho) request.getSession().getAttribute("carrinho");
+      
+      for( int i=0; i< carrinho.getItensCarrinho().size(); i++) {
+        
+          ItemCarrinho item = new ItemCarrinho();
+          item = (ItemCarrinho) carrinho.getItensCarrinho().get(i);
+          itens.add(item);
+      }
+
+    }
     
-    itens.addAll(carrinho.getItensCarrinho());
+    Cliente cliente = (Cliente) request.getSession().getAttribute("clientes");
+    
+    int idCliente = cliente.getId().intValue();
     
     String[] strIdCuponsTroca = request.getParameterValues("cupom-troca");
+    
+    ArrayList<Cupom> cuponsSelecionados = new ArrayList<>();
     List<Cupom> cuponsTroca = new ArrayList<>();
   
     for (int i = 0; i < strIdCuponsTroca.length; i++) {
-      Cupom cup = new Cupom();
-      cup.setId(Formatter.format(strIdCuponsTroca[i]));
-      cup.setTipo(TipoCupom.TROCA);
-      cuponsTroca.add(cup);
+      
+      if(strIdCuponsTroca[i] != null) {
+        Cupom cup = new Cupom();
+        cup.setId(Formatter.format(strIdCuponsTroca[i]));
+        cup.setTipo(TipoCupom.TROCA);
+        cup.setIdCliente(idCliente);
+        cuponsSelecionados.add(cup);        
+      }    
     }
+    
+
+
     
     Cupom cupomPromocional = new Cupom();
     Integer idCupomPromocional = Formatter.format(request.getParameter("cupom-promocional"));
     cupomPromocional.setId(idCupomPromocional);
-    cupomPromocional.setTipo(TipoCupom.PROMOCIONAL); 
+    cupomPromocional.setTipo(TipoCupom.PROMOCIONAL);
+    cupomPromocional.setIdCliente(idCliente);
+    
+    System.out.println("cliente: "+cliente.getId());
+     
+
     
     double subtotal = 0;
     
@@ -76,10 +106,13 @@ public class VHPedidoDeCompra implements IViewHelper {
     
     Pagamento pagamentoCartao1 = new Pagamento();
     Pagamento pagamentoCartao2 = new Pagamento();
+    
     pagamentoCartao1.setFormaDePagamento(cartao1);
     pagamentoCartao1.setValor(valorCartao1);
+    
     pagamentoCartao2.setFormaDePagamento(cartao2);
     pagamentoCartao2.setValor(valorCartao2);
+   
     ArrayList<Pagamento> pagamentos = new ArrayList<>();
     pagamentos.add(pagamentoCartao1);
     pagamentos.add(pagamentoCartao2);
@@ -90,6 +123,8 @@ public class VHPedidoDeCompra implements IViewHelper {
     pedido.setEnderecoDeEntrega(endereco);
     pedido.setFrete(frete);
     pedido.setItens(itens);
+    pedido.setValorTotal(subtotal);
+    pedido.setIdCliente(BigInteger.valueOf(cliente.getId().intValue()));
 
     return pedido;
   }

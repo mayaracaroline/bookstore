@@ -1,6 +1,12 @@
 package dominio;
 
-public class Bandeira extends EntidadeDominio {
+import java.io.Serializable;
+
+public class Bandeira extends EntidadeDominio implements Serializable {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   String nome;
 
   public String getNome() {

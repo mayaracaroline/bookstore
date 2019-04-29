@@ -164,7 +164,7 @@
 				<div class="review-payment">
 					<h2>Itens no Carrinho</h2>
 				</div>
-
+             <form action="/livraria/Pages/lumino/finalizarCompra" method="POST">
 				<div class="table-responsive cart_info">
 					<table class="table table-condensed">
 						<thead>
@@ -350,6 +350,7 @@
                         <button  name="operacao" value="SALVAR" type="submit" class="btn btn-fefault cart right">
                            <i class="fa fa-shopping-cart"></i> Adicionar
                         </button>
+                        </form>
 					</div>
 				</div>
 			</div>

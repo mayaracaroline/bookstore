@@ -1,14 +1,21 @@
 package dominio;
 
+import java.io.Serializable;
+import java.math.BigInteger;
 import java.time.LocalDate;
 
-public class Cupom extends EntidadeDominio implements IFormaDePagamento {
+public class Cupom extends EntidadeDominio implements IFormaDePagamento, Serializable {
   
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
   Double valor;
   String codigo;
   TipoCupom tipo;
   LocalDate dataDeValidade; 
   boolean status;
+  int idCliente;
 
   @Override
   public void processarPagamento() {
@@ -54,6 +61,14 @@ public class Cupom extends EntidadeDominio implements IFormaDePagamento {
 
   public void setStatus(boolean status) {
     this.status = status;
+  }
+
+  public int getIdCliente() {
+    return idCliente;
+  }
+
+  public void setIdCliente(int idCliente) {
+    this.idCliente = idCliente;
   }  
 
 }

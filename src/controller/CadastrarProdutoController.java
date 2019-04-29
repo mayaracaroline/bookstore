@@ -40,7 +40,7 @@ import viewhelper.IViewHelper;
 import viewhelper.VHBloqueio;
 import viewhelper.VHCadastrarProduto;
 import viewhelper.VHCliente;
-import viewhelper.VHUsuario;
+import viewhelper.VHPedidoDeCompra;
 
 /**
  * Servlet implementation class CadastrarProdutoController
@@ -54,7 +54,8 @@ import viewhelper.VHUsuario;
       "/Pages/lumino/InativaProduto",
       "/Pages/lumino/CadastraCliente", 
       "/Pages/lumino/ConsultaCliente",
-      "/Pages/lumino/carrinho"
+      "/Pages/lumino/carrinho",
+      "/Pages/lumino/finalizarCompra"
     })
 
   public class CadastrarProdutoController extends HttpServlet implements ServletContextListener {
@@ -77,6 +78,7 @@ import viewhelper.VHUsuario;
     	mapViewHelper.put("/livraria/Pages/lumino/CadastraCliente", new VHCliente());
     	mapViewHelper.put("/livraria/Pages/lumino/ConsultaCliente", new VHCliente());
     	mapViewHelper.put("/livraria/Pages/lumino/carrinho", new VHBloqueio());
+    	mapViewHelper.put("/livraria/Pages/lumino/finalizarCompra", new VHPedidoDeCompra());
     	
     	mapCommand = new HashMap<String, ICommand>();
     	mapCommand.put("SALVAR", new CommandSalvar());
