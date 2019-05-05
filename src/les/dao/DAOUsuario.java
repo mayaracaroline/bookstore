@@ -97,7 +97,7 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
         }        
       }
       
-     
+      pst.close();
       mapUsuario.put("ENDERECO", enderecos);
       mapUsuario.put("CARTAO", cartoes);
       mapUsuario.put("CUPOMPROMOCIONAL", cuponsPromocionais);
@@ -112,7 +112,7 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.erro("Erro ao autenticar usuário");
     }
- 
+
     return resultado;
   }
 

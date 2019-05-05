@@ -12,7 +12,6 @@ public class Conexao {
 		String url = "jdbc:mysql://localhost:3306/livraria";
 		
 		if (null == conn) {
-		  System.out.println("null == conn");
   		try{
   		  
   			Class.forName("com.mysql.jdbc.Driver");

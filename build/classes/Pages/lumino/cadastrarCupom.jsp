@@ -51,71 +51,8 @@
 			</div><!-- /.col-->
 		</div><!-- /.row -->
 	</div><!--/.main-->
-  
-  <script>
-  	
-  	
-  	function complementarEndereco(number) {
-  		let cep = document.getElementById('cep'+number)
-  		if(validaCep(cep.value)) {
-  	  	  	fetch('http://viacep.com.br/ws/'+ cep.value +'/json/')
-  	  	  	.then(response => {
-  	  	  		response.json()
-  	  	  		.then((address) => {
-  	  				meu_callback(address, number)  	  				
-  	  	  		})
-  	  	  	})	
-  			
-  		} else {
-          //CEP não Encontrado.
-          limpa_formulario_cep(number);
-          alert("CEP inválido.");
-        }
-
-  	}
-  	
-  	
-  	
-  	function limpa_formulario_cep(number) {
-        //Limpa valores do formulário de cep.
-        document.getElementById('cep'+number).value=""
-		document.getElementById('logradouro'+number).value= ""
-		document.getElementById('bairro'+number).value= ""
-		document.getElementById('cidade'+number).value= ""
-		document.getElementById('estado'+number).value= ""
-    }
-
-    function meu_callback(conteudo, number) {
-        if (!("erro" in conteudo)) {
-            //Atualiza os campos com os valores.
-				document.getElementById('logradouro'+number).value= conteudo.logradouro
-  				document.getElementById('bairro'+number).value= conteudo.bairro
-  				document.getElementById('cidade'+number).value= conteudo.localidade
-  				document.getElementById('estado'+number).value= conteudo.uf
-        } //end if.
-        else {
-            //CEP não Encontrado.
-            limpa_formulário_cep(number);
-            alert("CEP não encontrado.");
-        }
-    }
-    
-    function validaCep(cep) {
-    	return cep.split('').length === 8;
-    }
-  	
-  	
-
-  </script>
 	
-<script src="../../js/jquery-1.11.1.min.js"></script>
-	<script src="../../js/bootstrap.min.js"></script>
-	<script src="../../js/chart.min.js"></script>
-	<script src="../../js/chart-data.js"></script>
-	<script src="../../js/easypiechart.js"></script>
-	<script src="../../js/easypiechart-data.js"></script>
-	<script src="../../js/bootstrap-datepicker.js"></script>
-	<script src="../../js/custom.js"></script>
+	<jsp:include page= "./scripts.jsp" />
 	
 </body>
 </html>

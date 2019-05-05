@@ -39,12 +39,15 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
       
       pst.execute();
       
+      
       ResultSet rs = pst.getGeneratedKeys();
       BigInteger id = BigInteger.ZERO;
       
       while(rs.next()) {
         id = rs.getBigDecimal(1).toBigInteger();
       }
+      
+      pst.close();
       
       endereco.setId(id.intValue());
       

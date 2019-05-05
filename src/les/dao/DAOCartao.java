@@ -29,6 +29,8 @@ public class DAOCartao extends AbstractDAO implements IDAO {
       
       pst.execute();
       
+      pst.close();
+      
       BigInteger id = BigInteger.ZERO;
       ResultSet rs = pst.getGeneratedKeys();
       
@@ -45,6 +47,7 @@ public class DAOCartao extends AbstractDAO implements IDAO {
       resultado.erro("Erro ao cadastrar cartão");
       e.printStackTrace();
     } 
+    
     return resultado;
   }
 

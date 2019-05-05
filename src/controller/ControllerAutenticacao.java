@@ -80,7 +80,6 @@ public class ControllerAutenticacao implements Filter  {
       ICommand command = mapaCommand.get(operacao);  
       EntidadeDominio entidade = viewHelper.getEntidade(req);
       Resultado resultado = command.executar(entidade);
-      System.out.println(resultado.getContagem());
       if(!resultado.getErro() && resultado.getContagem() > 0) {
         Cookie logado = new Cookie("clienteLogado","true");
         res.addCookie(logado);
@@ -95,7 +94,6 @@ public class ControllerAutenticacao implements Filter  {
     if(req.getCookies()!=null){
       for(Cookie cookie : req.getCookies()){
         if(cookie.getName().equals("clienteLogado")) {
-          System.out.println("clienteLogado");
           usuarioLogado = true;
           res.sendRedirect("checkout.jsp");
 

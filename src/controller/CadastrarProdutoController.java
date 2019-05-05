@@ -29,6 +29,7 @@ import dominio.Carrinho;
 import dominio.EntidadeDominio;
 import dominio.ItemCarrinho;
 import les.command.CommandAlterar;
+import les.command.CommandCarrinhoAdicionar;
 import les.command.CommandConsultar;
 import les.command.CommandExcluir;
 import les.command.CommandInativar;
@@ -86,20 +87,9 @@ import viewhelper.VHPedidoDeCompra;
     	mapCommand.put("EXCLUIR", new CommandExcluir());
     	mapCommand.put("ALTERAR", new CommandAlterar());
     	mapCommand.put("INATIVAR", new CommandInativar());
+    	mapCommand.put("CARRINHOADICIONAR", new CommandCarrinhoAdicionar());
     }
     
-    Carrinho getCarrinho() {
-      
-      if (null == carrinho ) {
-        
-        Carrinho carrinho = new Carrinho();
-        ArrayList<ItemCarrinho> itensCarrinho = new ArrayList<>();
-        carrinho.setItensCarrinho(itensCarrinho);
-        this.carrinho = carrinho;
-      }
-      
-      return carrinho;
-    }
     
 	/**
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)

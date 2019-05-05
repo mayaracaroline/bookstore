@@ -113,10 +113,16 @@ function cupomTrocaSelecionado(element, valor){
 document.getElementById('total');
 
 
-
+const contador = 0;
 async function buscarProdutosAtivos() {
 	
-	const dados = await fetch('/livraria/Pages/lumino/ConsultaProduto?page=product&operacao=CONSULTAR&codigo=0', {method: 'get'})
+	const dados = await fetch('/livraria/Pages/lumino/ConsultaProduto?page=product&operacao=CONSULTAR&codigo=0', {method: 'get'})	
+	
+//	if(contador < 1) {
+//		document.location.href='produtos.jsp';
+//		contador++
+//	}	
+//	console.log(contador)
 	return dados;
 }
 

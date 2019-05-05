@@ -31,7 +31,7 @@ public class DAOTipoLogradouro extends AbstractDAO implements IDAO {
       while(rs.next()) {
         tipoLogradouro.setTipo(rs.getString("tpl_nome"));
       }
-      
+      pst.close();
       resultado.setResultado(tipoLogradouro);
       resultado.sucesso("Consulta realizada com sucesso");
     } catch (Exception e) {

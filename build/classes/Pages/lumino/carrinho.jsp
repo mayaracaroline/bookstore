@@ -144,10 +144,7 @@
     
       
       <div class="col-sm-12">
-        <div class="total_area">
-            <label for="cep">CEP:</label><br>
-            <input type="text" name="cep" id="cep">             
-            <button class="btn btn-primary" type="button" id="calcular" onclick="showAlert('calculo-frete')">Calcular</button>
+        <div class="total_area">            
             <div class="alert alert-info" id="calculo-frete" role="alert">
               <input type="radio" name="tipo-entrega" id="economica">
               <label for="economica">Econômica - até 6 dias úteis - R$ 34,93</label><br>
@@ -157,44 +154,7 @@
         </div>
         </div> 
     </div>   <!-- row -->
-    <div class="heading">
-      <h3>Cupons</h3>
-    </div> 
-    <div class="row">
-        <div class="col-sm-12">
-          <div class="total_area">
-            <ul class="list-group">
-              <ul class="list-group-item ">
-                <input type="radio" id="cartao1" name="cuponsPromo">
-                <strong>Tipo: </strong>Promocional<br>
-                <strong>Código:</strong> HACXKF4BIPCD<br>
-                <strong>Valor:</strong>R$50,00<br>
-                <label>Validade:</label> 15/03/2019<br>
-              </ul>
-              <ul class="list-group-item ">
-                  <input type="radio" id="cartao2" name="cuponsPromo">
-                  <strong>Tipo: </strong>Promocional<br>
-                  <strong>Código:</strong> HACXKF4BIPCD<br>
-                  <strong>Valor:</strong>R$50,00<br>
-                  <label>Validade:</label> 15/03/2019<br>
-                </ul>
-              <ul class="list-group-item">
-                <input type="checkbox" id="cartao3" name="cuponsTroca">
-                <strong>Tipo: </strong>Troca<br>
-                <strong>Código:</strong> HACXKF4BIPCD<br>
-                <strong>Valor:</strong>R$50,00<br>
-                <label>Validade:</label> 25/08/2019<br>
-              </ul>
-              <ul class="list-group-item">
-                <input type="checkbox" id="cartao4" name="cuponsDiferenca">
-                <strong>Tipo: </strong>Diferença<br>
-                <strong>Código:</strong> HACXKF4BIPCD<br>
-                <strong>Valor:</strong>R$50,00<br>
-                <label>Validade:</label> 25/08/2019<br>
-              </ul>                           
-            </ul>
-          </div>
-        </div>
+ 
         
         <button type="submit" style="margin-bottom:30px" class="btn btn-primary">Comprar</button>
        </form>

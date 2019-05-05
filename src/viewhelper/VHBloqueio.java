@@ -32,12 +32,12 @@ public class VHBloqueio implements IViewHelper {
       this.carrinho = carrinho;
     }
     
-      if (request.getSession().getAttribute("carrinho") == null) {
+    if (request.getSession().getAttribute("carrinho") == null) {
       Carrinho novoCarrinho = new Carrinho();
       ArrayList<ItemCarrinho> itensCarrinho = new ArrayList<>();
       novoCarrinho.setItensCarrinho(itensCarrinho);
       novoCarrinho.setStatus(true);      
-      request.getSession().setAttribute("carrinho", novoCarrinho);
+      request.getSession().setAttribute("carrinho", novoCarrinho); //colocar o mesmo carrinho
     }
     
     Bloqueio bloqueio = new Bloqueio();
@@ -51,6 +51,7 @@ public class VHBloqueio implements IViewHelper {
     produto.setPreco(preco);
     BigInteger idProduto = produto.getId();
     boolean contemProduto = false;
+    
     for ( int i = 0; i < this.carrinho.getItensCarrinho().size(); i++) {
       Produto prod = this.carrinho.getItensCarrinho().get(i).getProduto();
       if(prod.getId().equals(idProduto)) {
@@ -103,7 +104,7 @@ public class VHBloqueio implements IViewHelper {
       } 
     }
     try {
-      if(operacao.equals("SALVAR")){
+      if(operacao.equals("CARRINHOADICIONAR")){
         request.getSession().setAttribute("sucessos", mensagem);
         request.getSession().setAttribute("livro", (Livro) resultado.getResultado());
         response.sendRedirect("/livraria/Pages/lumino/productDetails.jsp");

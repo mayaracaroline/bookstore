@@ -31,6 +31,8 @@ public class DAOCupom extends AbstractDAO implements IDAO {
       
       pst.execute();
       
+      pst.close();
+      
       resultado.setResultado(cupom);
       resultado.sucesso("Cupom salvo com sucesso");
     } catch (Exception e) {
@@ -43,7 +45,6 @@ public class DAOCupom extends AbstractDAO implements IDAO {
 
   @Override
   public Resultado consultar(EntidadeDominio entidade) {
-    System.out.println("dao cupom");
     Cupom cupom;
     Cliente cliente;
     Resultado resultado = new Resultado();
@@ -57,7 +58,6 @@ public class DAOCupom extends AbstractDAO implements IDAO {
       
       if (entidade instanceof Cliente ) {
         cliente = (Cliente) entidade;
-        System.out.println("entidade instanceof Cliente ");
         pst.setInt(1, cliente.getId().intValue());
       } else {
         cupom = (Cupom) entidade;
@@ -79,7 +79,7 @@ public class DAOCupom extends AbstractDAO implements IDAO {
         cupons.add(novoCupom);
       }
       
-
+      pst.close();
       resultado.setListaResultado(cupons);
       resultado.sucesso("Consulta realizada com sucesso");
       
@@ -114,15 +114,13 @@ public class DAOCupom extends AbstractDAO implements IDAO {
       PreparedStatement pst = conexao.prepareStatement(sql);
       pst.setInt(1, cupom.getId().intValue());
       pst.executeUpdate();
-      
+      pst.close();
       resultado.setResultado(cupom);
       resultado.sucesso("Sucesso");
     } catch (Exception e) {
-      System.out.println("catch");
       resultado.erro("Erro ao alterar cupons");
     }
     
-    System.out.println("inativar");
     return resultado;
   }
 

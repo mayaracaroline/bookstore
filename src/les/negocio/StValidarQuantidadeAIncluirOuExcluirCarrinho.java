@@ -16,7 +16,6 @@ public class StValidarQuantidadeAIncluirOuExcluirCarrinho implements IStrategy {
 
   @Override
   public String processar(EntidadeDominio entidade) {
-    System.out.println("StValidarQuantidadeAIncluirOuExcluirCarrinho");
     String mensagem = "";
     Bloqueio produtosBloqueados = (Bloqueio) entidade;
     Carrinho carrinho = produtosBloqueados.getCarrinho();

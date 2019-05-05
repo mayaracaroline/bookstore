@@ -48,8 +48,8 @@
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
 								<li><a href="../../area-do-cliente/lumino/meus-pedidos.html"><i class="fa fa-user"></i> Minha conta</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Meu carrinho(${fn:length(sessionScope.carrinho.itensCarrinho)})</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+								<li><a href="carrinho.jsp"><i class="fa fa-shopping-cart"></i> Meu carrinho(${fn:length(sessionScope.carrinho.itensCarrinho)})</a></li>
+								<li><a href="loginCliente.jsp"><i class="fa fa-lock"></i> Login</a></li>
 							</ul>
 						</div>
 					</div>
@@ -72,7 +72,7 @@
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
 								<li><a href="index.html">Home</a></li>
-								<li class="dropdown"><a href="#">Produtos</a></li> 					
+								<li class="dropdown"><a href="produtos.jsp">Produtos</a></li> 					
 							</ul>
 						</div>
 					</div>
@@ -190,19 +190,19 @@
 						 </div>
 						 <div class="col-sm-7">
 							<div class="product-information"><!--/product-information-->
-								<h2>${livro.titulo}</h2>
+								<h2>${sessionScope.livro.titulo}</h2>
                                 <input type="hidden" name="titulo" value="${livro.titulo}">
 								<p>Ray Bradbury</p>
 								<p>Web ID: 1089772</p>
 								<img src="images/product-details/rating.png" alt="" />
 								<span>
-									<span>R$${livro.preco}</span>
-                                    <input type="hidden" name="preco" value="${livro.preco}">
+									<span>R$${sessionScope.livro.preco}</span>
+                                    <input type="hidden" name="preco" value="${sessionScope.livro.preco}">
 									<label>Quantidade:</label>
 									<input name="quantidade" type="text" value="1" />
 									<button
                                       name="operacao"
-                                      value="SALVAR"
+                                      value="CARRINHOADICIONAR"
                                       type="submit" 
                                       class="btn btn-fefault cart"
                                     >
@@ -227,8 +227,8 @@
 									<ul>
 										<li><a href=""><i class="fa fa-user"></i>Sinopse</a></li>
 									</ul>
-                                    <input name="codigo" type="hidden" value="${livro.id}">                                    
-									<p>${livro.sinopse}</p>
+                                    <input name="codigo" type="hidden" value="${sessionScope.livro.id}">                                    
+									<p>${sessionScope.livro.sinopse}</p>
 										 <table class="table">
 												<thead class="thead-dark">
 														<tr>
@@ -238,33 +238,33 @@
 												<tbody>
 													<tr>	
 														<td>Autor</td>
-														<td>${livro.autor}</td>
+														<td>${sessionScope.livro.autor}</td>
                                                                               
 													</tr>
 													<tr>
 														<td>Altura</td>
-														<td>${livro.altura}cm</td>
+														<td>${sessionScope.livro.altura}cm</td>
 													</tr>
 													<tr>
 														<td>Largura</td>
-														<td>${livro.largura}</td>	
+														<td>${sessionScope.livro.largura}</td>	
 													</tr>
 													<tr>
 														<td>Peso</td>
-														<td>${livro.peso}</td>	
+														<td>${sessionScope.livro.peso}</td>	
 													</tr>
 													<tr>
 														<td>Profundidade</td>
-														<td>${livro.profundidade}</td>	
+														<td>${sessionScope.livro.profundidade}</td>	
 													</tr>
 													<tr>
 														<td>Ano da edição</td>
-														<td name="ano" value="${livro.ano}">${livro.ano}</td>										
+														<td name="ano" value="${sessionScope.livro.ano}">${livro.ano}</td>										
 													</tr>
 													<tr>
 														<td>Categorias</td>
                                                         <td>
-														  <c:forEach var="categoria" items="${livro.categorias}">
+														  <c:forEach var="categoria" items="${sessionScope.livro.categorias}">
 															${categoria.descricao};
                                                             <input type="hidden" name="genero" value="${categoria.id}">
 														  </c:forEach>
@@ -272,28 +272,28 @@
 													</tr>
 													<tr>
 														<td>Editora</td>
-														<td>${livro.editora}</td>															
+														<td>${sessionScope.livro.editora}</td>															
 													</tr>
 													<tr>
 														<td>ISBN</td>
-														<input type="hidden" name="isbn" value="${livro.isbn}" >${livro.isbn}</td>	
+														<input type="hidden" name="isbn" value="${sessionScope.livro.isbn}" >${sessionScope.livro.isbn}</td>	
 													</tr>
 													<tr>
 														<td>Quantidade de páginas</td>
-														<td>${livro.quantidadePaginas}</td>	
+														<td>${sessionScope.livro.quantidadePaginas}</td>	
 													</tr>														
 												</tbody>
 											</table>
-                                            <input type="hidden" name="autor" value="${livro.autor}"/>
-                                            <input type="hidden" name="altura" value="${livro.altura}"/>
-                                            <input type="hidden" name="largura" value="${livro.largura}">
-                                            <input type="hidden" name="peso" value="${livro.peso}">
+                                            <input type="hidden" name="autor" value="${sessionScope.livro.autor}"/>
+                                            <input type="hidden" name="altura" value="${sessionScope.livro.altura}"/>
+                                            <input type="hidden" name="largura" value="${sessionScope.livro.largura}">
+                                            <input type="hidden" name="peso" value="${sessionScope.livro.peso}">
                                             <input type="hidden" name="profundidade" value="${livro.profundidade}">
-                                            <input type="hidden" name="ano" value="${livro.ano}">
-                                            <input type="hidden" name="genero" value="${categoria.descricao}">
-                                            <input type="hidden" name="editora" value="${livro.editora}">
-                                            <input type="hidden" name="isbn" value="${livro.isbn}" >
-                                            <input type="hidden" name="quantidadePaginas" value="${livro.quantidadePaginas}">
+                                            <input type="hidden" name="ano" value="${sessionScope.livro.ano}">
+                                            <input type="hidden" name="genero" value="${sessionScope.categoria.descricao}">
+                                            <input type="hidden" name="editora" value="${sessionScope.livro.editora}">
+                                            <input type="hidden" name="isbn" value="${sessionScope.livro.isbn}" >
+                                            <input type="hidden" name="quantidadePaginas" value="${sessionScope.livro.quantidadePaginas}">
 						</div>	
                     </form>			
 				</div>

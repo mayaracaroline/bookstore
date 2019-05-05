@@ -218,15 +218,13 @@ public class VHCadastrarProduto implements IViewHelper {
 			else if(operacao.equals("CONSULTAR")){
 			  RequestDispatcher rd ;
 			  if(page.equals("product")) {
-			    rd = request.getRequestDispatcher("/Pages/lumino/produtos.jsp");
 			    if(codigo != 0) {
-            rd = request.getRequestDispatcher("/Pages/lumino/productDetails.jsp");
-            
+			      response.sendRedirect("productDetails.jsp");
           }
 			  } else {
           rd = request.getRequestDispatcher("/Pages/lumino/listaProduto.jsp");
         }
-			  rd.forward(request, response);		
+//			  rd.forward(request, response);		
 			} else if(operacao.equals("EXCLUIR")){
 				request.setAttribute("livro", (Livro) resultado.getResultado());
 				RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/produtoExcluido.jsp");

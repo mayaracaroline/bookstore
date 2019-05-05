@@ -39,6 +39,7 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
         estoque.setQuantidade(rs.getInt("est_quantidade"));
       }
       
+      pst.close();
       resultado.sucesso("Produto consultado com sucesso");
       resultado.setResultado(estoque);
       

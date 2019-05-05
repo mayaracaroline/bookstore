@@ -28,6 +28,7 @@ public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
         pst.setInt(3, cliente.getEnderecoResidencial().getId().intValue());
         pst.setString(2, cliente.getEnderecoResidencial().getTipoEndereco());
         pst.execute();
+        pst.close();
   
       }
       
@@ -36,7 +37,8 @@ public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
         pst.setInt(1, cliente.getId().intValue());
         pst.setInt(3, cliente.getEnderecoEntrega().getId().intValue());
         pst.setString(2, cliente.getEnderecoEntrega().getTipoEndereco());
-        pst.execute();  
+        pst.execute(); 
+        pst.close();
       }
       
       if(cliente.getEnderecoCobranca() != null) {
@@ -44,8 +46,11 @@ public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
         pst.setInt(1, cliente.getId().intValue());
         pst.setInt(3, cliente.getEnderecoCobranca().getId().intValue());
         pst.setString(2, cliente.getEnderecoCobranca().getTipoEndereco());
-        pst.execute();  
+        pst.execute(); 
+        pst.close();
       }
+      
+      
       
       resultado.setResultado(cliente);
       resultado.sucesso("Salvo com sucesso: CLIENTES_ENDERECO");           

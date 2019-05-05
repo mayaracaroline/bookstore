@@ -1,5 +1,6 @@
 package viewhelper;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +65,13 @@ public class VHPedidoDeCompra implements IViewHelper {
     
     Cliente cliente = (Cliente) request.getSession().getAttribute("clientes");
     
-    int idCliente = cliente.getId().intValue();
+    int idCliente = 35;
     
     String[] strIdCuponsTroca = request.getParameterValues("cupom-troca");
     
     ArrayList<Cupom> cuponsSelecionados = new ArrayList<>();
     List<Cupom> cuponsTroca = new ArrayList<>();
+    
   
     for (int i = 0; i < strIdCuponsTroca.length; i++) {
       
@@ -91,7 +93,6 @@ public class VHPedidoDeCompra implements IViewHelper {
     cupomPromocional.setTipo(TipoCupom.PROMOCIONAL);
     cupomPromocional.setIdCliente(idCliente);
     
-    System.out.println("cliente: "+cliente.getId());
      
 
     
@@ -131,7 +132,12 @@ public class VHPedidoDeCompra implements IViewHelper {
 
   @Override
   public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) {
-    // TODO Auto-generated method stub
+    try {
+      response.sendRedirect("produtos.jsp");
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     
   }
 

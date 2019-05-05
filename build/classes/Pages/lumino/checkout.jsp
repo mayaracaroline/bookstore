@@ -348,7 +348,7 @@
 								</div>
 						</div>
                         <button  name="operacao" value="SALVAR" type="submit" class="btn btn-fefault cart right">
-                           <i class="fa fa-shopping-cart"></i> Adicionar
+                           <i class="fa fa-shopping-cart"></i> Comprar
                         </button>
                         </form>
 					</div>

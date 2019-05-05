@@ -18,12 +18,9 @@ import les.dao.DAOPedidoCompra;
 import les.dao.DAOUsuario;
 import les.dao.IDAO;
 import les.negocio.IStrategy;
-import les.negocio.StComplementarCupom;
 import les.negocio.StComplementarGeneroLiterario;
 import les.negocio.StConsultarQuantidadeEstoque;
-import les.negocio.StInativarCupom;
 import les.negocio.StValidarDadosObrigatoriosCliente;
-import les.negocio.StValidarDadosObrigatoriosCompra;
 import les.negocio.StValidarDadosObrigatoriosLivro;
 import les.negocio.StValidarExistencia;
 import les.negocio.StValidarIdConsultaCliente;
@@ -33,7 +30,7 @@ import les.negocio.StValidarMotivoAtivacao;
 import les.negocio.StValidarMotivoCategoriaInativacao;
 import les.negocio.StValidarQuantidadeAIncluirOuExcluirCarrinho;
 import les.negocio.StValidarUsuarioExistente;
-import les.negocio.StValidarValorExcendenteAoPagamento;
+import servico.CarrinhoServico;
 import util.Resultado;
 
 public class Fachada implements IFachada  {
@@ -119,10 +116,7 @@ public class Fachada implements IFachada  {
 		listStrategyAutenticarUsuario.add(new StValidarUsuarioExistente());
 		
 		listStrategySalvarCompra = new ArrayList<IStrategy>();
-		listStrategySalvarCompra.add(new StValidarDadosObrigatoriosCompra());
-		listStrategySalvarCompra.add(new StComplementarCupom()); 
-		listStrategySalvarCompra.add(new StValidarValorExcendenteAoPagamento());
-		listStrategySalvarCompra.add(new StInativarCupom());
+
 		
 		rnsProduto.put("SALVAR", listStrategySalvarProduto);
 		rnsProduto.put("CONSULTAR", listStrategyConsultarProduto);
@@ -247,6 +241,21 @@ public class Fachada implements IFachada  {
 		}
 		
 		return resultado;
-	}	
+	}
+
+  @Override
+  public Resultado adicionarAoCarrinho(EntidadeDominio entidade) {
+    Resultado resultado = new Resultado();
+    resultado = validarStrategys(entidade, "SALVAR");
+    
+    if (!resultado.getErro()) {
+      
+       CarrinhoServico servico = new CarrinhoServico();
+       servico.adicionar(entidade);
+    }
+    
+    return resultado;    
+    
+  }	
 	
 }

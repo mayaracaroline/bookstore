@@ -90,7 +90,7 @@ public class DAOCliente extends AbstractDAO implements IDAO {
       DAOCartoesCliente daoCartoesCli = new DAOCartoesCliente();
       
       daoCartoesCli.salvar(cliente);      
-            
+      preparedStatement.close();
       resultado.sucesso("Cliente salvo com sucesso");
       
     } catch (Exception e) {
@@ -155,6 +155,7 @@ public class DAOCliente extends AbstractDAO implements IDAO {
       cliente.setEnderecoEntrega((Endereco)rsEnderecoEntrega.getResultado());
       cliente.setEnderecoCobranca((Endereco)rsEnderecoCobranca.getResultado());
      
+      pst.close();
       resultado.sucesso("Consulta realizada com sucesso");
       resultado.setResultado(cliente);
     } catch (Exception e) {

@@ -21,7 +21,7 @@ public class DAOProduto extends AbstractDAO implements IDAO {
       pst.setDouble(2, produto.getPreco());
       
       pst.execute();     
-      
+      pst.close();
       resultado.setResultado(produto);
       resultado.sucesso("Produto cadastrado com sucesso");
       
@@ -44,7 +44,8 @@ public class DAOProduto extends AbstractDAO implements IDAO {
       PreparedStatement pst = conexao.prepareStatement(sql);
       pst.setString(1, produto.getCodigoBarras());
       
-      pst.executeQuery();     
+      pst.executeQuery();   
+      pst.close();
       
       resultado.setResultado(produto);
       resultado.sucesso("Consulta realizada com sucesso");
