@@ -23,8 +23,7 @@ public class StConsultarQuantidadeEstoque implements IStrategy {
     Bloqueio produtoBloqueado = (Bloqueio) entidade;
     Carrinho carrinho = produtoBloqueado.getCarrinho();
     // Index do último produto adicionado
-    Integer indexProdutoAdicionado = carrinho.getItensCarrinho().size() - 1;
-    ItemCarrinho itemCarrinho = carrinho.getItensCarrinho().get(indexProdutoAdicionado);
+    ItemCarrinho itemCarrinho = carrinho.getItensCarrinho().get(0);
     HttpSession sessaoUsuario = produtoBloqueado.getSessao();
     
     Produto produto = itemCarrinho.getProduto();
@@ -39,6 +38,7 @@ public class StConsultarQuantidadeEstoque implements IStrategy {
     mapProdutosBloqueados = (HashMap<String, Bloqueio>) sessaoUsuario.getServletContext()
         .getAttribute("bloqueio");
     
+    // Conta a quantidade de itens bloqueados com o id do produto adicionado
     for(Map.Entry<String, Bloqueio> entry : mapProdutosBloqueados.entrySet()) {
       
       Bloqueio bloqueioCarrinho = (Bloqueio) entry.getValue();

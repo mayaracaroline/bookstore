@@ -86,7 +86,7 @@ public class DAOCarrinho extends AbstractDAO implements IDAO {
 //    
 //    resultado.setResultado(produto);
 //    resultado.sucesso("Produto inserido com sucesso");
-    return null;
+    //return null;
   }
 
   @Override

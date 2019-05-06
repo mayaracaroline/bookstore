@@ -23,6 +23,7 @@ import les.negocio.StConsultarQuantidadeEstoque;
 import les.negocio.StValidarDadosObrigatoriosCliente;
 import les.negocio.StValidarDadosObrigatoriosLivro;
 import les.negocio.StValidarExistencia;
+import les.negocio.StValidarExistenciaCarrinhoSessao;
 import les.negocio.StValidarIdConsultaCliente;
 import les.negocio.StValidarIdInserido;
 import les.negocio.StValidarLivroExclusaoEAlteracao;
@@ -103,6 +104,7 @@ public class Fachada implements IFachada  {
 		listStrategyInativarProduto.add(new StValidarMotivoCategoriaInativacao());
 		
 		listStrategySalvarBloqueioProduto.add(new StConsultarQuantidadeEstoque());
+		listStrategySalvarBloqueioProduto.add(new StValidarExistenciaCarrinhoSessao());
 		
 		listStrategyAlterarBloqueioProduto.add(new StValidarQuantidadeAIncluirOuExcluirCarrinho());
 		
@@ -251,7 +253,7 @@ public class Fachada implements IFachada  {
     if (!resultado.getErro()) {
       
        CarrinhoServico servico = new CarrinhoServico();
-       servico.adicionar(entidade);
+       resultado = servico.adicionar(entidade);
     }
     
     return resultado;    

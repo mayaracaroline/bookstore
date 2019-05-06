@@ -1,5 +1,6 @@
 package servico;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,16 +18,15 @@ public class CarrinhoServico {
   
   public Resultado adicionar(EntidadeDominio entidade) {
     Resultado resultado = new Resultado(); 
-    Bloqueio produtoBloqueado = (Bloqueio) entidade;
-    Carrinho carrinho = produtoBloqueado.getCarrinho();
-    // Index do último produto adicionado
-    Integer indexProdutoAdicionado = carrinho.getItensCarrinho().size() - 1;
-    ItemCarrinho itemCarrinho = carrinho.getItensCarrinho().get(indexProdutoAdicionado);
-    Produto produto = itemCarrinho.getProduto();
-    Integer quantidadeReservados = 0;
+    Bloqueio produtoBloqueado = (Bloqueio) entidade;  
+    // Apenas um item é adicionado por vez (index sempre será 0)
+    ItemCarrinho itemBloqueado = produtoBloqueado.getCarrinho().getItensCarrinho().get(0);
+    Produto produto = itemBloqueado.getProduto();
+    BigInteger idProduto = produto.getId();    
     HttpSession sessaoUsuario = produtoBloqueado.getSessao();
     Carrinho carrinhoSessao = (Carrinho) sessaoUsuario.getAttribute("carrinho");
-    ArrayList<ItemCarrinho> itensCarrinho = carrinhoSessao.getItensCarrinho();
+    ArrayList<ItemCarrinho> itensCarrinhoSessao = carrinhoSessao.getItensCarrinho();
+    Integer quantidadeReservados = 0;
 
     for (int i= 0; i < carrinhoSessao.getItensCarrinho().size();i++) {
       Produto produtoSessao = carrinhoSessao
@@ -39,43 +39,50 @@ public class CarrinhoServico {
             .get(i).getQuantidade();
       }      
     }
-    Integer totalDeProdutosAInserir = quantidadeReservados + itemCarrinho.getQuantidade();
+    Integer totalDeProdutosAInserir = quantidadeReservados + itemBloqueado.getQuantidade();
     
-    Carrinho novoCarrinho = new Carrinho();
-    ItemCarrinho novoItem = new ItemCarrinho();
+  boolean contemProduto = false; 
+  
+    for ( int i = 0; i < itensCarrinhoSessao.size(); i++) {
+      Produto prod = itensCarrinhoSessao.get(i).getProduto();
+      if(prod.getId().equals(idProduto)) {
+        
+        itensCarrinhoSessao.get(i).setQuantidade(totalDeProdutosAInserir);
     
-    if (itensCarrinho.size() > indexProdutoAdicionado ) {
-      itensCarrinho.get(indexProdutoAdicionado).setQuantidade(totalDeProdutosAInserir);
-    } else {
-      novoItem.setProduto(produto);
-      novoItem.setQuantidade(totalDeProdutosAInserir);
-      itensCarrinho.add(novoItem);     
+        contemProduto = true;
+        break;
+      }    
+    }
+  
+    if (!contemProduto) {
+      ItemCarrinho item = new ItemCarrinho();
+      
+      item.setProduto(produto);
+      item.setQuantidade(totalDeProdutosAInserir);
+          
+      carrinhoSessao.addItem(item);     
     }
 
-    novoCarrinho.setItensCarrinho(itensCarrinho);
-    novoCarrinho.setStatus(true);
     
-    sessaoUsuario.setAttribute("carrinho", novoCarrinho);
-
+    Integer quantidadeDeItensBloqueados = 0;
+    
+    // Conta total de produtos no carrinho
+    for(int i = 0; i < itensCarrinhoSessao.size(); i++) {
+       ItemCarrinho item = itensCarrinhoSessao.get(i);
+       quantidadeDeItensBloqueados += item.getQuantidade();  
+    }
+    
+    carrinhoSessao.setQuantidadeProdutos(quantidadeDeItensBloqueados);
+    
+    sessaoUsuario.setAttribute("carrinho", carrinhoSessao);
+    
     HashMap<String, Bloqueio> mapProdutosBloqueados;
     mapProdutosBloqueados = (HashMap<String, Bloqueio>) sessaoUsuario.getServletContext()
         .getAttribute("bloqueio");
     
-    Integer quantidadeDeItensBloqueados = 0;
+    produtoBloqueado.setCarrinho(carrinhoSessao);
     
-    for(Map.Entry<String, Bloqueio> entry : mapProdutosBloqueados.entrySet()) {
-      
-      Bloqueio bloqueioCarrinho = (Bloqueio) entry.getValue();
-       
-      for(int i = 0; i < bloqueioCarrinho.getCarrinho().getItensCarrinho().size(); i++) {
-         ItemCarrinho itemBloqueado = bloqueioCarrinho.getCarrinho().getItensCarrinho().get(i);
-         if(itemBloqueado.getProduto().getId().equals(produto.getId())) {
-           quantidadeDeItensBloqueados += itemBloqueado.getQuantidade();
-         }  
-       }
-    }
-    
-    produtoBloqueado.setCarrinho(novoCarrinho);
+    // Atualiza de lista de produtos bloqueados ( todos os usuários )
     mapProdutosBloqueados.put(sessaoUsuario.getId(), produtoBloqueado);
 
     

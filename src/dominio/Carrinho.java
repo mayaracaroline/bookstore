@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Carrinho {
   
   private ArrayList<ItemCarrinho> itensCarrinho;
+  Integer quantidadeProdutos;
   boolean status;
 
   public ArrayList<ItemCarrinho> getItensCarrinho() {
@@ -38,6 +39,14 @@ public class Carrinho {
 
   public void setStatus(boolean status) {
     this.status = status;
+  }
+
+  public Integer getQuantidadeProdutos() {
+    return quantidadeProdutos;
+  }
+
+  public void setQuantidadeProdutos(Integer quantidadeProdutos) {
+    this.quantidadeProdutos = quantidadeProdutos;
   }
 
 }

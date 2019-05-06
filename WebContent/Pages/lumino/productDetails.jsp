@@ -48,7 +48,7 @@
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
 								<li><a href="../../area-do-cliente/lumino/meus-pedidos.html"><i class="fa fa-user"></i> Minha conta</a></li>
-								<li><a href="carrinho.jsp"><i class="fa fa-shopping-cart"></i> Meu carrinho(${fn:length(sessionScope.carrinho.itensCarrinho)})</a></li>
+								<li><a href="carrinho.jsp"><i class="fa fa-shopping-cart"></i> Meu carrinho(${sessionScope.carrinho.quantidadeProdutos})</a></li>
 								<li><a href="loginCliente.jsp"><i class="fa fa-lock"></i> Login</a></li>
 							</ul>
 						</div>
@@ -276,7 +276,7 @@
 													</tr>
 													<tr>
 														<td>ISBN</td>
-														<input type="hidden" name="isbn" value="${sessionScope.livro.isbn}" >${sessionScope.livro.isbn}</td>	
+														<td>${sessionScope.livro.isbn}</td>	
 													</tr>
 													<tr>
 														<td>Quantidade de páginas</td>
