@@ -43,7 +43,7 @@
         <div class="shop-menu clearfix pull-right">
           <ul class="nav navbar-nav">
             <li><a href="../../area-do-cliente/lumino/meus-pedidos.html"><i class="fa fa-user"></i> Minha conta</a></li>
-            <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Meu carrinho</a></li>
+            <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Meu carrinho(${sessionScope.carrinho.quantidadeProdutos})</a></li>
             <li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
           </ul>
         </div>
@@ -124,7 +124,7 @@
               <p class="cart_total_price">R$${itemCarrinho.produto.preco * itemCarrinho.quantidade }</p>
             </td>
             <td class="cart_delete">
-              <button type="submit" class="cart_quantity_delete" onclick="excluirItemCarrinho(${itemCarrinho.produto.id})"><i class="fa fa-times"></i></button>
+              <button type="button" class="cart_quantity_delete" onclick="excluirItemCarrinho(${itemCarrinho.produto.id})"><i class="fa fa-times"></i></button>
             </td>
           </tr>
        </c:forEach>

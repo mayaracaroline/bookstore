@@ -259,5 +259,18 @@ public class Fachada implements IFachada  {
     return resultado;    
     
   }	
+  
+  public Resultado adicionarAlterarCarrinho(EntidadeDominio entidade) {
+      Resultado resultado = new Resultado();
+      resultado = validarStrategys(entidade, "ALTERAR");
+      
+      if (!resultado.getErro()) {
+        
+         CarrinhoServico servico = new CarrinhoServico();
+         resultado = servico.alterarQuantidadeItens(entidade);
+      }
+      
+      return resultado;     
+  }
 	
 }

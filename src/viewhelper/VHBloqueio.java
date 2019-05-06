@@ -73,13 +73,17 @@ public class VHBloqueio implements IViewHelper {
       if(operacao.equals("CARRINHOADICIONAR")){
         request.getSession().setAttribute("sucessos", mensagem);
         request.getSession().setAttribute("livro", (Livro) resultado.getResultado());
-        response.sendRedirect("/livraria/Pages/lumino/productDetails.jsp");
+        response.sendRedirect("productDetails.jsp");
       }
        else if(operacao.equals("EXCLUIR")){
-        request.setAttribute("livro", (Livro) resultado.getResultado());
-        RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/productDetails.jsp");
-        rd.forward(request, response);
-      } 
+         request.getSession().setAttribute("sucessos", mensagem);
+         request.getSession().setAttribute("livro", (Livro) resultado.getResultado());
+         response.sendRedirect("carrinho.jsp");
+      } else if(operacao.equals("CARRINHOALTERAR")){
+        request.getSession().setAttribute("sucessos", mensagem);
+        request.getSession().setAttribute("livro", (Livro) resultado.getResultado());
+        response.sendRedirect("carrinho.jsp");
+     } 
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

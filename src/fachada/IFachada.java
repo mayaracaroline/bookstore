@@ -11,5 +11,6 @@ public interface IFachada {
 	public Resultado alterar(EntidadeDominio entidade);
 	public Resultado inativar(EntidadeDominio entidade);
   public Resultado adicionarAoCarrinho(EntidadeDominio entidade);
+  public Resultado adicionarAlterarCarrinho(EntidadeDominio entidade);
   
 }

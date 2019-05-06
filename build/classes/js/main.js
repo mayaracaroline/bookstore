@@ -118,17 +118,12 @@ async function buscarProdutosAtivos() {
 	
 	const dados = await fetch('/livraria/Pages/lumino/ConsultaProduto?page=product&operacao=CONSULTAR&codigo=0', {method: 'get'})	
 	
-//	if(contador < 1) {
-//		document.location.href='produtos.jsp';
-//		contador++
-//	}	
-//	console.log(contador)
 	return dados;
 }
 
 async function alterarQuantidadeItensCarrinho(id, quantidade) {
 	console.log('quantidade: '+quantidade)
-	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=ALTERAR&codigo='+id+'&quantidade='+quantidade, {method: 'get'})
+	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=CARRINHOALTERAR&codigo='+id+'&quantidade='+quantidade, {method: 'get'})
 	console.log(dados)
 	return dados;
 }

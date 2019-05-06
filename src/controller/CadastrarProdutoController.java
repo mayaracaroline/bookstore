@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,9 +26,9 @@ import org.quartz.impl.StdSchedulerFactory;
 import dominio.Bloqueio;
 import dominio.Carrinho;
 import dominio.EntidadeDominio;
-import dominio.ItemCarrinho;
 import les.command.CommandAlterar;
 import les.command.CommandCarrinhoAdicionar;
+import les.command.CommandCarrinhoAlterar;
 import les.command.CommandConsultar;
 import les.command.CommandExcluir;
 import les.command.CommandInativar;
@@ -88,6 +87,7 @@ import viewhelper.VHPedidoDeCompra;
     	mapCommand.put("ALTERAR", new CommandAlterar());
     	mapCommand.put("INATIVAR", new CommandInativar());
     	mapCommand.put("CARRINHOADICIONAR", new CommandCarrinhoAdicionar());
+    	mapCommand.put("CARRINHOALTERAR", new CommandCarrinhoAlterar());
     }
     
     
