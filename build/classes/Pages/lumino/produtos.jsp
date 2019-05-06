@@ -235,7 +235,7 @@
                                     <input type="hidden" name="codigo" value="${livro.id}"/>
                                     <img src="images/shop/product12.jpg" alt="" />                    
                                     <h6>${livro.titulo}</h6>
-                                    <h2>R$${livro.preco }</h2>
+                                    <h2 id="preco">R$${livro.preco }</h2>
                                     <button                                  
                                        class="btn btn-default add-to-cart"
                                        name="operacao"

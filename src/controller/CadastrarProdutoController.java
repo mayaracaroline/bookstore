@@ -29,6 +29,7 @@ import dominio.EntidadeDominio;
 import les.command.CommandAlterar;
 import les.command.CommandCarrinhoAdicionar;
 import les.command.CommandCarrinhoAlterar;
+import les.command.CommandCarrinhoExcluir;
 import les.command.CommandConsultar;
 import les.command.CommandExcluir;
 import les.command.CommandInativar;
@@ -88,6 +89,7 @@ import viewhelper.VHPedidoDeCompra;
     	mapCommand.put("INATIVAR", new CommandInativar());
     	mapCommand.put("CARRINHOADICIONAR", new CommandCarrinhoAdicionar());
     	mapCommand.put("CARRINHOALTERAR", new CommandCarrinhoAlterar());
+    	mapCommand.put("CARRINHOEXCLUIR", new CommandCarrinhoExcluir());
     }
     
     

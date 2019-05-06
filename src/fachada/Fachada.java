@@ -72,7 +72,6 @@ public class Fachada implements IFachada  {
 		
 		mapDAO.put("LIVRO", new DAOLivro());
 		mapDAO.put("CLIENTE", new DAOCliente());
-		mapDAO.put("BLOQUEIO", new DAOCarrinho());
 		mapDAO.put("USUARIO", new DAOUsuario());
 		mapDAO.put("PEDIDODECOMPRA", new DAOPedidoCompra());
 
@@ -260,7 +259,7 @@ public class Fachada implements IFachada  {
     
   }	
   
-  public Resultado adicionarAlterarCarrinho(EntidadeDominio entidade) {
+  public Resultado alterarItensCarrinho(EntidadeDominio entidade) {
       Resultado resultado = new Resultado();
       resultado = validarStrategys(entidade, "ALTERAR");
       
@@ -271,6 +270,21 @@ public class Fachada implements IFachada  {
       }
       
       return resultado;     
+  }
+  
+  public Resultado excluirItensCarrinho(EntidadeDominio entidade) {
+    
+    Resultado resultado = new Resultado();
+    resultado = validarStrategys(entidade, "EXCLUIR");
+    
+    if (!resultado.getErro()) {
+      
+       CarrinhoServico servico = new CarrinhoServico();
+       resultado = servico.excluirItens(entidade);
+    }
+    
+    return resultado; 
+    
   }
 	
 }

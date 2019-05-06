@@ -130,7 +130,7 @@ async function alterarQuantidadeItensCarrinho(id, quantidade) {
 
 async function excluirItemCarrinho(id) {
 	
-	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=EXCLUIR&codigo='+id, {method: 'get'})
+	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=CARRINHOEXCLUIR&codigo='+id, {method: 'get'})
 	console.log(dados)
 	document.querySelector("[data-cod="+"'"+id+"'"+"]").style.display="none";
 	return dados;
