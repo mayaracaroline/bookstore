@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PedidoDeCompra extends EntidadeDominio {
-  
+  Carrinho carrinho;
   List<Cupom> cuponsTroca;
   Cupom cupomPromocional;
   List<ItemCarrinho> itens;
@@ -62,6 +62,12 @@ public class PedidoDeCompra extends EntidadeDominio {
   }
   public void setIdCliente(BigInteger idCliente) {
     this.idCliente = idCliente;
+  }
+  public Carrinho getCarrinho() {
+    return carrinho;
+  }
+  public void setCarrinho(Carrinho carrinho) {
+    this.carrinho = carrinho;
   }
    
 }

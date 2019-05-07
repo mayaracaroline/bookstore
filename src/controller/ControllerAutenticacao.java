@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dominio.Cliente;
 import dominio.EntidadeDominio;
 import dominio.Usuario;
 import les.command.CommandAlterar;
@@ -80,8 +81,10 @@ public class ControllerAutenticacao implements Filter  {
       ICommand command = mapaCommand.get(operacao);  
       EntidadeDominio entidade = viewHelper.getEntidade(req);
       Resultado resultado = command.executar(entidade);
+      Cliente cliente = (Cliente) resultado.getResultado();
+      String idCliente = cliente.getId().toString();
       if(!resultado.getErro() && resultado.getContagem() > 0) {
-        Cookie logado = new Cookie("clienteLogado","true");
+        Cookie logado = new Cookie("clienteLogado", idCliente);
         res.addCookie(logado);
         viewHelper.setView(resultado, req, res);
         return;
@@ -105,9 +108,7 @@ public class ControllerAutenticacao implements Filter  {
         //Redireciona para a página de login
         res.sendRedirect("loginCliente.jsp");
       }
-    
-    
-  }
+    }
 
   @Override
   public void init(FilterConfig request) throws ServletException {

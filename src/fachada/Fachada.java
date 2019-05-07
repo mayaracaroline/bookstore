@@ -20,6 +20,7 @@ import les.dao.IDAO;
 import les.negocio.IStrategy;
 import les.negocio.StComplementarGeneroLiterario;
 import les.negocio.StConsultarQuantidadeEstoque;
+import les.negocio.StValidarCarrinhoExpirado;
 import les.negocio.StValidarCepInformado;
 import les.negocio.StValidarDadosObrigatoriosCliente;
 import les.negocio.StValidarDadosObrigatoriosLivro;
@@ -124,6 +125,8 @@ public class Fachada implements IFachada  {
 		listStrategyAutenticarUsuario.add(new StValidarUsuarioExistente());
 		
 		listStrategySalvarCompra = new ArrayList<IStrategy>();
+		
+		listStrategySalvarCompra.add(new StValidarCarrinhoExpirado());
 		
 		listStrategyCalcularFrete.add(new StValidarCepInformado());
 

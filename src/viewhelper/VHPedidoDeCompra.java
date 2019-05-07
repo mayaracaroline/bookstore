@@ -3,8 +3,10 @@ package viewhelper;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,10 +50,9 @@ public class VHPedidoDeCompra implements IViewHelper {
     
     // Itens de Carrinho
 
-    List<ItemCarrinho> itens = new ArrayList<>();
-//    
+    ArrayList<ItemCarrinho> itens = new ArrayList<>();
+    Carrinho carrinho = new Carrinho();
     if(request.getSession().getAttribute("carrinho") != null) {
-      Carrinho carrinho = new Carrinho();
       carrinho = (Carrinho) request.getSession().getAttribute("carrinho");
       
       for( int i=0; i< carrinho.getItensCarrinho().size(); i++) {
@@ -60,41 +61,60 @@ public class VHPedidoDeCompra implements IViewHelper {
           item = (ItemCarrinho) carrinho.getItensCarrinho().get(i);
           itens.add(item);
       }
-
+      carrinho.setItensCarrinho(itens);
+      carrinho.setStatus(true);
+    } else if (request.getServletContext().getAttribute("desbloqueio") != null) {
+      HashMap<String, Carrinho> mapCarrinhosExpirados = new HashMap<>();
+      carrinho = mapCarrinhosExpirados.get(request.getSession().getId());
+      if( carrinho != null) {
+        for( int i=0; i< carrinho.getItensCarrinho().size(); i++) {       
+          ItemCarrinho item = new ItemCarrinho();
+          item = (ItemCarrinho) carrinho.getItensCarrinho().get(i);
+          itens.add(item);
+        }
+        carrinho.setItensCarrinho(itens);
+        carrinho.setStatus(false);  
+      }
     }
     
     Cliente cliente = (Cliente) request.getSession().getAttribute("clientes");
     
-    int idCliente = 35;
+    String idCliente = "";
+    if(request.getCookies() !=null){
+      for(Cookie cookie : request.getCookies()){
+        if(cookie.getName().equals("clienteLogado")) {
+          idCliente = cookie.getValue();
+          break;
+        }
+      }
+    }
+    
+    int id = Formatter.format(idCliente);
     
     String[] strIdCuponsTroca = request.getParameterValues("cupom-troca");
     
     ArrayList<Cupom> cuponsSelecionados = new ArrayList<>();
     List<Cupom> cuponsTroca = new ArrayList<>();
     
-  
-    for (int i = 0; i < strIdCuponsTroca.length; i++) {
-      
-      if(strIdCuponsTroca[i] != null) {
-        Cupom cup = new Cupom();
-        cup.setId(Formatter.format(strIdCuponsTroca[i]));
-        cup.setTipo(TipoCupom.TROCA);
-        cup.setIdCliente(idCliente);
-        cuponsSelecionados.add(cup);        
+    if( null != strIdCuponsTroca) {
+      for (int i = 0; i < strIdCuponsTroca.length; i++) {
+        
+        if(strIdCuponsTroca[i] != null) {
+          Cupom cup = new Cupom();
+          cup.setId(Formatter.format(strIdCuponsTroca[i]));
+          cup.setTipo(TipoCupom.TROCA);
+          cup.setIdCliente(id);
+          cuponsSelecionados.add(cup);        
+        }    
       }    
     }
-    
-
 
     
     Cupom cupomPromocional = new Cupom();
     Integer idCupomPromocional = Formatter.format(request.getParameter("cupom-promocional"));
     cupomPromocional.setId(idCupomPromocional);
     cupomPromocional.setTipo(TipoCupom.PROMOCIONAL);
-    cupomPromocional.setIdCliente(idCliente);
-    
-     
-
+    cupomPromocional.setIdCliente(id);
     
     double subtotal = 0;
     
@@ -119,28 +139,38 @@ public class VHPedidoDeCompra implements IViewHelper {
     pagamentos.add(pagamentoCartao2);
     
     pedido.setPagamento(pagamentos);
+    pedido.setCarrinho(carrinho);
     pedido.setCupomPromocional(cupomPromocional);
     pedido.setCuponsTroca(cuponsTroca);
     pedido.setEnderecoDeEntrega(endereco);
     pedido.setFrete(frete);
     pedido.setItens(itens);
     pedido.setValorTotal(subtotal);
-    pedido.setIdCliente(BigInteger.valueOf(cliente.getId().intValue()));
+    pedido.setIdCliente(BigInteger.valueOf(id));
 
     return pedido;
   }
 
   @Override
   public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) {
-    try {
-      response.sendRedirect("produtos.jsp");
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
+     String mensagem = resultado.getMensagem();
+     String operacao = request.getParameter("operacao");
+     if(resultado.getErro()) {
+       request.getSession().setAttribute("erro", mensagem);
+     }
+     try {
+       
+       if (operacao.equals("SALVAR")) {
+         if(resultado.getErro()) {
+           response.sendRedirect("finalizarCompra.jsp");
+         } else {
+           response.sendRedirect("produtos.jsp");
+         }
+       }      
+    } catch (Exception e) {
       e.printStackTrace();
     }
-    
-  }
-
+ }
 }
 
 

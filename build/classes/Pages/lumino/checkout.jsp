@@ -209,9 +209,9 @@
                                         </div>                                                                                  
                                     </div>
                                 </td>
-								<td colspan="2" class="col-sm-3">
+								<td colspan="6" class="col-sm-3">
                       
-									<table class="table table-condensed total-result">
+									<table class="table table-condensed total-result col-sm-3">
                                         <tr>Subtotal</tr>
 										<tr>
 											<td>Frete: R$</td>

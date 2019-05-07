@@ -40,8 +40,9 @@ public class StValidarItensCarrinhoComTempoExpirado implements Job {
       if(diferenca > 70) {        
         System.out.println("Retirando do carrinho ");
         produtosBloqueados.remove(entry.getKey());
-        entry.getValue().getSessao().removeAttribute("carrinho");
+        
         produtosDesbloqueados.put(entry.getValue().getSessao().getId(), entry.getValue().getCarrinho());
+        entry.getValue().getSessao().removeAttribute("carrinho");
         Livro livro = (Livro) produtosDesbloqueados.get(entry.getValue()
             .getSessao().getId()).getItensCarrinho()
             .get(0).getProduto();
