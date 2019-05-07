@@ -185,7 +185,6 @@
 								</td>
 								<td class="cart_description">
 								  <h4><a href="">${itemCarrinho.produto.titulo}</a></h4>
-								  <p>Web ID: 1089772</p>
 								</td>
 								<td class="cart_price">
 								  <p>${itemCarrinho.produto.preco}</p>
@@ -197,23 +196,26 @@
 						   </c:forEach>
 							<tr>
 								<td colspan="2">
-                                    <div class="total_area">
-                                        <h4>Frete</h4>                                                                   
-                                        <div class="alert alert-info col-sm-6" id="calculo-frete" role="alert">
-                                          <input type="radio" value="16.5" onclick="showSelectedValue(this)" name="tipo-entrega" id="economica">
-                                          <label for="economica">Econômica - até 6 dias úteis - R$ 16,50</label><br>
-                                          <input value="24.00" onclick="showSelectedValue(this)" type="radio" name="tipo-entrega" id="express">
-                                          <label for="express">Express - até 3 dias úteis - R$ 24,00</label>    
-                                        </div>
+                                    <div class="col-sm-6">
+                                        <h4>Frete</h4> 
+                                        <div class="input-group">
+                                          <span class="input-group-addon">CEP</span>
+                                          <input type="text" class="form-control" value="" name="cep" onblur="calcularFrete(this.value)">
+                                        </div>                                                                
+                                        <div class="input-group">
+                                          <span class="input-group-addon">R$</span>
+                                          <input type="text" id="frete" class="form-control" value="${sessionScope.frete}">
+                                          <span class="input-group-addon">.00</span>  
+                                        </div>                                                                                  
                                     </div>
                                 </td>
-								<td colspan="6">
+								<td colspan="2" class="col-sm-3">
                       
 									<table class="table table-condensed total-result">
                                         <tr>Subtotal</tr>
 										<tr>
-											<td>Frete</td>
-											<td id="valorFrete"></td>
+											<td>Frete: R$</td>
+											<td id="valorFrete">${sessionScope.frete}</td>
 										</tr>
 										<tr id="total">
 											<td style="display:none">Total</td>

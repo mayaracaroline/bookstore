@@ -27,6 +27,7 @@ import dominio.Bloqueio;
 import dominio.Carrinho;
 import dominio.EntidadeDominio;
 import les.command.CommandAlterar;
+import les.command.CommandCalcularFrete;
 import les.command.CommandCarrinhoAdicionar;
 import les.command.CommandCarrinhoAlterar;
 import les.command.CommandCarrinhoExcluir;
@@ -41,6 +42,7 @@ import viewhelper.IViewHelper;
 import viewhelper.VHBloqueio;
 import viewhelper.VHCadastrarProduto;
 import viewhelper.VHCliente;
+import viewhelper.VHEndereco;
 import viewhelper.VHPedidoDeCompra;
 
 /**
@@ -56,7 +58,8 @@ import viewhelper.VHPedidoDeCompra;
       "/Pages/lumino/CadastraCliente", 
       "/Pages/lumino/ConsultaCliente",
       "/Pages/lumino/carrinho",
-      "/Pages/lumino/finalizarCompra"
+      "/Pages/lumino/finalizarCompra",
+      "/Pages/lumino/calcularFrete"
     })
 
   public class CadastrarProdutoController extends HttpServlet implements ServletContextListener {
@@ -80,6 +83,7 @@ import viewhelper.VHPedidoDeCompra;
     	mapViewHelper.put("/livraria/Pages/lumino/ConsultaCliente", new VHCliente());
     	mapViewHelper.put("/livraria/Pages/lumino/carrinho", new VHBloqueio());
     	mapViewHelper.put("/livraria/Pages/lumino/finalizarCompra", new VHPedidoDeCompra());
+    	mapViewHelper.put("/livraria/Pages/lumino/calcularFrete", new VHEndereco());
     	
     	mapCommand = new HashMap<String, ICommand>();
     	mapCommand.put("SALVAR", new CommandSalvar());
@@ -90,6 +94,7 @@ import viewhelper.VHPedidoDeCompra;
     	mapCommand.put("CARRINHOADICIONAR", new CommandCarrinhoAdicionar());
     	mapCommand.put("CARRINHOALTERAR", new CommandCarrinhoAlterar());
     	mapCommand.put("CARRINHOEXCLUIR", new CommandCarrinhoExcluir());
+    	mapCommand.put("CALCULARFRETE", new CommandCalcularFrete());
     }
     
     

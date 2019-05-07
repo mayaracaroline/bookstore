@@ -13,5 +13,6 @@ public interface IFachada {
   public Resultado adicionarAoCarrinho(EntidadeDominio entidade);
   public Resultado alterarItensCarrinho(EntidadeDominio entidade);
   public Resultado excluirItensCarrinho(EntidadeDominio entidade);
+  public Resultado calcularFrete(EntidadeDominio entidade);
   
 }

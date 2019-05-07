@@ -141,18 +141,18 @@
       <h3>Calcular frete</h3>
     </div>
     <div class="row">
-    
-      
-      <div class="col-sm-12">
-        <div class="total_area">            
-            <div class="alert alert-info" id="calculo-frete" role="alert">
-              <input type="radio" name="tipo-entrega" id="economica">
-              <label for="economica">Econômica - até 6 dias úteis - R$ 34,93</label><br>
-              <input type="radio" name="tipo-entrega" id="express">
-              <label for="express">Express - até 3 dias úteis - R$ 54,93</label>    
-          </div>
-        </div>
-        </div> 
+      <div class="col-sm-3">
+          <div class="input-group">
+            <span class="input-group-addon">CEP</span>
+            <input type="text" class="form-control" value="" name="cep" onblur="calcularFrete(this.value)">
+          </div>                                                                
+          <div class="input-group">
+            <span class="input-group-addon">R$</span>
+            <input type="text" id="frete" class="form-control" value="${sessionScope.frete}">
+            <span class="input-group-addon">.00</span>  
+          </div>   
+          <input type="hidden"  value="${sessionScope.frete}" name="tipo-entrega" readonly>             
+      </div> 
     </div>   <!-- row -->
  
         

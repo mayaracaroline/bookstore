@@ -7,11 +7,11 @@ import java.util.Map;
 
 import dominio.Bloqueio;
 import dominio.Cliente;
+import dominio.Endereco;
 import dominio.EntidadeDominio;
 import dominio.Livro;
 import dominio.PedidoDeCompra;
 import dominio.Usuario;
-import les.dao.DAOCarrinho;
 import les.dao.DAOCliente;
 import les.dao.DAOLivro;
 import les.dao.DAOPedidoCompra;
@@ -20,6 +20,7 @@ import les.dao.IDAO;
 import les.negocio.IStrategy;
 import les.negocio.StComplementarGeneroLiterario;
 import les.negocio.StConsultarQuantidadeEstoque;
+import les.negocio.StValidarCepInformado;
 import les.negocio.StValidarDadosObrigatoriosCliente;
 import les.negocio.StValidarDadosObrigatoriosLivro;
 import les.negocio.StValidarExistencia;
@@ -31,6 +32,7 @@ import les.negocio.StValidarMotivoAtivacao;
 import les.negocio.StValidarMotivoCategoriaInativacao;
 import les.negocio.StValidarQuantidadeAIncluirOuExcluirCarrinho;
 import les.negocio.StValidarUsuarioExistente;
+import servico.CalcularFrete;
 import servico.CarrinhoServico;
 import util.Resultado;
 
@@ -41,6 +43,7 @@ public class Fachada implements IFachada  {
 	private Map<String, List<IStrategy>> rnsBloqueioProduto;
 	private Map<String, List<IStrategy>> rnsAutenticarUsuario;
 	private Map<String, List<IStrategy>> rnsValidarDadosCompra;
+	private Map<String, List<IStrategy>> rnsValidarEndereco;
 	private Map<String, IDAO> mapDAO;
 	private Map<String, Map<String, List<IStrategy>>> rns;
 	
@@ -59,6 +62,8 @@ public class Fachada implements IFachada  {
 	private List<IStrategy> listStrategySalvarCompra;
 	
 	 private List<IStrategy> listStrategyAutenticarUsuario;
+	 
+	 private List<IStrategy> listStrategyCalcularFrete;
 	
 	public Fachada() {
 	  rns = new HashMap<String, Map<String, List<IStrategy>>>();
@@ -67,6 +72,7 @@ public class Fachada implements IFachada  {
 		rnsBloqueioProduto = new HashMap<String, List<IStrategy>>();
     rnsAutenticarUsuario = new HashMap<String, List<IStrategy>>();
     rnsValidarDadosCompra = new HashMap<String, List<IStrategy>>();
+    rnsValidarEndereco = new HashMap<String, List<IStrategy>>();
 		
 		mapDAO = new HashMap<String, IDAO>();
 		
@@ -83,6 +89,7 @@ public class Fachada implements IFachada  {
     listStrategySalvarBloqueioProduto = new ArrayList<IStrategy>(); 
     listStrategyAlterarBloqueioProduto = new ArrayList<IStrategy>();
     listStrategyExcluirBloqueioProduto = new ArrayList<IStrategy>();
+    listStrategyCalcularFrete = new ArrayList<IStrategy>();
 		
 		listStrategySalvarProduto.add(new StValidarDadosObrigatoriosLivro());
 		listStrategySalvarProduto.add(new StValidarMotivoAtivacao());
@@ -117,6 +124,8 @@ public class Fachada implements IFachada  {
 		listStrategyAutenticarUsuario.add(new StValidarUsuarioExistente());
 		
 		listStrategySalvarCompra = new ArrayList<IStrategy>();
+		
+		listStrategyCalcularFrete.add(new StValidarCepInformado());
 
 		
 		rnsProduto.put("SALVAR", listStrategySalvarProduto);
@@ -136,12 +145,14 @@ public class Fachada implements IFachada  {
 		
 		rnsValidarDadosCompra.put("SALVAR", listStrategySalvarCompra);
 		
+		rnsValidarEndereco.put("CALCULARFRETE", listStrategyCalcularFrete);
 		
     rns.put(Livro.class.getSimpleName().toUpperCase(), rnsProduto);
     rns.put(Cliente.class.getSimpleName().toUpperCase(), rnsCliente);
     rns.put(Bloqueio.class.getSimpleName().toUpperCase(), rnsBloqueioProduto);
     rns.put(Usuario.class.getSimpleName().toUpperCase(), rnsAutenticarUsuario);
     rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsValidarDadosCompra);
+    rns.put(Endereco.class.getSimpleName().toUpperCase(), rnsValidarEndereco);
 				
 	}
 	
@@ -285,6 +296,21 @@ public class Fachada implements IFachada  {
     
     return resultado; 
     
+  }
+ 
+
+  @Override
+  public Resultado calcularFrete(EntidadeDominio entidade) {
+    Resultado resultado = new Resultado();
+    resultado = validarStrategys(entidade, "CALCULARFRETE");
+    
+    if (!resultado.getErro()) {
+      
+       CalcularFrete servico = new CalcularFrete();
+       resultado = servico.calcularFrete(entidade);
+    }
+    
+    return resultado; 
   }
 	
 }

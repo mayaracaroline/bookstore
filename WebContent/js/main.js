@@ -122,9 +122,8 @@ async function buscarProdutosAtivos() {
 }
 
 async function alterarQuantidadeItensCarrinho(id, quantidade) {
-	console.log('quantidade: '+quantidade)
+	
 	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=CARRINHOALTERAR&codigo='+id+'&quantidade='+quantidade, {method: 'get'})
-	console.log(dados)
 	return dados;
 }
 
@@ -136,38 +135,15 @@ async function excluirItemCarrinho(id) {
 	return dados;
 }
 
-async function calcularFrete() {
+async function calcularFrete(cep) {
 	
-
+	let dados = await fetch('/livraria/Pages/lumino/calcularFrete?operacao=CALCULARFRETE&cep='+cep, {method: 'post'})
 	
-	const params = 
-	{
-	  "nCdEmpresa": "",
-	  "sDsSenha": "",
-	  "nCdServico": "40010",
-	  "sCepOrigem": "37410220",
-	  "sCepDestino": "05311900",
-	  "nVlPeso": "1",
-	  "nCdFormato": "1",
-	  "nVlComprimento": "20",
-	  "nVlAltura": "5",
-	  "nVlLargura": "15",
-	  "nVlDiametro": "0",
-	  "sCdMaoPropria": "n",
-	  "nVlValorDeclarado": "100",
-	  "sCdAvisoRecebimento": "n"
-	}
-	
-	const options = {
-			  method: "POST",
-			  body: params
-			}
-	
-	const dados = await correios.calcPreco(args)
-	
-	console.log(dados)
+	location.href="/livraria/Pages/lumino/calcularFrete?operacao=CALCULARFRETE&cep="+cep;
+//	let input = document.createElement('input').setAttribute("type","text").value= frete;
 	
 	return dados;
+
 }
 
 
