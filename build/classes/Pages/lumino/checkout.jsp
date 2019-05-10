@@ -198,13 +198,14 @@
 								<td colspan="2">
                                     <div class="col-sm-6">
                                         <h4>Frete</h4> 
+                                        <input type="hidden" name="formName" value="checkout">
                                         <div class="input-group">
                                           <span class="input-group-addon">CEP</span>
-                                          <input type="text" class="form-control" value="" name="cep" onblur="calcularFrete(this.value)">
+                                          <input type="text" class="form-control" value="" name="cep" onchange="calcularFrete(this.value,'checkout')">
                                         </div>                                                                
                                         <div class="input-group">
                                           <span class="input-group-addon">R$</span>
-                                          <input type="text" id="frete" class="form-control" value="${sessionScope.frete}">
+                                          <input type="text" name="frete" id="frete" class="form-control" value="${sessionScope.frete}">
                                           <span class="input-group-addon">.00</span>  
                                         </div>                                                                                  
                                     </div>
@@ -240,7 +241,7 @@
 								<div class="panel-body">
 									<select name="endereco-entrega" class="form-control">
                                         <c:forEach var="endereco" items="${sessionScope.enderecos}">
-    										<option class="cep-entrega" value="${enderecoEntrega.id}">
+    										<option class="cep-entrega" value="${endereco.id}">
     											 ${endereco.logradouro}, ${endereco.numero} - ${endereco.cidade} - ${endereco.estado}
     										<option>
                                         </c:forEach>
@@ -297,6 +298,7 @@
 								  <input name="nome-titular" type="text" class="form-control" aria-describedby="basic-addon1">
 								</div>	
 								<select name="numero-cartao2" class="form-control">
+                                   <option></option>
                                    <c:forEach var="cartao" items="${sessionScope.cartoes}">
 									 <option value="${cartao.id}">
 										${cartao.bandeira.nome} - ${cartao.numero} - ${cartao.nomeTitular}
@@ -324,6 +326,7 @@
 								<div class="panel panel-default">
                                    <c:forEach var="cupom" items="${sessionScope.cuponsPromocionais}">
                                         <h4 class="panel-heading">Promocionais</h4>
+                                        <input type="radio" style="display:none" value="0" name="cupom-promocional" selected>
     									<ul class="list-group">
     										<li class="list-group-item">
     											<input type="radio" value="${cupom.id}" onclick="cupomPromocionalSelecionado(this,${cupom.valor})" id="cupomPromo" name="cupom-promocional">

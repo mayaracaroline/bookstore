@@ -135,12 +135,14 @@ async function excluirItemCarrinho(id) {
 	return dados;
 }
 
-async function calcularFrete(cep) {
+async function calcularFrete(cep, formName) {
+	let dados = await fetch('/livraria/Pages/lumino/calcularFrete?operacao=CALCULARFRETE&cep='+cep+'&formName='+formName, {method: 'post'})
 	
-	let dados = await fetch('/livraria/Pages/lumino/calcularFrete?operacao=CALCULARFRETE&cep='+cep, {method: 'post'})
-	
-	location.href="/livraria/Pages/lumino/calcularFrete?operacao=CALCULARFRETE&cep="+cep;
-//	let input = document.createElement('input').setAttribute("type","text").value= frete;
+	if(formName === 'checkout') {
+		location.href="/livraria/Pages/lumino/checkout.jsp";
+	} else {
+		location.href="/livraria/Pages/lumino/carrinho.jsp";
+	}
 	
 	return dados;
 

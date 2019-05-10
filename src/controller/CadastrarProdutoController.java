@@ -102,8 +102,8 @@ import viewhelper.VHPedidoDeCompra;
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    
-		String operacao = request.getParameter("operacao");
+		
+	  String operacao = request.getParameter("operacao");
 		String vh = request.getRequestURI();
 		IViewHelper viewHelper = mapViewHelper.get(vh);
 		ICommand command = mapCommand.get(operacao);	

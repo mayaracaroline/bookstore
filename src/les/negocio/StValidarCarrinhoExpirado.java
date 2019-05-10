@@ -14,8 +14,7 @@ public class StValidarCarrinhoExpirado implements IStrategy {
     PedidoDeCompra pedido = (PedidoDeCompra) entidade;
     Carrinho carrinho = pedido.getCarrinho();
     if(null == carrinho) {
-      mensagem.append("Pedido expirado por tempo excedido,");
-      mensagem.append("coloque os itens no carrinho novamente.");
+      mensagem.append("Pedido expirado por tempo excedido, coloque os itens no carrinho novamente.");
            
     } else if(!carrinho.isStatus()) {
       if(null !=  carrinho.getItensCarrinho()) {
@@ -29,8 +28,8 @@ public class StValidarCarrinhoExpirado implements IStrategy {
           mensagem.append("\n");
         }
       } else {
-        mensagem.append("Pedido expirado por tempo excedido,");
-        mensagem.append("coloque os itens no carrinho novamente.");
+        mensagem.append("Pedido expirado por tempo excedido;");
+        mensagem.append("coloque os itens no carrinho novamente.,");
       }
     }
     

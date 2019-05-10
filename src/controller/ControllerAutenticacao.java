@@ -82,8 +82,9 @@ public class ControllerAutenticacao implements Filter  {
       EntidadeDominio entidade = viewHelper.getEntidade(req);
       Resultado resultado = command.executar(entidade);
       Cliente cliente = (Cliente) resultado.getResultado();
-      String idCliente = cliente.getId().toString();
+      
       if(!resultado.getErro() && resultado.getContagem() > 0) {
+        String idCliente = cliente.getId().toString();
         Cookie logado = new Cookie("clienteLogado", idCliente);
         res.addCookie(logado);
         viewHelper.setView(resultado, req, res);

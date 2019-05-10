@@ -26,6 +26,7 @@ public class VHEndereco implements IViewHelper {
 
     String frete = resultado.getMensagem();
     String operacao = request.getParameter("operacao");
+    String formName = request.getParameter("formName");
     try {
       request.getSession().removeAttribute("frete");
       if(operacao.equals(null)) {
@@ -34,7 +35,11 @@ public class VHEndereco implements IViewHelper {
       }
       if(operacao.equals("CALCULARFRETE")) {
         request.getSession().setAttribute("frete", frete);
-        response.sendRedirect("carrinho.jsp");
+        if(formName.equals("checkout")) {
+          response.sendRedirect("checkout.jsp");
+        } else {
+          response.sendRedirect("carrinho.jsp");
+        }             
       }
 
     } catch (Exception e) {

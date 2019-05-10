@@ -1,7 +1,6 @@
 package util;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
+import java.math.BigInteger;
 
 public class Formatter {
 
@@ -26,7 +25,7 @@ public class Formatter {
 	    double parsedNumber = null != string && 
 	        !"".equals(string) &&
 	        isNumeric(string) ? 
-	        Double.parseDouble(string) : 0;     
+	        Double.parseDouble(string) : 0.0;     
 	    return parsedNumber;
 	  }
 
@@ -35,6 +34,14 @@ public class Formatter {
      return parsedString;
    }
   
-
+   public static BigInteger formatBigInteger (String string) {
+     BigInteger parsedNumber;
+     int parsedToInt = null != string && 
+         !"".equals(string) &&
+         isNumeric(string) ? 
+         Integer.parseInt(string) : 0; 
+      parsedNumber = BigInteger.valueOf(parsedToInt);
+     return parsedNumber;
+   }
 
 }

@@ -18,14 +18,19 @@ import les.dao.DAOPedidoCompra;
 import les.dao.DAOUsuario;
 import les.dao.IDAO;
 import les.negocio.IStrategy;
+import les.negocio.StComplementarCupom;
 import les.negocio.StComplementarGeneroLiterario;
 import les.negocio.StConsultarQuantidadeEstoque;
+import les.negocio.StInativarCupom;
 import les.negocio.StValidarCarrinhoExpirado;
 import les.negocio.StValidarCepInformado;
+import les.negocio.StValidarClienteLogado;
 import les.negocio.StValidarDadosObrigatoriosCliente;
+import les.negocio.StValidarDadosObrigatoriosCompra;
 import les.negocio.StValidarDadosObrigatoriosLivro;
 import les.negocio.StValidarExistencia;
 import les.negocio.StValidarExistenciaCarrinhoSessao;
+import les.negocio.StValidarFormaDePagamento;
 import les.negocio.StValidarIdConsultaCliente;
 import les.negocio.StValidarIdInserido;
 import les.negocio.StValidarLivroExclusaoEAlteracao;
@@ -33,6 +38,9 @@ import les.negocio.StValidarMotivoAtivacao;
 import les.negocio.StValidarMotivoCategoriaInativacao;
 import les.negocio.StValidarQuantidadeAIncluirOuExcluirCarrinho;
 import les.negocio.StValidarUsuarioExistente;
+import les.negocio.StValidarValorCompra;
+import les.negocio.StValidarValorExcendenteAoPagamento;
+import les.negocio.StValidarValorMinimoParaPagamentoComCartao;
 import servico.CalcularFrete;
 import servico.CarrinhoServico;
 import util.Resultado;
@@ -126,8 +134,17 @@ public class Fachada implements IFachada  {
 		
 		listStrategySalvarCompra = new ArrayList<IStrategy>();
 		
+		listStrategySalvarCompra.add(new StValidarClienteLogado());
 		listStrategySalvarCompra.add(new StValidarCarrinhoExpirado());
-		
+		listStrategySalvarCompra.add(new StValidarDadosObrigatoriosCompra()); 
+    listStrategySalvarCompra.add(new StValidarFormaDePagamento());
+    listStrategySalvarCompra.add(new StComplementarCupom());
+    listStrategySalvarCompra.add(new StValidarValorCompra());
+    listStrategySalvarCompra.add(new StValidarValorMinimoParaPagamentoComCartao());
+    listStrategySalvarCompra.add(new StValidarValorExcendenteAoPagamento());
+    listStrategySalvarCompra.add(new StInativarCupom());
+    
+    
 		listStrategyCalcularFrete.add(new StValidarCepInformado());
 
 		
@@ -308,7 +325,6 @@ public class Fachada implements IFachada  {
     resultado = validarStrategys(entidade, "CALCULARFRETE");
     
     if (!resultado.getErro()) {
-      
        CalcularFrete servico = new CalcularFrete();
        resultado = servico.calcularFrete(entidade);
     }

@@ -11,10 +11,10 @@ public class StValidarCepInformado implements IStrategy {
     Endereco endereco = (Endereco) entidade;
     String cep = endereco.getCep();
     
-    if (cep.length() != 8) {
+    if (cep.trim().replace("-", "").length() != 8) {
       mensagem = "Digite um CEP válido";
     }
-    
+    System.out.println("Strategy" + mensagem);
     return mensagem;
   }
 

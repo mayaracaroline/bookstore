@@ -50,6 +50,7 @@ public class VHUsuario implements IViewHelper {
     resultados =  mapUsuario.get("CARTAO");
 
     for(int i = 0; i < resultados.size(); i++) {
+      System.out.println("id: "+resultados.get(i).getId());
       cartoes.add((Cartao)resultados.get(i));    
     }
     

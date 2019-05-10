@@ -16,32 +16,33 @@ public class StComplementarCupom implements IStrategy {
 
   @Override
   public String processar(EntidadeDominio entidade) {
-    System.out.println("StComplementarCupom");
     
     String mensagem = "";
     PedidoDeCompra pedido = (PedidoDeCompra) entidade;
-    double valorTotalAbater = 0;
-    
-    //Cartão 1 e 2
-    double valorCartao1 = pedido.getPagamento().get(0).getValor();
-    double valorCartao2 = pedido.getPagamento().get(1).getValor();
+    Cupom cupomPromocional = pedido.getCupomPromocional();
     DAOCupom daoCupom = new DAOCupom();
     
     // Complementa cupom promocional (busca por id)
-    Resultado resCupom = daoCupom.consultar(pedido.getCupomPromocional());
-    Cupom cupomPromocional = (Cupom) resCupom.getListaResultado().get(0);
+    if(!pedido.getCupomPromocional().getId().equals(BigInteger.ZERO)) {
+      Resultado resCupom = daoCupom.consultar(pedido.getCupomPromocional());
+      cupomPromocional = (Cupom) resCupom.getListaResultado().get(0);      
+    }
+    
+    System.out.println("StComplementar: "+pedido.getCuponsTroca().size());
     
     //Complementa lista de pedido de trocas
     ArrayList<Cupom> cuponsTrocaSelecionados = new ArrayList<>();
     for (int i = 0; i < pedido.getCuponsTroca().size(); i++) {
-      
-      Resultado resCupomTroca = daoCupom.consultar(pedido.getCuponsTroca().get(i));
+      Resultado resCupomTroca = daoCupom.consultarPorId(pedido.getCuponsTroca().get(i));
       Cupom cupomTroca = new Cupom();
-      cupomTroca = (Cupom) resCupomTroca.getListaResultado().get(i);
+      cupomTroca = (Cupom) resCupomTroca.getResultado();
       cuponsTrocaSelecionados.add(cupomTroca);
 
     }
-
+    
+    pedido.setCupomPromocional(cupomPromocional);
+    pedido.setCuponsTroca(cuponsTrocaSelecionados);
+    
     return mensagem;
   }
   

@@ -123,5 +123,48 @@ public class DAOCupom extends AbstractDAO implements IDAO {
     
     return resultado;
   }
+  
+  public Resultado consultarPorId(EntidadeDominio entidade) {
+    Cupom cupom;
+    Cliente cliente;
+    Resultado resultado = new Resultado();
+    ArrayList<EntidadeDominio> cupons = new ArrayList<>();
+    LocalDate hoje = LocalDate.now();
+    
+    String sql = "SELECT * FROM cupons WHERE cup_id = ?;";
+    
+    try {
+      PreparedStatement pst = conexao.prepareStatement(sql);
+      
+        cupom = (Cupom) entidade;
+        pst.setInt(1, cupom.getId().intValue());
+      
+      ResultSet rs = pst.executeQuery();
+      
+      while(rs.next()) {
+        Cupom novoCupom = new Cupom();
+        novoCupom.setId(rs.getInt("cup_id"));
+        novoCupom.setCodigo(rs.getString("cup_codigo"));
+        novoCupom.setTipo(TipoCupom.valueOf(rs.getString("cup_tipo")));
+        novoCupom.setValor(rs.getDouble("cup_valor"));
+        novoCupom.setStatus(rs.getBoolean("cup_status"));
+        String data = rs.getDate("cup_data_validade").toString();
+        novoCupom.setDataDeValidade(LocalDate.parse(data));
+        novoCupom.setIdCliente(rs.getInt("cup_cli_id"));
+        cupons.add(novoCupom);
+      }
+      
+      pst.close();
+      resultado.setResultado(cupons.get(0));
+      resultado.sucesso("Consulta realizada com sucesso");
+      
+      
+    } catch (Exception e) {
+      resultado.erro("Erro ao consultar cupom");
+      e.printStackTrace();
+    }
+    
+    return resultado;
+  }
 
 }

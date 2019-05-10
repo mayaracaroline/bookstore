@@ -43,7 +43,6 @@ public class CalcularFrete {
     String frete = mapValorFretePorRegiao.get(regiao);
     
     resultado.sucesso(frete);
-   
     return resultado;
   }
 
