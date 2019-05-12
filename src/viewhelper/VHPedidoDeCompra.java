@@ -171,7 +171,7 @@ public class VHPedidoDeCompra implements IViewHelper {
      try {
        
        if (operacao.equals("SALVAR")) {
-         if(resultado.getErro()) {
+         if(!resultado.getErro()) {
            response.sendRedirect("finalizarCompra.jsp");
          } else {
            response.sendRedirect("produtos.jsp");
