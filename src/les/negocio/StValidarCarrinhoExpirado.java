@@ -19,7 +19,7 @@ public class StValidarCarrinhoExpirado implements IStrategy {
     } else if(!carrinho.isStatus()) {
       if(null !=  carrinho.getItensCarrinho()) {
         mensagem.append("Pedido expirado por tempo excedido,");
-        mensagem.append("os seguintes itens foram retirados do carrinho: ");
+        mensagem.append("os seguintes itens foram retirados do carrinho: ;");
         
         for(int i = 0; i < carrinho.getItensCarrinho().size(); i++) {
           Livro livro = (Livro) carrinho.getItensCarrinho().get(i).getProduto();
@@ -27,10 +27,7 @@ public class StValidarCarrinhoExpirado implements IStrategy {
           mensagem.append(livro.getTitulo());
           mensagem.append("\n");
         }
-      } else {
-        mensagem.append("Pedido expirado por tempo excedido;");
-        mensagem.append("coloque os itens no carrinho novamente.,");
-      }
+      } 
     }
     
     return mensagem.toString();

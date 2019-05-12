@@ -14,7 +14,7 @@ import dominio.PedidoDeCompra;
 import dominio.Usuario;
 import les.dao.DAOCliente;
 import les.dao.DAOLivro;
-import les.dao.DAOPedidoCompra;
+import les.dao.DAOPedidoDeCompra;
 import les.dao.DAOUsuario;
 import les.dao.IDAO;
 import les.negocio.IStrategy;
@@ -88,7 +88,7 @@ public class Fachada implements IFachada  {
 		mapDAO.put("LIVRO", new DAOLivro());
 		mapDAO.put("CLIENTE", new DAOCliente());
 		mapDAO.put("USUARIO", new DAOUsuario());
-		mapDAO.put("PEDIDODECOMPRA", new DAOPedidoCompra());
+		mapDAO.put("PEDIDODECOMPRA", new DAOPedidoDeCompra());
 
 		listStrategySalvarProduto = new ArrayList<IStrategy>();
 		listStrategyConsultarProduto = new ArrayList<IStrategy>();

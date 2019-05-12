@@ -37,7 +37,7 @@ public class StValidarItensCarrinhoComTempoExpirado implements Job {
       LocalDateTime horarioAtual = LocalDateTime.now();
       LocalDateTime horarioBloqueio = bloqueioCarrinho.getHorarioBloqueio();
       long diferenca = Duration.between(horarioBloqueio, horarioAtual ).getSeconds();
-      if(diferenca > 70) {        
+      if(diferenca > 300) {        
         System.out.println("Retirando do carrinho ");
         produtosBloqueados.remove(entry.getKey());
         

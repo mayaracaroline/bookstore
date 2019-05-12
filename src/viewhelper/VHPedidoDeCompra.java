@@ -163,7 +163,7 @@ public class VHPedidoDeCompra implements IViewHelper {
 
   @Override
   public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) {
-     String mensagem = resultado.getMensagem();
+     String[] mensagem = resultado.getMensagem().split(";");
      String operacao = request.getParameter("operacao");
      if(resultado.getErro()) {
        request.getSession().setAttribute("erro", mensagem);

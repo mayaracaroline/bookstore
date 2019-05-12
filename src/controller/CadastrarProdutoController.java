@@ -36,6 +36,7 @@ import les.command.CommandExcluir;
 import les.command.CommandInativar;
 import les.command.CommandSalvar;
 import les.command.ICommand;
+import les.negocio.StAprovarOuReprovarCompra;
 import les.negocio.StValidarItensCarrinhoComTempoExpirado;
 import util.Resultado;
 import viewhelper.IViewHelper;
@@ -147,11 +148,17 @@ import viewhelper.VHPedidoDeCompra;
                          .withIdentity("validadorJOB", "grupo01")
                          .usingJobData(jobDataMap)
                          .build();
+           
+          JobDetail jobAprovarOuReprovarCompra = JobBuilder.newJob(StAprovarOuReprovarCompra.class)
+                                                .withIdentity("validadorOperadora", "grupo01")
+                                                .usingJobData(jobDataMap)
+                                                .build();
            Trigger trigger = TriggerBuilder.newTrigger()
                          .withIdentity("validadorTRIGGER","grupo01")
                          .withSchedule(CronScheduleBuilder.cronSchedule("0/1 * * * * ?"))
                          .build();
            scheduler.scheduleJob(job, trigger);
+           
   } catch (SchedulerException e) {
       e.printStackTrace();
   }
