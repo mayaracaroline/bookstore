@@ -21,6 +21,7 @@ import les.negocio.IStrategy;
 import les.negocio.StComplementarCupom;
 import les.negocio.StComplementarGeneroLiterario;
 import les.negocio.StConsultarQuantidadeEstoque;
+import les.negocio.StGerarCodigoCompra;
 import les.negocio.StInativarCupom;
 import les.negocio.StValidarCarrinhoExpirado;
 import les.negocio.StValidarCepInformado;
@@ -72,8 +73,9 @@ public class Fachada implements IFachada  {
 	
 	 private List<IStrategy> listStrategyAutenticarUsuario;
 	 
-	 private List<IStrategy> listStrategyCalcularFrete;
-	
+	 private List<IStrategy> listStrategyCalcularFrete; 
+	 private List<IStrategy> listStrategyConsultarCompra; 
+	 
 	public Fachada() {
 	  rns = new HashMap<String, Map<String, List<IStrategy>>>();
 		rnsProduto = new HashMap<String, List<IStrategy>>();
@@ -81,7 +83,7 @@ public class Fachada implements IFachada  {
 		rnsBloqueioProduto = new HashMap<String, List<IStrategy>>();
     rnsAutenticarUsuario = new HashMap<String, List<IStrategy>>();
     rnsValidarDadosCompra = new HashMap<String, List<IStrategy>>();
-    rnsValidarEndereco = new HashMap<String, List<IStrategy>>();
+    rnsValidarEndereco = new HashMap<String, List<IStrategy>>(); 
 		
 		mapDAO = new HashMap<String, IDAO>();
 		
@@ -133,6 +135,7 @@ public class Fachada implements IFachada  {
 		listStrategyAutenticarUsuario.add(new StValidarUsuarioExistente());
 		
 		listStrategySalvarCompra = new ArrayList<IStrategy>();
+    listStrategyConsultarCompra = new ArrayList<IStrategy>();
 		
 		listStrategySalvarCompra.add(new StValidarClienteLogado());
 		listStrategySalvarCompra.add(new StValidarCarrinhoExpirado());
@@ -142,9 +145,9 @@ public class Fachada implements IFachada  {
     listStrategySalvarCompra.add(new StValidarValorCompra());
     listStrategySalvarCompra.add(new StValidarValorMinimoParaPagamentoComCartao());
     listStrategySalvarCompra.add(new StValidarValorExcendenteAoPagamento());
-    listStrategySalvarCompra.add(new StInativarCupom());
-    
-    
+    listStrategySalvarCompra.add(new StInativarCupom()); 
+    listStrategySalvarCompra.add(new StGerarCodigoCompra());
+
 		listStrategyCalcularFrete.add(new StValidarCepInformado());
 
 		
@@ -164,6 +167,7 @@ public class Fachada implements IFachada  {
 		rnsAutenticarUsuario.put("CONSULTAR",listStrategyAutenticarUsuario);
 		
 		rnsValidarDadosCompra.put("SALVAR", listStrategySalvarCompra);
+		rnsValidarDadosCompra.put("CONSULTAR", listStrategyConsultarCompra);
 		
 		rnsValidarEndereco.put("CALCULARFRETE", listStrategyCalcularFrete);
 		

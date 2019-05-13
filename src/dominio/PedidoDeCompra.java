@@ -1,6 +1,7 @@
 package dominio;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,10 @@ public class PedidoDeCompra extends EntidadeDominio {
   ArrayList<Pagamento> pagamento;
   Double valorTotal;
   BigInteger idCliente;
+  String codigoIdentificador;
+  Integer status;
+  LocalDate dataSolicitacao;
+  LocalDate dataConclusao;
   
   public List<Cupom> getCuponsTroca() {
     return cuponsTroca;
@@ -68,6 +73,30 @@ public class PedidoDeCompra extends EntidadeDominio {
   }
   public void setCarrinho(Carrinho carrinho) {
     this.carrinho = carrinho;
+  }
+  public String getCodigoIdentificador() {
+    return codigoIdentificador;
+  }
+  public void setCodigoIdentificador(String codigoIdentificador) {
+    this.codigoIdentificador = codigoIdentificador;
+  }
+  public Integer getStatus() {
+    return status;
+  }
+  public void setStatus(Integer status) {
+    this.status = status;
+  }
+  public LocalDate getDataSolicitacao() {
+    return dataSolicitacao;
+  }
+  public void setDataSolicitacao(LocalDate dataSolicitacao) {
+    this.dataSolicitacao = dataSolicitacao;
+  }
+  public LocalDate getDataConclusao() {
+    return dataConclusao;
+  }
+  public void setDataConclusao(LocalDate dataConclusao) {
+    this.dataConclusao = dataConclusao;
   }
    
 }

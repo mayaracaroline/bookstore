@@ -7,6 +7,7 @@ import java.util.List;
 
 import dominio.EntidadeDominio;
 import dominio.Estoque;
+import dominio.ItemCarrinho;
 import dominio.Produto;
 import util.Resultado;
 
@@ -68,6 +69,24 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
   public Resultado inativar(EntidadeDominio entidade) {
     // TODO Auto-generated method stub
     return null;
+  }
+  
+  public void adicionarAoEstoque(EntidadeDominio entidade) {
+    ItemCarrinho item = (ItemCarrinho) entidade;
+    String sql = "UPDATE estoque SET est_quantidade = est_quantidade + ? WHERE est_pro_id = ?";
+    
+    try {
+      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst.setInt(1, item.getQuantidade());
+      pst.setInt(2, item.getProduto().getId().intValue());
+      
+      pst.executeUpdate();
+      
+      pst.close();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
 }

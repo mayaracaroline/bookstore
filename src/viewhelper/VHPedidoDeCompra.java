@@ -1,11 +1,10 @@
 package viewhelper;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +16,7 @@ import dominio.Cupom;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
 import dominio.ItemCarrinho;
+import dominio.Livro;
 import dominio.Pagamento;
 import dominio.PedidoDeCompra;
 import dominio.TipoCupom;
@@ -70,7 +70,7 @@ public class VHPedidoDeCompra implements IViewHelper {
       HashMap<String, Carrinho> mapCarrinhosExpirados = new HashMap<>();
       carrinho = mapCarrinhosExpirados.get(request.getSession().getId());
       if( carrinho != null) {
-        for( int i=0; i< carrinho.getItensCarrinho().size(); i++) {       
+        for( int i = 0; i< carrinho.getItensCarrinho().size(); i++) {       
           ItemCarrinho item = new ItemCarrinho();
           item = (ItemCarrinho) carrinho.getItensCarrinho().get(i);
           itens.add(item);
@@ -165,6 +165,24 @@ public class VHPedidoDeCompra implements IViewHelper {
   public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) {
      String[] mensagem = resultado.getMensagem().split(";");
      String operacao = request.getParameter("operacao");
+     ArrayList<PedidoDeCompra> pedidos = new ArrayList<>();
+     ArrayList<Livro> livros = new ArrayList<>();
+    
+     if ( null != resultado.getListaResultado()) {
+       for (EntidadeDominio pedido : resultado.getListaResultado() ) {
+         pedidos.add((PedidoDeCompra) pedido);
+       }
+       
+       int index = 0;
+       for (PedidoDeCompra pedido : pedidos) {
+         Livro livro = (Livro) pedido.getCarrinho().getItensCarrinho()
+             .get(index).getProduto();
+         index++;
+         livros.add(livro);       
+       }
+     }
+     
+     
      if(resultado.getErro()) {
        request.getSession().setAttribute("erro", mensagem);
      }
@@ -176,7 +194,12 @@ public class VHPedidoDeCompra implements IViewHelper {
          } else {
            response.sendRedirect("produtos.jsp");
          }
-       }      
+       } else if (operacao.equals("CONSULTAR")) {
+         request.setAttribute("pedidos", pedidos);
+         request.setAttribute("livros", livros);
+         RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/meusPedidos.jsp");
+         rd.forward(request, response);
+       }
     } catch (Exception e) {
       e.printStackTrace();
     }

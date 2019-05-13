@@ -60,14 +60,14 @@ import viewhelper.VHPedidoDeCompra;
       "/Pages/lumino/ConsultaCliente",
       "/Pages/lumino/carrinho",
       "/Pages/lumino/finalizarCompra",
-      "/Pages/lumino/calcularFrete"
+      "/Pages/lumino/calcularFrete",
+      "/Pages/lumino/pedido",
     })
 
   public class CadastrarProdutoController extends HttpServlet implements ServletContextListener {
 	private static final long serialVersionUID = 1L;
 	private Map<String, IViewHelper> mapViewHelper;
 	private Map<String, ICommand> mapCommand;
-	private Carrinho carrinho;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -85,6 +85,7 @@ import viewhelper.VHPedidoDeCompra;
     	mapViewHelper.put("/livraria/Pages/lumino/carrinho", new VHBloqueio());
     	mapViewHelper.put("/livraria/Pages/lumino/finalizarCompra", new VHPedidoDeCompra());
     	mapViewHelper.put("/livraria/Pages/lumino/calcularFrete", new VHEndereco());
+    	mapViewHelper.put("/livraria/Pages/lumino/pedido", new VHPedidoDeCompra());
     	
     	mapCommand = new HashMap<String, ICommand>();
     	mapCommand.put("SALVAR", new CommandSalvar());
@@ -141,7 +142,9 @@ import viewhelper.VHPedidoDeCompra;
     SchedulerFactory shedFact = new StdSchedulerFactory();
     try {
            Scheduler scheduler = shedFact.getScheduler();
+           Scheduler scheduler2 = shedFact.getScheduler();
            scheduler.start();
+           scheduler2.start();
          JobDataMap jobDataMap = new JobDataMap();
          jobDataMap.put("servletContext", getServletContext());
            JobDetail job = JobBuilder.newJob(StValidarItensCarrinhoComTempoExpirado.class)
@@ -150,14 +153,20 @@ import viewhelper.VHPedidoDeCompra;
                          .build();
            
           JobDetail jobAprovarOuReprovarCompra = JobBuilder.newJob(StAprovarOuReprovarCompra.class)
-                                                .withIdentity("validadorOperadora", "grupo01")
+                                                .withIdentity("validadorOperadora", "grupo02")
                                                 .usingJobData(jobDataMap)
                                                 .build();
            Trigger trigger = TriggerBuilder.newTrigger()
                          .withIdentity("validadorTRIGGER","grupo01")
                          .withSchedule(CronScheduleBuilder.cronSchedule("0/1 * * * * ?"))
                          .build();
+           Trigger trigger2 = TriggerBuilder.newTrigger()
+               .withIdentity("validadorTRIGGER2","grupo02")
+//               .withSchedule(CronScheduleBuilder.cronSchedule("0 0/5 0 ? * * * "))
+             .withSchedule(CronScheduleBuilder.cronSchedule("0/1 * * * * ?"))
+               .build();
            scheduler.scheduleJob(job, trigger);
+           scheduler2.scheduleJob(jobAprovarOuReprovarCompra, trigger2);
            
   } catch (SchedulerException e) {
       e.printStackTrace();

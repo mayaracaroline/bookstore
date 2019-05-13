@@ -1,6 +1,6 @@
 package dominio;
 
-public class ItemCarrinho {
+public class ItemCarrinho extends EntidadeDominio {
   
   private Produto produto;
   private int quantidade;

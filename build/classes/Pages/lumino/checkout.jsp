@@ -173,7 +173,7 @@
 								<td class="description">Descrição</td>
 								<td class="price">Preço</td>
 								<td class="total">Total</td>
-								<td></td>
+								<td>${sessionScope.clientes.nome}</td>
 							</tr>
 						</thead>
 						<tbody>
