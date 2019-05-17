@@ -201,11 +201,11 @@
                                         <input type="hidden" name="formName" value="checkout">
                                         <div class="input-group">
                                           <span class="input-group-addon">CEP</span>
-                                          <input type="text" class="form-control" value="" name="cep" onchange="calcularFrete(this.value,'checkout')">
+                                          <input type="text" class="form-control" value="" name="cep" onchange="calcularFrete(this.value,'checkout')" >
                                         </div>                                                                
                                         <div class="input-group">
                                           <span class="input-group-addon">R$</span>
-                                          <input type="text" name="frete" id="frete" class="form-control" value="${sessionScope.frete}">
+                                          <input type="text" name="frete" id="frete" class="form-control" value="${sessionScope.frete}"readonly>
                                           <span class="input-group-addon">.00</span>  
                                         </div>                                                                                  
                                     </div>
@@ -240,6 +240,7 @@
 								</div>
 								<div class="panel-body">
 									<select name="endereco-entrega" class="form-control">
+
                                         <c:forEach var="endereco" items="${sessionScope.enderecos}">
     										<option class="cep-entrega" value="${endereco.id}">
     											 ${endereco.logradouro}, ${endereco.numero} - ${endereco.cidade} - ${endereco.estado}
@@ -272,6 +273,7 @@
 								  <input name="nome-titular" type="text" class="form-control" aria-describedby="basic-addon1">
 								</div>
 								<select name="numero-cartao1" class="form-control">
+								<option></option>
                                     <c:forEach var="cartao" items="${sessionScope.cartoes}">
     									<option value="${cartao.id}">
     										${cartao.bandeira.nome} - ${cartao.numero} - ${cartao.nomeTitular}

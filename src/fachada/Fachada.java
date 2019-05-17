@@ -44,6 +44,7 @@ import les.negocio.StValidarValorExcendenteAoPagamento;
 import les.negocio.StValidarValorMinimoParaPagamentoComCartao;
 import servico.CalcularFrete;
 import servico.CarrinhoServico;
+import servico.PedidoServico;
 import util.Resultado;
 
 public class Fachada implements IFachada  {
@@ -54,6 +55,7 @@ public class Fachada implements IFachada  {
 	private Map<String, List<IStrategy>> rnsAutenticarUsuario;
 	private Map<String, List<IStrategy>> rnsValidarDadosCompra;
 	private Map<String, List<IStrategy>> rnsValidarEndereco;
+	private Map<String, List<IStrategy>> rnsGerenciarPedido;
 	private Map<String, IDAO> mapDAO;
 	private Map<String, Map<String, List<IStrategy>>> rns;
 	
@@ -68,6 +70,7 @@ public class Fachada implements IFachada  {
 	private List<IStrategy> listStrategySalvarBloqueioProduto;
 	private List<IStrategy> listStrategyAlterarBloqueioProduto;
 	private List<IStrategy> listStrategyExcluirBloqueioProduto;
+	private List<IStrategy> listStrategyAlterarPedido;
 	
 	private List<IStrategy> listStrategySalvarCompra;
 	
@@ -84,7 +87,8 @@ public class Fachada implements IFachada  {
     rnsAutenticarUsuario = new HashMap<String, List<IStrategy>>();
     rnsValidarDadosCompra = new HashMap<String, List<IStrategy>>();
     rnsValidarEndereco = new HashMap<String, List<IStrategy>>(); 
-		
+    rnsGerenciarPedido = new HashMap<String, List<IStrategy>>();
+    
 		mapDAO = new HashMap<String, IDAO>();
 		
 		mapDAO.put("LIVRO", new DAOLivro());
@@ -150,6 +154,8 @@ public class Fachada implements IFachada  {
 
 		listStrategyCalcularFrete.add(new StValidarCepInformado());
 
+		listStrategyAlterarPedido = new ArrayList<IStrategy>();
+		
 		
 		rnsProduto.put("SALVAR", listStrategySalvarProduto);
 		rnsProduto.put("CONSULTAR", listStrategyConsultarProduto);
@@ -166,16 +172,21 @@ public class Fachada implements IFachada  {
 		
 		rnsAutenticarUsuario.put("CONSULTAR",listStrategyAutenticarUsuario);
 		
-		rnsValidarDadosCompra.put("SALVAR", listStrategySalvarCompra);
-		rnsValidarDadosCompra.put("CONSULTAR", listStrategyConsultarCompra);
+
 		
 		rnsValidarEndereco.put("CALCULARFRETE", listStrategyCalcularFrete);
+		
+		rnsGerenciarPedido.put("SALVAR", listStrategySalvarCompra);
+		rnsGerenciarPedido.put("CONSULTAR", listStrategyConsultarCompra);
+		rnsGerenciarPedido.put("COLOCAREMTRANSPORTE", listStrategyAlterarPedido);
+		rnsGerenciarPedido.put("CONFIRMARENTREGA", listStrategyAlterarPedido);
 		
     rns.put(Livro.class.getSimpleName().toUpperCase(), rnsProduto);
     rns.put(Cliente.class.getSimpleName().toUpperCase(), rnsCliente);
     rns.put(Bloqueio.class.getSimpleName().toUpperCase(), rnsBloqueioProduto);
     rns.put(Usuario.class.getSimpleName().toUpperCase(), rnsAutenticarUsuario);
-    rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsValidarDadosCompra);
+    rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsGerenciarPedido);
+//    rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsValidarDadosCompra);
     rns.put(Endereco.class.getSimpleName().toUpperCase(), rnsValidarEndereco);
 				
 	}
@@ -335,5 +346,31 @@ public class Fachada implements IFachada  {
     
     return resultado; 
   }
-	
+
+  @Override
+  public Resultado colocarEmTransporte(EntidadeDominio entidade) {
+    Resultado resultado = new Resultado();
+    resultado = validarStrategys(entidade, "COLOCAREMTRANSPORTE");
+    
+    if (!resultado.getErro()) {
+      PedidoServico servico = new PedidoServico();
+       resultado = servico.colocarEmTransporte(entidade);
+    }
+    
+    return resultado; 
+  }
+
+  @Override
+  public Resultado confirmarEntrega(EntidadeDominio entidade) {
+    Resultado resultado = new Resultado();
+    resultado = validarStrategys(entidade, "CONFIRMARENTREGA");
+    
+    if (!resultado.getErro()) {
+      PedidoServico servico = new PedidoServico();
+       resultado = servico.confirmarEntrega(entidade);
+    }
+    
+    return resultado; 
+  }
+  	
 }

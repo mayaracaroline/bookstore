@@ -34,9 +34,9 @@
               </tr>
             </thead>
             <tbody>
+              <c:forEach var="pedido" items="${pedidos}">
               <tr>
                 <th scope="row">1</th>
-                <c:forEach var="pedido" items="${pedidos}">
                   <td>${pedido.codigoIdentificador}</td>
                   <td>${pedido.valorTotal}</td>
                   <td>

@@ -160,5 +160,39 @@ public class DAOItensPedido extends AbstractDAO implements IDAO {
     return resultado;
   }
   
+  public void colocarItensEmTransporte(EntidadeDominio entidade) {
+    String sql = "UPDATE itens_pedido SET itp_status = ? WHERE itp_ped_id = ?";
+    PedidoDeCompra pedido = (PedidoDeCompra) entidade;
+    
+    try {
+      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst.setInt(1, 4);
+      pst.setInt(2, pedido.getId().intValue());
+      
+      pst.executeUpdate();
+      pst.close();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+  }
 
+  public void confirmarEntregaItens(EntidadeDominio entidade) {
+    String sql = "UPDATE itens_pedido SET itp_status = ? WHERE itp_ped_id = ?";
+    PedidoDeCompra pedido = (PedidoDeCompra) entidade;
+    
+    try {
+      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst.setInt(1, 5);
+      pst.setInt(2, pedido.getId().intValue());
+      
+      pst.executeUpdate();
+      pst.close();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+  }
 }

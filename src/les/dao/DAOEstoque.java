@@ -88,5 +88,23 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
       e.printStackTrace();
     }
   }
+  
+  public void retirarDoEstoque(EntidadeDominio entidade) {
+    ItemCarrinho item = (ItemCarrinho) entidade;
+    String sql = "UPDATE estoque SET est_quantidade = est_quantidade - ? WHERE est_pro_id = ?";
+    
+    try {
+      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst.setInt(1, item.getQuantidade());
+      pst.setInt(2, item.getProduto().getId().intValue());
+      
+      pst.executeUpdate();
+      
+      pst.close();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
 }

@@ -31,6 +31,8 @@ import les.command.CommandCalcularFrete;
 import les.command.CommandCarrinhoAdicionar;
 import les.command.CommandCarrinhoAlterar;
 import les.command.CommandCarrinhoExcluir;
+import les.command.CommandColocarEmTransporte;
+import les.command.CommandConfirmaEntrega;
 import les.command.CommandConsultar;
 import les.command.CommandExcluir;
 import les.command.CommandInativar;
@@ -97,6 +99,8 @@ import viewhelper.VHPedidoDeCompra;
     	mapCommand.put("CARRINHOALTERAR", new CommandCarrinhoAlterar());
     	mapCommand.put("CARRINHOEXCLUIR", new CommandCarrinhoExcluir());
     	mapCommand.put("CALCULARFRETE", new CommandCalcularFrete());
+    	mapCommand.put("COLOCAREMTRANSPORTE", new CommandColocarEmTransporte());
+    	mapCommand.put("CONFIRMARENTREGA", new CommandConfirmaEntrega());
     }
     
     
@@ -163,7 +167,7 @@ import viewhelper.VHPedidoDeCompra;
            Trigger trigger2 = TriggerBuilder.newTrigger()
                .withIdentity("validadorTRIGGER2","grupo02")
 //               .withSchedule(CronScheduleBuilder.cronSchedule("0 0/5 0 ? * * * "))
-             .withSchedule(CronScheduleBuilder.cronSchedule("0/1 * * * * ?"))
+             .withSchedule(CronScheduleBuilder.cronSchedule("0/60 * * * * ?"))
                .build();
            scheduler.scheduleJob(job, trigger);
            scheduler2.scheduleJob(jobAprovarOuReprovarCompra, trigger2);

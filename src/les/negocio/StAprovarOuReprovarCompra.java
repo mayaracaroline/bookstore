@@ -19,6 +19,7 @@ public class StAprovarOuReprovarCompra implements Job {
 
   @Override
   public void execute(JobExecutionContext context) throws JobExecutionException {
+    System.out.println("StAprovarOuReprovarCompra ");
     Random random = new Random();
     Integer analisarPedido = random.nextInt(10);
     DAOPedidoDeCompra daoPedido = new DAOPedidoDeCompra();
@@ -42,12 +43,6 @@ public class StAprovarOuReprovarCompra implements Job {
       System.out.println("Reprovar");
     }
     
-    try {
-      context.getScheduler().shutdown();
-    } catch (SchedulerException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
     
   }
 

@@ -46,7 +46,7 @@
 		<ul class="nav menu">
 			<li class="active"><a href="index.html"><em class="fa fa-dashboard">&nbsp;</em> Relatório</a></li>
 			<li class="parent "><a data-toggle="collapse" href="#sub-item-1">
-					<em class="fa fa-calendar">&nbsp;</em> Gerenciar Clientes <span data-toggle="collapse" href="#sub-item-1" 
+					<em class="fa fa-calendar">&nbsp;</em> Ger. Clientes <span data-toggle="collapse" href="#sub-item-1" 
 						class="icon pull-right"><em class="fa fa-plus"
 					></em></span>
 					</a>
@@ -57,15 +57,15 @@
 						<li><a class="" href="cadastrar-clientes.html">
 								<span class="fa fa-arrow-right">&nbsp;</span> Cadastrar
 							</a>
-                        </li>
+            </li>
 						<li><a class="" href="consultar-clientes.html">
 							<span class="fa fa-arrow-right">&nbsp;</span> Consultar
 						</a></li>
 					</ul>
-				</li>
+			</li>
 			<li class="parent ">
                     <a data-toggle="collapse" href="#sub-item-2">
-  					 <em class="fa fa-navicon">&nbsp;</em> Gerenciar Produtos 
+  					 <em class="fa fa-navicon">&nbsp;</em> Ger. Produtos 
                      <span data-toggle="collapse" href="#sub-item-2" class="icon pull-right">
                        <em class="fa fa-plus"></em>
                      </span>
@@ -93,7 +93,7 @@
 					</ul>
 				</li>
 				<li class="parent "><a data-toggle="collapse" href="#sub-item-3">
-						<em class="fa fa-navicon">&nbsp;</em> Gerenciar Estoque <span data-toggle="collapse" href="#sub-item-3" 
+						<em class="fa fa-navicon">&nbsp;</em> Ger. Estoque <span data-toggle="collapse" href="#sub-item-3" 
 							class="icon pull-right"><em class="fa fa-plus"
 						></em></span>
 						</a>
@@ -110,12 +110,12 @@
 						</ul>
 					</li>
 					<li class="parent "><a data-toggle="collapse" href="#sub-item-4">
-						<em class="fa fa-navicon">&nbsp;</em> Gerenciar Pedidos <span data-toggle="collapse" href="#sub-item-4" 
+						<em class="fa fa-navicon">&nbsp;</em> Ger. Pedidos <span data-toggle="collapse" href="#sub-item-4" 
 					class="icon pull-right"><em class="fa fa-plus"></em></span>
 				</a>
 				<ul class="children collapse" id="sub-item-4">
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Em processamento
+					<li><a class="" href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR&formName=gerenciarPedidos">
+						<span class="fa fa-arrow-right">&nbsp;</span> Em proc.
 					</a></li>
 					<li><a class="" href="#">
 						<span class="fa fa-arrow-right">&nbsp;</span> Aprovado

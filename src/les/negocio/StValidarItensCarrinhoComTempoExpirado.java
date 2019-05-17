@@ -40,7 +40,7 @@ public class StValidarItensCarrinhoComTempoExpirado implements Job {
       LocalDateTime horarioAtual = LocalDateTime.now();
       LocalDateTime horarioBloqueio = bloqueioCarrinho.getHorarioBloqueio();
       long diferenca = Duration.between(horarioBloqueio, horarioAtual ).getSeconds();
-      if(diferenca > 300) {        
+      if(diferenca > 90) {        
         System.out.println("Retirando do carrinho ");
         
         // Remove carrinho dos itens bloqueados
@@ -80,7 +80,9 @@ public class StValidarItensCarrinhoComTempoExpirado implements Job {
             .getSessao().getId()).getItensCarrinho()
             .get(0).getProduto();
         
-        System.out.println("O livro: " + livro.getTitulo() + " foi retirado do carrinho, "
+        System.out.println("O livro: " + livro.getTitulo() + produtosDesbloqueados.get(entry.getValue()
+            .getSessao().getId()).getItensCarrinho()
+            .get(0).getProduto().getPreco() + " foi retirado do carrinho, "
             + "pois excedeu o tempo de " + diferenca + " segundos e a compra não foi efetivada. ");
      
       }

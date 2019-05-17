@@ -48,6 +48,12 @@ public class DAOPedidoDeCompra extends AbstractDAO implements IDAO {
       
       daoItens.salvar(pedido);
       
+      for (ItemCarrinho item : pedido.getCarrinho().getItensCarrinho()) {
+        DAOEstoque daoEstoque = new DAOEstoque();
+        
+        daoEstoque.retirarDoEstoque(item);
+      }
+      
       pst.close();
       
       resultado.setResultado(pedido);
@@ -190,5 +196,47 @@ public class DAOPedidoDeCompra extends AbstractDAO implements IDAO {
       e.printStackTrace();
     }
   }
+  
+  public void colocarEmtransporte(EntidadeDominio entidade) {
+    String sql = "UPDATE pedidos set ped_status = ? WHERE ped_id = ? ";
+    PedidoDeCompra pedido = (PedidoDeCompra) entidade;
+    
+    try {
+      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst.setInt(1, 4);
+      pst.setInt(2, pedido.getId().intValue());
+      
+      pst.executeUpdate();
+      
+      DAOItensPedido daoItens = new DAOItensPedido();
+      
+      daoItens.colocarItensEmTransporte(pedido);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+  
+  public void confirmarEntrega(EntidadeDominio entidade) {
+    String sql = "UPDATE pedidos set ped_status = ? WHERE ped_id = ? ";
+    PedidoDeCompra pedido = (PedidoDeCompra) entidade;
+    
+    try {
+      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst.setInt(1, 5);
+      pst.setInt(2, pedido.getId().intValue());
+      
+      
+      pst.executeUpdate();
+      
+      DAOItensPedido daoItens = new DAOItensPedido();
+      
+      daoItens.confirmarEntregaItens(pedido);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+  
     
 }

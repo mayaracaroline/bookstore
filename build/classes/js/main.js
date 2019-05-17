@@ -123,7 +123,7 @@ async function buscarProdutosAtivos() {
 
 async function alterarQuantidadeItensCarrinho(id, quantidade) {
 	
-	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=CARRINHOALTERAR&codigo='+id+'&quantidade='+quantidade, {method: 'get'})
+	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=CARRINHOALTERAR&codigo='+id+'&quantidade='+quantidade, {method: 'get'});
 	return dados;
 }
 

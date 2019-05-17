@@ -19,6 +19,7 @@ import dominio.ItemCarrinho;
 import dominio.Livro;
 import dominio.Pagamento;
 import dominio.PedidoDeCompra;
+import dominio.Produto;
 import dominio.TipoCupom;
 import util.Formatter;
 import util.Resultado;
@@ -67,12 +68,19 @@ public class VHPedidoDeCompra implements IViewHelper {
       carrinho.setItensCarrinho(itens);
       carrinho.setStatus(true);
     } else if (request.getServletContext().getAttribute("desbloqueio") != null) {
+      
       HashMap<String, Carrinho> mapCarrinhosExpirados = new HashMap<>();
+      mapCarrinhosExpirados = (HashMap<String, Carrinho>) request.getServletContext().getAttribute("desbloqueio");
       carrinho = mapCarrinhosExpirados.get(request.getSession().getId());
       if( carrinho != null) {
         for( int i = 0; i< carrinho.getItensCarrinho().size(); i++) {       
           ItemCarrinho item = new ItemCarrinho();
+          
+          
           item = (ItemCarrinho) carrinho.getItensCarrinho().get(i);
+          Produto produto = new Produto();
+          produto = item.getProduto();
+          item.setProduto(produto);
           itens.add(item);
         }
         carrinho.setItensCarrinho(itens);
@@ -103,7 +111,6 @@ public class VHPedidoDeCompra implements IViewHelper {
         
         if(strIdCuponsTroca[i] != null) {
           Cupom cup = new Cupom();
-          System.out.println(strIdCuponsTroca[i]);
           cup.setId(Formatter.format(strIdCuponsTroca[i]));
           cup.setTipo(TipoCupom.TROCA);
           cup.setIdCliente(id.intValue());
@@ -127,8 +134,14 @@ public class VHPedidoDeCompra implements IViewHelper {
     double subtotal = 0;
     
     for (int i = 0; i < itens.size(); i++) {
-      double preco = itens.get(i).getProduto().getPreco();
-      int quantidade = itens.get(i).getQuantidade();
+      double preco = 0;
+      int quantidade = 0;
+      
+      if(itens.get(i).getProduto().getPreco() != null ) {
+        preco = itens.get(i).getProduto().getPreco();
+        quantidade = itens.get(i).getQuantidade();
+      } 
+      
       
       subtotal += (preco * quantidade);
     }
@@ -148,6 +161,9 @@ public class VHPedidoDeCompra implements IViewHelper {
     pagamentos.add(pagamentoCartao1);
     pagamentos.add(pagamentoCartao2);
     
+    Integer pedidoId = Formatter.format(request.getParameter("codigoPedido"));
+    
+    pedido.setId(pedidoId);
     pedido.setPagamento(pagamentos);
     pedido.setCarrinho(carrinho);
     pedido.setCupomPromocional(cupomPromocional);
@@ -165,21 +181,26 @@ public class VHPedidoDeCompra implements IViewHelper {
   public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) {
      String[] mensagem = resultado.getMensagem().split(";");
      String operacao = request.getParameter("operacao");
+     String formName = Formatter.formatString(request.getParameter("formName")) ;
      ArrayList<PedidoDeCompra> pedidos = new ArrayList<>();
      ArrayList<Livro> livros = new ArrayList<>();
-    
+     System.out.println(operacao);
      if ( null != resultado.getListaResultado()) {
        for (EntidadeDominio pedido : resultado.getListaResultado() ) {
          pedidos.add((PedidoDeCompra) pedido);
        }
        
-       int index = 0;
-       for (PedidoDeCompra pedido : pedidos) {
-         Livro livro = (Livro) pedido.getCarrinho().getItensCarrinho()
-             .get(index).getProduto();
-         index++;
-         livros.add(livro);       
-       }
+//       int index = 0;
+//       for (PedidoDeCompra pedido : pedidos) {
+//         Livro livro = (Livro) pedido.getCarrinho().getItensCarrinho()
+//             .get(index).getProduto();
+//         index++;
+//         livros.add(livro);       
+//       }
+     }
+     
+     for (int i = 0; i < mensagem.length; i++) {
+       System.out.println(mensagem[i]);
      }
      
      
@@ -189,14 +210,25 @@ public class VHPedidoDeCompra implements IViewHelper {
      try {
        
        if (operacao.equals("SALVAR")) {
-         if(!resultado.getErro()) {
+         if(resultado.getErro()) {
            response.sendRedirect("finalizarCompra.jsp");
          } else {
-           response.sendRedirect("produtos.jsp");
+           response.sendRedirect("areaCliente.jsp");
          }
        } else if (operacao.equals("CONSULTAR")) {
+         if(formName.equals("gerenciarPedidos")) {
+           request.setAttribute("pedidos", pedidos);
+           RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/gerenciarPedidos.jsp");
+           rd.forward(request, response);
+         }  else {
+           request.setAttribute("pedidos", pedidos);
+           RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/meusPedidos.jsp");
+           rd.forward(request, response);
+         } 
+
+//         request.setAttribute("livros", livros);
+       } else if (operacao.equals("COLOCAREMTRANSPORTE") || operacao.equals("CONFIRMARENTREGA")) {
          request.setAttribute("pedidos", pedidos);
-         request.setAttribute("livros", livros);
          RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/meusPedidos.jsp");
          rd.forward(request, response);
        }
