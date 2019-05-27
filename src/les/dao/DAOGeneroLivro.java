@@ -9,6 +9,7 @@ import java.util.List;
 import dominio.EntidadeDominio;
 import dominio.GeneroLiterario;
 import dominio.Livro;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOGeneroLivro extends AbstractDAO implements IDAO {
@@ -19,12 +20,14 @@ public class DAOGeneroLivro extends AbstractDAO implements IDAO {
 		Resultado resultado = new Resultado();
 		ArrayList<GeneroLiterario> generos = new ArrayList<>();
 		ResultSet queryResult;
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement preparedStatment = null;
 		
 //		String sql = "SELECT * FROM GENEROS_LIVRO WHERE glv_livro_id = ?";
 		String sql = "SELECT * FROM GENEROS WHERE gen_id = ?";		
 		try {
 			
-			PreparedStatement preparedStatment = conexao.prepareStatement(sql);	
+			preparedStatment = conexao.prepareStatement(sql);	
 			
 			for (int i = 0; i < livro.getCategorias().size(); i++) {
 				preparedStatment.setInt(1,livro.getCategorias().get(i).getId().intValue());
@@ -44,30 +47,31 @@ public class DAOGeneroLivro extends AbstractDAO implements IDAO {
 			}
 			
 			livro.setCategorias(generos);
-			preparedStatment.close();
 			
 			resultado.setResultado(livro);
-			resultado.sucesso("");
-			
+			resultado.sucesso("");			
 			
 			return resultado;
 		
 			
 		} catch (Exception e) {
-			e.printStackTrace();
 			resultado.erro("Erro de consulta.");
-			
+			e.printStackTrace();
 			return resultado;
-		} 
+		} finally {
+      ConnectionFactory.closeConnection(preparedStatment, conexao);
+    } 
 	}
 
 	public Resultado salvar(EntidadeDominio entidade) {
 		String sql = "INSERT into GENEROS_LIVRO (glv_livro_id, glv_genero_id, glv_genero_descricao) values (? , ?, (SELECT gen_descricao FROM generos WHERE gen_id = ? ))";
 		Livro livro = (Livro) entidade;
 		Resultado resultado = new Resultado();
-		
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement statement = null;
+    
 		try {
-			PreparedStatement statement = conexao.prepareStatement(sql);
+			statement = conexao.prepareStatement(sql);
 
 //			for (int i = 0; i < livro.getCategorias().size(); i++) {
 //				
@@ -88,21 +92,14 @@ public class DAOGeneroLivro extends AbstractDAO implements IDAO {
 				statement.execute();
 			}
 			
-			statement.close();
-			
 			resultado.setResultado(livro);
 			resultado.sucesso("Sucesso!");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultado.erro("Erro ao salvar na tabela generos_livro");
-		}finally {      
-      try {
-        conexao.close();
-      } catch (SQLException e) {
-        // LOGGING
-        e.printStackTrace();
-      }
+		}  finally {
+      ConnectionFactory.closeConnection(statement, conexao);
     }
 		
 		return resultado;

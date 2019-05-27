@@ -10,6 +10,7 @@ import dominio.Cliente;
 import dominio.Cupom;
 import dominio.EntidadeDominio;
 import dominio.TipoCupom;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOCupom extends AbstractDAO implements IDAO {
@@ -19,9 +20,11 @@ public class DAOCupom extends AbstractDAO implements IDAO {
     Cupom cupom = (Cupom) entidade;
     String sql = "INSERT INTO cupons (cup_cli_id, cup_status, cup_codigo, cup_tipo, cup_data_validade, cup_valor) values (?,?,?,?,?,?);";
     Resultado resultado = new Resultado();
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setInt(1, cupom.getIdCliente());
       pst.setBoolean(2, true);
       pst.setString(3, cupom.getCodigo());
@@ -29,15 +32,15 @@ public class DAOCupom extends AbstractDAO implements IDAO {
       pst.setDate(5, Date.valueOf(cupom.getDataDeValidade().toString()));
       pst.setDouble(6, cupom.getValor());
       
-      pst.execute();
-      
-      pst.close();
+      pst.execute();      
       
       resultado.setResultado(cupom);
       resultado.sucesso("Cupom salvo com sucesso");
     } catch (Exception e) {
       resultado.erro("Falhar ao salvar cupom");
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     
     return resultado;
@@ -49,12 +52,13 @@ public class DAOCupom extends AbstractDAO implements IDAO {
     Cliente cliente;
     Resultado resultado = new Resultado();
     ArrayList<EntidadeDominio> cupons = new ArrayList<>();
-    LocalDate hoje = LocalDate.now();
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     String sql = "SELECT * FROM cupons WHERE cup_cli_id = ? AND cup_status = 1  AND cup_data_validade >= (SELECT CURDATE());";
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       
       if (entidade instanceof Cliente ) {
         cliente = (Cliente) entidade;
@@ -79,7 +83,6 @@ public class DAOCupom extends AbstractDAO implements IDAO {
         cupons.add(novoCupom);
       }
       
-      pst.close();
       resultado.setListaResultado(cupons);
       resultado.sucesso("Consulta realizada com sucesso");
       
@@ -87,6 +90,8 @@ public class DAOCupom extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.erro("Erro ao consultar cupom");
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     
     return resultado;
@@ -108,10 +113,12 @@ public class DAOCupom extends AbstractDAO implements IDAO {
   public Resultado inativar(EntidadeDominio entidade) {
     Cupom cupom = (Cupom) entidade;
     String sql = "UPDATE cupons SET cup_status = 0 WHERE cup_id = ?;";
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     Resultado resultado = new Resultado();
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setInt(1, cupom.getId().intValue());
       pst.executeUpdate();
       pst.close();
@@ -119,6 +126,8 @@ public class DAOCupom extends AbstractDAO implements IDAO {
       resultado.sucesso("Sucesso");
     } catch (Exception e) {
       resultado.erro("Erro ao alterar cupons");
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     
     return resultado;
@@ -126,15 +135,15 @@ public class DAOCupom extends AbstractDAO implements IDAO {
   
   public Resultado consultarPorId(EntidadeDominio entidade) {
     Cupom cupom;
-    Cliente cliente;
     Resultado resultado = new Resultado();
     ArrayList<EntidadeDominio> cupons = new ArrayList<>();
-    LocalDate hoje = LocalDate.now();
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     String sql = "SELECT * FROM cupons WHERE cup_id = ?;";
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       
         cupom = (Cupom) entidade;
         pst.setInt(1, cupom.getId().intValue());
@@ -154,7 +163,6 @@ public class DAOCupom extends AbstractDAO implements IDAO {
         cupons.add(novoCupom);
       }
       
-      pst.close();
       resultado.setResultado(cupons.get(0));
       resultado.sucesso("Consulta realizada com sucesso");
       
@@ -162,6 +170,8 @@ public class DAOCupom extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.erro("Erro ao consultar cupom");
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     
     return resultado;

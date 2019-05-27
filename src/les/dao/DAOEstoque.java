@@ -9,6 +9,7 @@ import dominio.EntidadeDominio;
 import dominio.Estoque;
 import dominio.ItemCarrinho;
 import dominio.Produto;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOEstoque extends AbstractDAO implements IDAO {
@@ -24,12 +25,14 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
     Resultado resultado = new Resultado();
     Produto produto = (Produto) entidade;
     Estoque estoque = new Estoque();
-    List<EntidadeDominio> produtos = new ArrayList<>();
-    String sql = "SELECT * FROM estoque WHERE est_pro_id = ?;";
-   
+    String sql = "SELECT * FROM estoque WHERE est_pro_cod_barras = ?;";
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
+    
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
-      pst.setInt(1, produto.getId().intValue());
+      pst = conexao.prepareStatement(sql);
+
+      pst.setString(1, produto.getCodigoBarras());
       
       ResultSet rs = pst.executeQuery();
       
@@ -40,7 +43,6 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
         estoque.setQuantidade(rs.getInt("est_quantidade"));
       }
       
-      pst.close();
       resultado.sucesso("Produto consultado com sucesso");
       resultado.setResultado(estoque);
       
@@ -49,6 +51,8 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
       resultado.erro("Erro ao consultar produto no estoque");
       e.printStackTrace();
       
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     return resultado;
   }
@@ -73,37 +77,42 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
   
   public void adicionarAoEstoque(EntidadeDominio entidade) {
     ItemCarrinho item = (ItemCarrinho) entidade;
-    String sql = "UPDATE estoque SET est_quantidade = est_quantidade + ? WHERE est_pro_id = ?";
+    String sql = "UPDATE estoque SET est_quantidade = est_quantidade + ? WHERE est_pro_cod_barras = ?";
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+     pst = conexao.prepareStatement(sql);
       pst.setInt(1, item.getQuantidade());
       pst.setInt(2, item.getProduto().getId().intValue());
       
       pst.executeUpdate();
       
-      pst.close();
-      
     } catch (Exception e) {
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
   }
   
   public void retirarDoEstoque(EntidadeDominio entidade) {
     ItemCarrinho item = (ItemCarrinho) entidade;
-    String sql = "UPDATE estoque SET est_quantidade = est_quantidade - ? WHERE est_pro_id = ?";
+    String sql = "UPDATE estoque SET est_quantidade = est_quantidade - ? WHERE est_pro_cod_barras = ?";
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setInt(1, item.getQuantidade());
-      pst.setInt(2, item.getProduto().getId().intValue());
+      pst.setString(2, item.getProduto().getCodigoBarras());
       
       pst.executeUpdate();
       
-      pst.close();
       
     } catch (Exception e) {
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
   }
 

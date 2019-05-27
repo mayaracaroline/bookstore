@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import dominio.Cartao;
 import dominio.Cliente;
 import dominio.EntidadeDominio;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOCartoesCliente extends AbstractDAO implements IDAO {
@@ -15,12 +16,13 @@ public class DAOCartoesCliente extends AbstractDAO implements IDAO {
   public Resultado salvar(EntidadeDominio entidade) {
     Resultado resultado = new Resultado();
     Cliente cliente = (Cliente) entidade;
-    
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     String sql = "INSERT INTO cartoes_cliente VALUES(?,?,?)";
     
     try {
       
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setInt(1,cliente.getId().intValue());
       pst.setInt(2, cliente.getCartao().getId().intValue());
       pst.setBoolean(3, cliente.getCartao().isPreferencial());
@@ -31,7 +33,10 @@ public class DAOCartoesCliente extends AbstractDAO implements IDAO {
       resultado.sucesso("Salvo com sucesso: cartoes_cliente");
     } catch (Exception e) {
       resultado.erro("Erro ao salvar: cartoes_cliente");
-    } 
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
+    }
+    
     return resultado;
   }
 
@@ -40,10 +45,12 @@ public class DAOCartoesCliente extends AbstractDAO implements IDAO {
     Resultado resultado = new Resultado();
     ArrayList<EntidadeDominio> cartoes = new ArrayList<EntidadeDominio>();
     Cliente cliente = (Cliente) entidade;
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     String sql = "SELECT * FROM cartoes_cliente WHERE ctc_cli_id = ?";
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setInt(1, cliente.getId().intValue());
       
       ResultSet rs = pst.executeQuery();
@@ -65,6 +72,8 @@ public class DAOCartoesCliente extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.sucesso("Erro ao consultar em DAOCartoesCliente");
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     
     return resultado;

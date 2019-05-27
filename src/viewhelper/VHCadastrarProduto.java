@@ -221,10 +221,17 @@ public class VHCadastrarProduto implements IViewHelper {
 			    if(codigo != 0) {
 			      response.sendRedirect("productDetails.jsp");
           }
-			  } else {
+			  } else if(page.equals("products-adm")){
+			    rd = request.getRequestDispatcher("/Pages/lumino/listaProduto.jsp");
+			    rd.forward(request, response);
+			  } else if (page.equals("listaProduto")) {
+	          rd = request.getRequestDispatcher("/Pages/lumino/alteraProduto.jsp");
+	          rd.forward(request, response);
+			  }else {			  
           rd = request.getRequestDispatcher("/Pages/lumino/listaProduto.jsp");
+          rd.forward(request, response);
         }
-//			  rd.forward(request, response);		
+  
 			} else if(operacao.equals("EXCLUIR")){
 				request.setAttribute("livro", (Livro) resultado.getResultado());
 				RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/produtoExcluido.jsp");

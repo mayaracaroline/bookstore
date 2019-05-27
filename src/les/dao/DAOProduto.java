@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 
 import dominio.EntidadeDominio;
 import dominio.Produto;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOProduto extends AbstractDAO implements IDAO {
@@ -13,21 +14,25 @@ public class DAOProduto extends AbstractDAO implements IDAO {
     Resultado resultado = new Resultado();
     Produto produto = (Produto) entidade;
     String sql = "INSERT INTO produtos(pro_cod_barras, pro_preco) VALUES (?,?)";
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     try {
       
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setString(1, produto.getCodigoBarras());
       pst.setDouble(2, produto.getPreco());
       
       pst.execute();     
-      pst.close();
+
       resultado.setResultado(produto);
       resultado.sucesso("Produto cadastrado com sucesso");
       
     } catch (Exception e) {
       resultado.erro("Erro ao consultar produto");
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
         
     return resultado;
@@ -38,10 +43,11 @@ public class DAOProduto extends AbstractDAO implements IDAO {
     Resultado resultado = new Resultado();
     Produto produto = (Produto) entidade;
     String sql = "SELECT * FROM produtos WHERE pro_cod_barras = ?";
-    
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     try {
       
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setString(1, produto.getCodigoBarras());
       
       pst.executeQuery();   
@@ -53,6 +59,8 @@ public class DAOProduto extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.erro("Erro ao consultar produto");
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     
     return resultado;

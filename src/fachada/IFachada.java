@@ -1,6 +1,7 @@
 package fachada;
 
 import dominio.EntidadeDominio;
+import les.command.ICommand;
 import util.Resultado;
 
 public interface IFachada {
@@ -16,5 +17,6 @@ public interface IFachada {
   public Resultado calcularFrete(EntidadeDominio entidade);
   public Resultado colocarEmTransporte(EntidadeDominio entidade);
   public Resultado confirmarEntrega(EntidadeDominio entidade);
+  public Resultado chamarServico(EntidadeDominio entidade, String command);
   
 }

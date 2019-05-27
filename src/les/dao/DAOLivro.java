@@ -10,6 +10,7 @@ import dominio.EntidadeDominio;
 import dominio.GeneroLiterario;
 import dominio.Livro;
 import dominio.Produto;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOLivro extends AbstractDAO implements IDAO {
@@ -36,10 +37,12 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 				"liv_peso," + 
 				"liv_profundidade)"
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement statement = null;	
 		
 		try {
 			
-			PreparedStatement statement = conexao.prepareStatement(sql);
+			statement = conexao.prepareStatement(sql);
 			statement.setInt(1,livro.getId().intValue());
 			statement.setString(2,livro.getCodigoBarras());
 			statement.setBoolean(3, livro.isAtivo());
@@ -68,8 +71,6 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 			
 			livro = (Livro) resultado.getResultado();
 			
-			statement.close();
-			
 			resultado.setResultado(livro);
 			resultado.sucesso("Salvo com sucesso!");
 			
@@ -79,7 +80,9 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 			e.printStackTrace();
 			resultado.erro("Erro salvar, por favor, refaça a operação.");
 			return resultado;
-		}	
+		}	  finally {
+      ConnectionFactory.closeConnection(statement, conexao);
+    }
 	}
 
 	@Override
@@ -89,7 +92,8 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 		Livro livro = (Livro) entidade;
 		List<EntidadeDominio> listLivro = new ArrayList<EntidadeDominio>();
 		String sql = null;
-		PreparedStatement statement;
+    conexao = ConnectionFactory.getConnection();
+		PreparedStatement statement = null;
 		
 		
 		try {
@@ -98,7 +102,7 @@ public class DAOLivro extends AbstractDAO implements IDAO {
         sql = "SELECT * FROM LIVROS A INNER JOIN PRODUTOS B ON A.liv_cod_barras = B.pro_cod_barras;";
         statement = conexao.prepareStatement(sql);
       } else {
-        sql =  "SELECT * FROM livros A INNER JOIN produtos B  ON A.liv_cod_barras = B.pro_cod_barras WHERE liv_id = ?";
+        sql =  "SELECT * FROM livros A INNER JOIN produtos B  ON A.liv_cod_barras = B.pro_cod_barras WHERE liv_id = ?"; 
         statement = conexao.prepareStatement(sql);
         statement.setInt(1, livro.getId().intValue());
       }
@@ -107,7 +111,6 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 			int contagem = 0;
 			
 			while(resultadoConsulta.next()) {
-				
 				Livro livroEncontrado = new Livro();
 				livroEncontrado.setId(resultadoConsulta.getInt("liv_id"));
 				livroEncontrado.setCodigoBarras(resultadoConsulta.getString("liv_cod_barras"));
@@ -149,7 +152,6 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 								
 			}
 								
-			statement.close();
 			resultado.setContagem(contagem);
 			
 			if( contagem == 1) {
@@ -165,13 +167,17 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 			e.printStackTrace();
 			resultado.erro("Erro ao consultar, por favor, refaça a operação.");
 			return resultado;
-		}
+		} finally {
+      ConnectionFactory.closeConnection(statement, conexao);
+    }
 	}
 
 	@Override
 	public Resultado alterar(EntidadeDominio entidade) {
 		Livro livro = (Livro) entidade;
 		Resultado resultado = new Resultado();
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement statement = null;
 		
 		String sql = "UPDATE livros SET liv_cod_barras = ?, "
 				+ "liv_ativo = ?,  "
@@ -192,8 +198,8 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 				+ "WHERE liv_id = ?";
 		
 		try {
-			
-			PreparedStatement statement = conexao.prepareStatement(sql);
+			System.out.println("getJustificativaAtivacao "+livro.getJustificativaAtivacao());
+			statement = conexao.prepareStatement(sql);
 			statement.setString(1, livro.getCodigoBarras());
 			statement.setBoolean(2, livro.isAtivo());
 			statement.setInt(3, livro.getCategoriaAtivacao());
@@ -221,14 +227,14 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 			livro = (Livro) resultado.getResultado();
 			livro.setCategorias((ArrayList<GeneroLiterario>) livro.getCategorias());
 			
-			statement.close();
-			
 			resultado.sucesso("Registro atualizado com sucesso!");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultado.erro("Erro ao alterar registro");
-		}		
+		}  finally {
+      ConnectionFactory.closeConnection(statement, conexao);
+    }		
 		
 		return resultado;
 	}
@@ -237,15 +243,16 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 	public Resultado excluir(EntidadeDominio entidade) {
 		Livro livro = (Livro) entidade;
 		Resultado resultado = new Resultado();
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement statement = null;
 		
 		String sql = "DELETE FROM livros WHERE liv_id = ?";
 		
 		try {
 			
-			PreparedStatement statement = conexao.prepareStatement(sql);
+			statement = conexao.prepareStatement(sql);
 			statement.setInt(1, livro.getId().intValue());
 			statement.execute();
-			statement.close();
 			
 			resultado.setResultado(livro);
 			resultado.sucesso("Registro excluido com sucesso!");
@@ -253,7 +260,9 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultado.erro("Erro ao excluir o registro");
-		}		
+		} finally {
+      ConnectionFactory.closeConnection(statement, conexao);
+    }		
 		
 		return resultado;
 	}
@@ -263,15 +272,16 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 		Livro livro = (Livro) entidade;
 		
 		String sql = "UPDATE livros SET liv_ativo = false, liv_categoria_inativacao_id = ?, liv_justificativa_inativacao = ? WHERE liv_id = ? ";
-		
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement statement = null;
+    
 		try {
 			
-			PreparedStatement statement = conexao.prepareStatement(sql);
+			statement = conexao.prepareStatement(sql);
 			statement.setInt(1, livro.getCategoriaInativacao());
 			statement.setString(2, livro.getJustificativaInativacao());
 			statement.setInt(3, livro.getId().intValue());
 			statement.executeUpdate();
-			statement.close();
 			
 			resultado.setResultado(livro);
 			resultado.sucesso("Livro inativado com sucesso!");
@@ -279,8 +289,91 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultado.erro("Erro ao inativar o registro");
-		} 		
+		}  finally {
+      ConnectionFactory.closeConnection(statement, conexao);
+    } 		
 		
 		return resultado;
 	}
+	
+	 public Resultado consultarPorCodigoDeBarras(EntidadeDominio entidade) {
+
+	    Resultado resultado = new Resultado();
+	    Livro livro = (Livro) entidade;
+	    List<EntidadeDominio> listLivro = new ArrayList<EntidadeDominio>();
+	    String sql = null;
+	    conexao = ConnectionFactory.getConnection();
+	    PreparedStatement statement = null;
+	    
+	    
+	    try {
+
+        sql = "SELECT * FROM livros A INNER JOIN produtos B  ON A.liv_cod_barras = B.pro_cod_barras WHERE liv_cod_barras = ?;";
+        statement = conexao.prepareStatement(sql);
+        statement.setString(1, livro.getCodigoBarras());
+
+	      
+	      ResultSet resultadoConsulta = statement.executeQuery();
+	      int contagem = 0;
+	      
+	      while(resultadoConsulta.next()) {
+	        Livro livroEncontrado = new Livro();
+	        livroEncontrado.setId(resultadoConsulta.getInt("liv_id"));
+	        livroEncontrado.setCodigoBarras(resultadoConsulta.getString("liv_cod_barras"));
+	        livroEncontrado.setAtivo(resultadoConsulta.getBoolean("liv_ativo"));
+	        
+	        GeneroLiterario genero = new GeneroLiterario();
+	        genero.setId(resultadoConsulta.getInt("liv_categoria_ativacao_id"));
+	        DAOGenerosLivro daoGenero = new DAOGenerosLivro();
+	        Resultado generosEncontrados = daoGenero.consultar(livroEncontrado);
+	        
+//	        DAOProduto daoProduto = new DAOProduto();
+//	        
+//	        Resultado resProduto = daoProduto.consultar(livro);
+//	        Produto produto = (Produto) resProduto.getResultado();      
+	        
+	              
+	        Livro novoLivro = (Livro) generosEncontrados.getResultado();
+	        livroEncontrado.setCategorias((ArrayList<GeneroLiterario>) novoLivro.getCategorias());
+	        livroEncontrado.setCategoriaInativacao(resultadoConsulta.getInt("liv_categoria_inativacao_id"));
+	        livroEncontrado.setJustificativaAtivacao(resultadoConsulta.getString("liv_justificativa_ativacao"));
+	        livroEncontrado.setAutor(resultadoConsulta.getString("liv_autor"));
+	        livroEncontrado.setTitulo(resultadoConsulta.getString("liv_titulo"));
+	        livroEncontrado.setAno(resultadoConsulta.getInt("liv_ano_publicacao"));
+	        livroEncontrado.setEdicao(resultadoConsulta.getString("liv_edicao"));
+	        livroEncontrado.setIsbn(resultadoConsulta.getString("liv_isbn"));
+	        livroEncontrado.setSinopse(resultadoConsulta.getString("liv_sinopse"));
+	        livroEncontrado.setEditora(resultadoConsulta.getString("liv_editora"));
+	        livroEncontrado.setQuantidadePaginas(resultadoConsulta.getInt("liv_quantidade_paginas"));
+	        livroEncontrado.setCategoriaAtivacao(resultadoConsulta.getInt("liv_categoria_ativacao_id"));
+	        livroEncontrado.setAltura(resultadoConsulta.getDouble("liv_altura"));
+	        livroEncontrado.setPeso(resultadoConsulta.getDouble("liv_peso"));
+	        livroEncontrado.setPreco(resultadoConsulta.getDouble("pro_preco"));
+	        livroEncontrado.setProfundidade(resultadoConsulta.getDouble("liv_profundidade"));
+	        
+	        contagem++;
+	        
+	        listLivro.add(livroEncontrado);
+	                
+	      }
+	                
+	      resultado.setContagem(contagem);
+	      
+	      if( contagem == 1) {
+	        resultado.setResultado(listLivro.get(0));       
+	      } else {
+	        resultado.setListaResultado(listLivro);       
+	      }
+
+	      resultado.sucesso("Sucesso");
+	      return resultado;
+	      
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	      resultado.erro("Erro ao consultar, por favor, refaça a operação.");
+	      return resultado;
+	    } finally {
+	      ConnectionFactory.closeConnection(statement, conexao);
+	    }
+	  }
 }

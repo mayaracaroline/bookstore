@@ -85,22 +85,22 @@
                               <div class="panel-body">
                                 <div class="form-group">
                                    <label>Tipo de residência: *</label>
-                                    <select name="tipo-residencia0" class="form-control"  >
+                                    <select id="tipo-residencia0" name="tipo-residencia0" class="form-control"  >
                                       <option value="SELECIONE">Selecione</option>
                                       <option value="CASA">Casa</option>
                                       <option value="APARTAMENTO">Apartamento</option>
                                       <option value="CONDOMINIO">Condomínio</option>
                                       <option value="SITIO">Sítio</option>
                                       <option value="CHACARA">Chacára</option>                                     
-                                    </select>
+                                    </select> 
                                     
                                   <label for="cep0">
                                     CEP: *
-                                    <input name="cep0" id="cep0" class="form-control" onchange="complementarEndereco(0)" type="text" value="">
+                                    <input id="cep0" name="cep0" id="cep0" class="form-control" onchange="complementarEndereco(0)" type="text" value="">
                                   </label><br>
                                   <label>Tipo do logradouro: *</label> <br>
                                   <label>
-                                  <select name="tipo-logradouro0" class="form-control" >
+                                  <select id="tipo-logradouro0" name="tipo-logradouro0" class="form-control" >
                                     <option value="">Selecione</option>
                                     <option value="1">Rua</option>
                                     <option value="2">Avenida</option>
@@ -134,13 +134,13 @@
                                   </select>   
                                           
                                   <label>Observações:</label>
-                                  <input class="form-control" type="text" name="observacoes0" placeholder="Ex: Ap. 25, Fundos etc." >
+                                  <input class="form-control" type="text" name="observacoes0" id="observacoes0" placeholder="Ex: Ap. 25, Fundos etc." >
                                   <div class="checkbox">
                                      <label>
-                                       <input name="checkbox-endereco-cobranca" type="checkbox" onclick="toggleDisplayElement(this,'endereco-cobranca')" value=""> Considerar também para cobrança
+                                       <input name="checkbox-endereco-entrega" type="checkbox"  onclick="preencherEnderecoEntrega()" value=""> Considerar também para entrega
                                      </label><br><br>
                                      <label>
-                                       <input name="checkbox-endereco-entrega" type="checkbox"  onclick="toggleDisplayElement(this,'endereco-entrega')" value=""> Considerar também para entrega
+                                       <input name="checkbox-endereco-cobranca" type="checkbox" onclick="preencherEnderecoCobranca()" value=""> Considerar também para cobrança
                                      </label>
                                   </div>
                                 </div>
@@ -152,7 +152,7 @@
                                 <div class="panel-body">
                                   <div class="form-group">
                                      <label>Tipo de residência: *</label>
-                                      <select name="tipo-residencia1" class="form-control"  >
+                                      <select name="tipo-residencia1" id="tipo-residencia1" class="form-control"  >
                                         <option value="">Selecione</option>
                                         <option value="CASA">Casa</option>
                                         <option value="APARTAMENTO">Apartamento</option>
@@ -162,7 +162,7 @@
                                         <input name="cep1" id="cep1" class="form-control" onchange="complementarEndereco(1)" type="text" value="">
                                       </label> <br>                                      
                                       <label>Tipo do logradouro: *</label>
-                                      <select name="tipo-logradouro1" class="form-control" >
+                                      <select name="tipo-logradouro1" id="tipo-logradouro1" class="form-control" >
                                       <option value="">Selecione</option>
                                       <option value="1">Rua</option>
                                       <option value="2">Avenida</option>
@@ -185,14 +185,14 @@
                                     </label><br>
                                     <label for="numero1">
                                       Nº: *
-                                      <input name="numero1" class="form-control" type="text"  value="" size="2">
+                                      <input name="numero1"  id="numero1" class="form-control" type="text"  value="" size="2">
                                     </label><br>                                      
                                     <label>País: *</label>
                                     <select name="pais1" class="form-control" >
                                       <option value="BRASIL" selected>Brasil</option>
                                     </select>                                     
                                     <label>Observações:</label>
-                                    <input class="form-control" type="text" name="observacoes1" placeholder="Ex: Ap. 25, Fundos etc." >
+                                    <input class="form-control" type="text" name="observacoes1" id="observacoes1" placeholder="Ex: Ap. 25, Fundos etc." >
                                   </div>
                                 </div> 
                              </div> <!-- Panel - Endereço Entrega -->                              
@@ -201,7 +201,7 @@
                                 <div class="panel-body">
                                   <div class="form-group">
                                      <label>Tipo de residência: *</label>
-                                      <select name="tipo-residencia2" class="form-control"  >
+                                      <select name="tipo-residencia2" id="tipo-residencia2" class="form-control"  >
                                         <option value="">Selecione</option>                                  
                                         <option  value="CASA">Casa</option>
                                         <option value="APARTAMENTO">Apartamento</option>
@@ -211,7 +211,7 @@
                                         <input name="cep2" id="cep2" class="form-control" onchange="complementarEndereco(2)" type="text" value="" >
                                       </label><br>                                        
                                       <label>Tipo do logradouro: *</label>
-                                      <select name="tipo-logradouro2" class="form-control" >
+                                      <select name="tipo-logradouro2" id="tipo-logradouro2" class="form-control" >
                                       <option value="">Selecione</option>
                                       <option value="1">Rua</option>
                                       <option value="2">Avenida</option>
@@ -234,14 +234,14 @@
                                     </label><br>
                                     <label for="numero2">
                                       Nº: *
-                                      <input name="numero2" class="form-control" type="text"  value="" size="2">
+                                      <input name="numero2" id="numero2" class="form-control" type="text"  value="" size="2">
                                     </label><br> 
                                     <label>País: *</label>
                                     <select name="pais2" class="form-control" >
                                       <option value="BRASIL" selected>Brasil</option>
                                     </select>                                                                                                            
                                     <label>Observações:</label>
-                                    <input class="form-control" type="text" name="observacoes2" placeholder="Ex: Ap. 25, Fundos etc." >
+                                    <input class="form-control" type="text" name="observacoes2" id="observacoes2" placeholder="Ex: Ap. 25, Fundos etc." >
                                   </div>
                                 </div> 
                              </div> <!-- Panel - Endereço Cobrança -->   

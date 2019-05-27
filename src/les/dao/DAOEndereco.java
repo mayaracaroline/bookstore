@@ -9,6 +9,7 @@ import dominio.EntidadeDominio;
 import dominio.Pais;
 import dominio.TipoLogradouro;
 import dominio.TipoResidencia;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOEndereco extends AbstractDAO implements IDAO {
@@ -17,12 +18,13 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
   public Resultado salvar(EntidadeDominio entidade) {
     Resultado resultado = new Resultado();
     Endereco endereco = (Endereco) entidade;
-    
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     String sql = "INSERT INTO enderecos(end_logradouro,end_bairro, end_cep, end_descricao, end_observacao, end_tipo_residencia, end_tipo, end_tpl_id, end_cidade, end_estado, end_status,end_numero, end_pais) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?);";
     
     try {
       
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setString(1, endereco.getLogradouro());
       pst.setString(2, endereco.getBairro());
       pst.setString(3, endereco.getCep());
@@ -47,8 +49,6 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
         id = rs.getBigDecimal(1).toBigInteger();
       }
       
-      pst.close();
-      
       endereco.setId(id.intValue());
       
       resultado.setResultado(endereco);
@@ -58,7 +58,10 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.erro("Erro ao salvar endereço");
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
+    
     
     return resultado;
   }
@@ -67,11 +70,13 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
   public Resultado consultar(EntidadeDominio entidade) {
     Endereco endereco = (Endereco) entidade;
     Resultado resultado = new Resultado();
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     String sql = "SELECT * FROM enderecos WHERE end_id = ? AND end_status = true";
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setInt(1, endereco.getId().intValue());
       
       ResultSet rs = pst.executeQuery();
@@ -110,7 +115,10 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.erro("Erro ao consultar endereço");
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
+    
     
     return resultado;
   }

@@ -19,7 +19,6 @@ public class StAprovarOuReprovarCompra implements Job {
 
   @Override
   public void execute(JobExecutionContext context) throws JobExecutionException {
-    System.out.println("StAprovarOuReprovarCompra ");
     Random random = new Random();
     Integer analisarPedido = random.nextInt(10);
     DAOPedidoDeCompra daoPedido = new DAOPedidoDeCompra();
@@ -36,6 +35,7 @@ public class StAprovarOuReprovarCompra implements Job {
       // Devolve os itens reprovados ao estoque
       for(EntidadeDominio it : resultado.getListaResultado()) {
         ItemCarrinho item = (ItemCarrinho) it;
+      
         daoEstoque.adicionarAoEstoque(item);
       }
       

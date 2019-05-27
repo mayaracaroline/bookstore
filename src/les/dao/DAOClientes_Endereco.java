@@ -9,6 +9,7 @@ import java.util.List;
 import dominio.Cliente;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
@@ -17,13 +18,15 @@ public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
   public Resultado salvar(EntidadeDominio entidade) {
     Resultado resultado = new Resultado();
     Cliente cliente = (Cliente) entidade; 
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     String sql = "INSERT INTO clientes_endereco VALUES(?, ?, ?);";
     
     try {
       
       if(cliente.getEnderecoResidencial() != null) {
-        PreparedStatement pst = conexao.prepareStatement(sql);
+        pst = conexao.prepareStatement(sql);
         pst.setInt(1, cliente.getId().intValue());
         pst.setInt(3, cliente.getEnderecoResidencial().getId().intValue());
         pst.setString(2, cliente.getEnderecoResidencial().getTipoEndereco());
@@ -33,7 +36,7 @@ public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
       }
       
       if(cliente.getEnderecoEntrega() != null) {
-        PreparedStatement pst = conexao.prepareStatement(sql);
+        pst = conexao.prepareStatement(sql);
         pst.setInt(1, cliente.getId().intValue());
         pst.setInt(3, cliente.getEnderecoEntrega().getId().intValue());
         pst.setString(2, cliente.getEnderecoEntrega().getTipoEndereco());
@@ -42,15 +45,12 @@ public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
       }
       
       if(cliente.getEnderecoCobranca() != null) {
-        PreparedStatement pst = conexao.prepareStatement(sql);
+        pst = conexao.prepareStatement(sql);
         pst.setInt(1, cliente.getId().intValue());
         pst.setInt(3, cliente.getEnderecoCobranca().getId().intValue());
         pst.setString(2, cliente.getEnderecoCobranca().getTipoEndereco());
         pst.execute(); 
-        pst.close();
-      }
-      
-      
+      }     
       
       resultado.setResultado(cliente);
       resultado.sucesso("Salvo com sucesso: CLIENTES_ENDERECO");           
@@ -58,6 +58,8 @@ public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.erro("Erro salvar: CLIENTES_ENDERECO");
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
         
     return resultado;
@@ -67,12 +69,14 @@ public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
   public Resultado consultar(EntidadeDominio entidade) {
     Cliente cliente = (Cliente) entidade;
     Resultado resultado = new Resultado();
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     String sql = "SELECT * from clientes_endereco WHERE cle_cli_id = ? ";
     
     try {
       
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setInt(1, cliente.getId().intValue());
       
       ResultSet rs = pst.executeQuery();
@@ -91,6 +95,8 @@ public class DAOClientes_Endereco extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.erro("Erro ao consultar: clientes_endereco");
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     } 
     
     return resultado;

@@ -240,12 +240,13 @@
 								</div>
 								<div class="panel-body">
 									<select name="endereco-entrega" class="form-control">
-
-                                        <c:forEach var="endereco" items="${sessionScope.enderecos}">
-    										<option class="cep-entrega" value="${endereco.id}">
-    											 ${endereco.logradouro}, ${endereco.numero} - ${endereco.cidade} - ${endereco.estado}
-    										<option>
-                                        </c:forEach>
+                      <c:forEach var="endereco" items="${sessionScope.enderecos}">
+												<c:if test="${endereco.tipoEndereco == 'ENTREGA'}"> 
+													<option class="cep-entrega" value="${endereco.id}">
+														${endereco.logradouro}, ${endereco.numero} - ${endereco.cidade} - ${endereco.estado}
+													</option>
+												</c:if>
+                      </c:forEach>
 									</select>
 									<!-- Fazer requisição para VHCliente com parametro Consultar e formName carrinho
 									Colocar um atributo na requisição ou sessão
@@ -268,17 +269,13 @@
 								<strong>Cartão 1</strong> 
 							</div>
 							<div class="panel-body">
-								<div class="input-group">
-								  <span class="input-group-addon" id="basic-addon1">Nome do titular</span>
-								  <input name="nome-titular" type="text" class="form-control" aria-describedby="basic-addon1">
-								</div>
 								<select name="numero-cartao1" class="form-control">
-								<option></option>
-                                    <c:forEach var="cartao" items="${sessionScope.cartoes}">
+								<option>Selecione</option>
+                    <c:forEach var="cartao" items="${sessionScope.cartoes}">
     									<option value="${cartao.id}">
-    										${cartao.bandeira.nome} - ${cartao.numero} - ${cartao.nomeTitular}
+    										Número: ${cartao.numero}  - ${cartao.bandeira.nome}
     									</option>
-                                    </c:forEach>
+                    </c:forEach>
 								</select>
 								<div class="input-group">
 								  <span class="input-group-addon" name="cod-seguranca1" id="basic-addon1">Cod. de segurança</span>
@@ -295,17 +292,13 @@
 								<strong>Cartão 2</strong> 
 							</div>
 							<div class="panel-body">
-								<div class="input-group">
-								  <span class="input-group-addon" id="basic-addon1">Nome do titular</span>
-								  <input name="nome-titular" type="text" class="form-control" aria-describedby="basic-addon1">
-								</div>	
 								<select name="numero-cartao2" class="form-control">
-                                   <option></option>
-                                   <c:forEach var="cartao" items="${sessionScope.cartoes}">
+                  <option>Selecione</option>
+                  <c:forEach var="cartao" items="${sessionScope.cartoes}">
 									 <option value="${cartao.id}">
-										${cartao.bandeira.nome} - ${cartao.numero} - ${cartao.nomeTitular}
+										Número: ${cartao.numero}  - ${cartao.bandeira.nome}
 									 </option>
-                                    </c:forEach>
+                  </c:forEach>
 								</select>										
 								<div class="input-group">
 								  <span class="input-group-addon" id="basic-addon1">Cod. de segurança</span>
@@ -326,9 +319,9 @@
 								<h2>Cupons</h2>
 							</div>
 								<div class="panel panel-default">
-                                   <c:forEach var="cupom" items="${sessionScope.cuponsPromocionais}">
-                                        <h4 class="panel-heading">Promocionais</h4>
-                                        <input type="radio" style="display:none" value="0" name="cupom-promocional" selected>
+									<c:forEach var="cupom" items="${sessionScope.cuponsPromocionais}">
+											<h4 class="panel-heading">Promocionais</h4>
+											<input type="radio" style="display:none" value="0" name="cupom-promocional" selected>
     									<ul class="list-group">
     										<li class="list-group-item">
     											<input type="radio" value="${cupom.id}" onclick="cupomPromocionalSelecionado(this,${cupom.valor})" id="cupomPromo" name="cupom-promocional">
@@ -337,12 +330,12 @@
     											<strong>Valor:</strong>${cupom.valor}<br>
     											<label>Validade:</label> ${cupom.dataDeValidade}<br>
     										</li>
-                                        </ul>
-                                    </c:forEach>
+											</ul>
+									</c:forEach>
                                     
-                                    <c:forEach var="cupomT" items="${sessionScope.cuponsTroca}">
-                                        <h4 class="panel-heading">Troca</h4>
-                                        <ul class="list-group">
+									<c:forEach var="cupomT" items="${sessionScope.cuponsTroca}">
+											<h4 class="panel-heading">Troca</h4>
+											<ul class="list-group">
     										<li class="list-group-item">
     											<input type="checkbox" value="${cupomT.id}" onclick="cupomTrocaSelecionado(this,${cupomT.valor})" id="cupomTroca" name="cupom-troca">
     											<strong>Tipo: </strong>${cupomT.tipo}<br>
@@ -351,7 +344,7 @@
     											<label>Validade:</label> ${cupomT.dataDeValidade}<br>
     										</li>              														
 									   </ul>
-                                    </c:forEach>
+                  </c:forEach>
 								</div>
 						</div>
                         <button  name="operacao" value="SALVAR" type="submit" class="btn btn-fefault cart right">
@@ -377,31 +370,21 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-sm-12">
-							
 							<div class="row">
-                               <div class="col-sm-9"> 
-    								<label for="escolher-endereco0">
-    									<input type="radio" id="end0" name="escolher-endereco0" checked>
-    									<h4>Endereço Residencial </h4>
-    									<p>	
-    										${enderecoResidencial.tipoLogradouro.tipo} ${enderecoResidencial.logradouro}, ${enderecoResidencial.numero} - 
-    										${enderecoResidencial.numero} - ${enderecoResidencial.cidade} ${enderecoResidencial.estado}
-    									</p>		
-    								</label>
-                               </div>	
+								<c:forEach var="endereco" items="${sessionScope.enderecos}">
+									<c:if test="${endereco.tipoEndereco != 'ENTREGA'}">
+											<div class="col-sm-9"> 
+												<label for="escolher-endereco0">
+													<h4>${endereco.tipoEndereco}</h4>
+													<input type="radio" id="end0" name="escolher-endereco1">														
+													${endereco.tipoLogradouro.tipo} ${endereco.logradouro}, ${endereco.numero} - 
+													${endereco.cidade} - ${endereco.estado}
+															
+												</label>
+											</div>
+									</c:if>	
+								</c:forEach>		
 							</div>
-                            <div class="row">
-    							<div class="col-sm-9">
-    								<label for="escolher-endereco1">
-    									<input type="radio" id="end2" name="escolher-endereco1">
-    									<h4>Endereço Cobrança</h4>
-    									<p>
-    										${enderecoCobranca.tipoLogradouro.tipo} ${enderecoCobranca.logradouro}, ${enderecoCobranca.numero} - 
-    										${enderecoCobranca.numero} - ${enderecoCobranca.cidade} ${enderecoCobranca.estado}
-    									</p>
-    								</label>						
-    							</div>
-                           </div>
 					 </div>
 				  </div>
 			 </div>

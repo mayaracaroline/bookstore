@@ -281,7 +281,11 @@
 													<tr>
 														<td>Quantidade de páginas</td>
 														<td>${sessionScope.livro.quantidadePaginas}</td>	
-													</tr>														
+													</tr>	
+                                                    <tr>
+                                                      <td>Código de barras</td>
+                                                      <td>${sessionScope.livro.codigoBarras}</td>  
+                                                    </tr> 													
 												</tbody>
 											</table>
                                             <input type="hidden" name="autor" value="${sessionScope.livro.autor}"/>
@@ -293,6 +297,7 @@
                                             <input type="hidden" name="genero" value="${sessionScope.categoria.descricao}">
                                             <input type="hidden" name="editora" value="${sessionScope.livro.editora}">
                                             <input type="hidden" name="isbn" value="${sessionScope.livro.isbn}" >
+                                            <input type="hidden" name="codBarras" value="${sessionScope.livro.codigoBarras}" >
                                             <input type="hidden" name="quantidadePaginas" value="${sessionScope.livro.quantidadePaginas}">
 						</div>	
                     </form>			

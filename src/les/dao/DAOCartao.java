@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import dominio.Bandeira;
 import dominio.Cartao;
 import dominio.EntidadeDominio;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOCartao extends AbstractDAO implements IDAO {
@@ -15,12 +16,13 @@ public class DAOCartao extends AbstractDAO implements IDAO {
   public Resultado salvar(EntidadeDominio entidade) {
     Resultado resultado = new Resultado();
     Cartao cartao = (Cartao) entidade;
-    
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     String sql = "INSERT INTO cartoes (car_nome_titular, car_numero, car_ban_id, car_cod_seguranca, car_preferencial) VALUES (?, ?, ?, ?, ?)";
     
     try {
       
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setString(1, cartao.getNomeTitular());
       pst.setString(2, cartao.getNumero());
       pst.setInt(3, cartao.getBandeira().getId().intValue());
@@ -28,8 +30,6 @@ public class DAOCartao extends AbstractDAO implements IDAO {
       pst.setBoolean(5, cartao.isPreferencial());
       
       pst.execute();
-      
-      pst.close();
       
       BigInteger id = BigInteger.ZERO;
       ResultSet rs = pst.getGeneratedKeys();
@@ -46,19 +46,23 @@ public class DAOCartao extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       resultado.erro("Erro ao cadastrar cartão");
       e.printStackTrace();
-    } 
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
+    }
     
     return resultado;
-  }
+  } 
 
   @Override
   public Resultado consultar(EntidadeDominio entidade) {
     Cartao cartao = (Cartao) entidade;
     Resultado resultado = new Resultado();
     String sql = "SELECT * FROM cartoes WHERE car_id = ?";
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setInt(1, cartao.getId().intValue());
       
       ResultSet rs = pst.executeQuery();
@@ -85,13 +89,15 @@ public class DAOCartao extends AbstractDAO implements IDAO {
         cartao.getBandeira().setNome(a); 
       }
 
-      
+      pst1.close();
       resultado.sucesso("Cartão encontrado");
       resultado.setResultado(cartao);
       
     } catch (Exception e) {
       resultado.erro("Cartão não encontrado");
       e.printStackTrace();
+    }  finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     
     return resultado;

@@ -75,12 +75,12 @@
                           <a class="" href="cadastraProduto.jsp">
 							<span class="fa fa-arrow-right">&nbsp;</span> Cadastrar
 						  </a>
-                        </li>
-                        <li>
-                          <a class="" href="./alteraProduto.jsp">
-                            <span class="fa fa-arrow-right">&nbsp;</span> Alterar
-                          </a>
-                        </li>
+								</li>
+								<li>
+									<a class="" href="./consultaProduto.jsp">
+										<span class="fa fa-arrow-right">&nbsp;</span> Alterar
+									</a>
+								</li>
 						<li><a class="" href="./consultaProduto.jsp">
 							<span class="fa fa-arrow-right">&nbsp;</span> Consultar
 						</a></li>												

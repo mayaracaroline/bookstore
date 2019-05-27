@@ -144,11 +144,11 @@
       <div class="col-sm-3">
           <div class="input-group">
             <span class="input-group-addon">CEP</span>
-            <input type="text" class="form-control" value="" name="cep" onblur="calcularFrete(this.value, 'carrinho')">
+            <input type="text" id="frete" class="form-control" value="" name="cep" onblur="calcularFrete(this.value, 'carrinho')">
           </div>                                                                
           <div class="input-group">
             <span class="input-group-addon">R$</span>
-            <input type="text" id="frete" class="form-control" value="${sessionScope.frete}">
+            <input type="text" id="frete" class="form-control" value="${sessionScope.frete}" readonly>
             <span class="input-group-addon">.00</span>  
           </div>   
           <input type="hidden"  value="${sessionScope.frete}" name="tipo-entrega" readonly>             

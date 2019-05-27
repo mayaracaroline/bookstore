@@ -42,7 +42,7 @@ public class VHUsuario implements IViewHelper {
     ArrayList<Cartao> cartoes = new ArrayList<>();
     ArrayList<Cupom> cuponsPromocionais = new ArrayList<>();
     ArrayList<Cupom> cuponsTroca = new ArrayList<>();
-    
+
     for(int i = 0; i < resultados.size(); i++) {
       enderecos.add((Endereco)resultados.get(i));    
     }
@@ -50,7 +50,6 @@ public class VHUsuario implements IViewHelper {
     resultados =  mapUsuario.get("CARTAO");
 
     for(int i = 0; i < resultados.size(); i++) {
-      System.out.println("id: "+resultados.get(i).getId());
       cartoes.add((Cartao)resultados.get(i));    
     }
     

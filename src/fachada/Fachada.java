@@ -12,6 +12,8 @@ import dominio.EntidadeDominio;
 import dominio.Livro;
 import dominio.PedidoDeCompra;
 import dominio.Usuario;
+import les.command.CommandCalcularFrete;
+import les.command.ICommand;
 import les.dao.DAOCliente;
 import les.dao.DAOLivro;
 import les.dao.DAOPedidoDeCompra;
@@ -44,6 +46,7 @@ import les.negocio.StValidarValorExcendenteAoPagamento;
 import les.negocio.StValidarValorMinimoParaPagamentoComCartao;
 import servico.CalcularFrete;
 import servico.CarrinhoServico;
+import servico.IServico;
 import servico.PedidoServico;
 import util.Resultado;
 
@@ -56,8 +59,10 @@ public class Fachada implements IFachada  {
 	private Map<String, List<IStrategy>> rnsValidarDadosCompra;
 	private Map<String, List<IStrategy>> rnsValidarEndereco;
 	private Map<String, List<IStrategy>> rnsGerenciarPedido;
-	private Map<String, IDAO> mapDAO;
 	private Map<String, Map<String, List<IStrategy>>> rns;
+	
+   private Map<String, IDAO> mapDAO;
+   private Map<String, IServico> mapServico;
 	
 	private List<IStrategy> listStrategySalvarProduto;
 	private List<IStrategy> listStrategyConsultarProduto;
@@ -95,6 +100,10 @@ public class Fachada implements IFachada  {
 		mapDAO.put("CLIENTE", new DAOCliente());
 		mapDAO.put("USUARIO", new DAOUsuario());
 		mapDAO.put("PEDIDODECOMPRA", new DAOPedidoDeCompra());
+		
+		mapServico = new HashMap<String, IServico>();
+		
+		mapServico.put(CommandCalcularFrete.class.getSimpleName(), new CalcularFrete());	
 
 		listStrategySalvarProduto = new ArrayList<IStrategy>();
 		listStrategyConsultarProduto = new ArrayList<IStrategy>();
@@ -154,8 +163,7 @@ public class Fachada implements IFachada  {
 
 		listStrategyCalcularFrete.add(new StValidarCepInformado());
 
-		listStrategyAlterarPedido = new ArrayList<IStrategy>();
-		
+		listStrategyAlterarPedido = new ArrayList<IStrategy>();		
 		
 		rnsProduto.put("SALVAR", listStrategySalvarProduto);
 		rnsProduto.put("CONSULTAR", listStrategyConsultarProduto);
@@ -171,8 +179,6 @@ public class Fachada implements IFachada  {
 		rnsCliente.put("CONSULTAR", listStrategyConsultarCliente);
 		
 		rnsAutenticarUsuario.put("CONSULTAR",listStrategyAutenticarUsuario);
-		
-
 		
 		rnsValidarEndereco.put("CALCULARFRETE", listStrategyCalcularFrete);
 		
@@ -368,6 +374,20 @@ public class Fachada implements IFachada  {
     if (!resultado.getErro()) {
       PedidoServico servico = new PedidoServico();
        resultado = servico.confirmarEntrega(entidade);
+    }
+    
+    return resultado; 
+  }
+
+  @Override
+  public Resultado chamarServico(EntidadeDominio entidade, String service) {
+    
+    Resultado resultado = new Resultado();
+    resultado = validarStrategys(entidade, service.toUpperCase().substring(7));
+    
+    if (!resultado.getErro()) {
+      IServico servico = mapServico.get(service);
+       resultado = servico.executarServico(entidade);
     }
     
     return resultado; 

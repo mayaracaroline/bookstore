@@ -16,6 +16,7 @@ import dominio.EntidadeDominio;
 import dominio.TipoCupom;
 import dominio.TipoLogradouro;
 import dominio.Usuario;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOUsuario extends AbstractDAO implements IDAO {
@@ -30,13 +31,15 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
   public Resultado consultar(EntidadeDominio entidade) {
     Resultado resultado = new Resultado();
     Usuario usuario = (Usuario) entidade;
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
 
     String sql = "SELECT cli_id FROM clientes WHERE cli_email = ?";
     HashMap<String, ArrayList<EntidadeDominio>> mapUsuario = new HashMap<>();
     ArrayList<EntidadeDominio> enderecos = new ArrayList<>();
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setString(1, usuario.getUsername());
       ResultSet rs = pst.executeQuery();
       int idCliente = -1;
@@ -54,6 +57,8 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
      
       DAOEndereco  daoEndereco = new DAOEndereco();  
       
+      
+      
       for (int i = 0; i < enderecos.size(); i++) {
         Endereco novoEndereco = new Endereco();
         Endereco end = new Endereco();
@@ -66,7 +71,7 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
             .getResultado();
         enderecos.set(i, novoEndereco);     
       }
-      
+
       DAOCartoesCliente daoCartoes = new DAOCartoesCliente();
       Resultado resultadoCli = daoCartoes.consultar(cliente);
       ArrayList<EntidadeDominio> cartoes = new ArrayList<>();
@@ -110,6 +115,8 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
                  
     } catch (Exception e) {
       resultado.erro("Erro ao autenticar usuário");
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
 
     return resultado;
@@ -136,9 +143,11 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
   public boolean buscarUsuario (EntidadeDominio entidade) {
     Usuario usuario = (Usuario) entidade;
     String sql = "SELECT cli_email, cli_senha FROM clientes  WHERE  cli_email = ?";
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setString(1, usuario.getUsername());
       
       ResultSet rs = pst.executeQuery();
@@ -149,6 +158,8 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
       
     } catch (Exception e) {
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     
     return true;
@@ -159,12 +170,13 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
     
     Usuario usuario = (Usuario) entidade;
     Usuario novoUsuario = new Usuario();
-    
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     String sql = "SELECT cli_email, cli_senha FROM clientes  WHERE  cli_email = ?";
     
     try {
       
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setString(1, usuario.getUsername());
       
       ResultSet rs = pst.executeQuery();
@@ -177,6 +189,8 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
     } catch (Exception e) {
       
       e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
         
     return novoUsuario;

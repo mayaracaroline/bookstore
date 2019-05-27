@@ -52,7 +52,8 @@ public class StConsultarQuantidadeEstoque implements IStrategy {
     }
  
     Estoque estoque = (Estoque) resultado.getResultado();
-    Integer quantidadeEmEstoque = estoque.getQuantidade(); 
+    Integer quantidadeEmEstoque = estoque.getQuantidade();
+    System.out.println("Quantidade em estoque: " + quantidadeEmEstoque );
     Integer quantidadeDisponivel = quantidadeEmEstoque - quantidadeDeItensBloqueados ;
    
     if(quantidadeAInserir > quantidadeDisponivel) {

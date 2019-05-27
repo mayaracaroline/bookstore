@@ -17,6 +17,7 @@ import dominio.Genero;
 import dominio.Telefone;
 import dominio.TipoTelefone;
 import dominio.Usuario;
+import util.ConnectionFactory;
 import util.Resultado;
 
 public class DAOCliente extends AbstractDAO implements IDAO {
@@ -25,14 +26,13 @@ public class DAOCliente extends AbstractDAO implements IDAO {
   public Resultado salvar(EntidadeDominio entidade) {
     Resultado resultado = new Resultado();
     Cliente cliente = (Cliente) entidade;
-    
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement preparedStatement = null;
   
     String sql = "INSERT INTO clientes (cli_cpf, cli_genero, cli_data_nascimento, "
         + "cli_nome, cli_sobrenome, cli_telefone, cli_email, cli_senha, "
         + "cli_status, cli_data_cadastro, cli_ddd, cli_tipo_telefone) "
         + "VALUES(?, ?, ?, ?, ?, ?, ?, ? ,? , ?, ?, ?);";
-    
-    PreparedStatement preparedStatement; 
     
     try {
       preparedStatement = conexao.prepareStatement(sql);
@@ -90,13 +90,15 @@ public class DAOCliente extends AbstractDAO implements IDAO {
       DAOCartoesCliente daoCartoesCli = new DAOCartoesCliente();
       
       daoCartoesCli.salvar(cliente);      
-      preparedStatement.close();
+
       resultado.sucesso("Cliente salvo com sucesso");
       
     } catch (Exception e) {
       resultado.erro("Erro ao salvar cliente");
       e.printStackTrace();
-    } 
+    } finally {
+      ConnectionFactory.closeConnection(preparedStatement, conexao);
+    }
     
     resultado.setResultado(cliente);
     return resultado;
@@ -106,11 +108,12 @@ public class DAOCliente extends AbstractDAO implements IDAO {
   public Resultado consultar(EntidadeDominio entidade) {
     Resultado resultado = new Resultado();
     Cliente cliente = (Cliente) entidade;
-    
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
     String sql = "SELECT * FROM clientes WHERE cli_id = ? ";
     
     try {
-      PreparedStatement pst = conexao.prepareStatement(sql);
+      pst = conexao.prepareStatement(sql);
       pst.setInt(1, cliente.getId().intValue());
       
       ResultSet rs = pst.executeQuery();
@@ -155,12 +158,13 @@ public class DAOCliente extends AbstractDAO implements IDAO {
       cliente.setEnderecoEntrega((Endereco)rsEnderecoEntrega.getResultado());
       cliente.setEnderecoCobranca((Endereco)rsEnderecoCobranca.getResultado());
      
-      pst.close();
       resultado.sucesso("Consulta realizada com sucesso");
       resultado.setResultado(cliente);
     } catch (Exception e) {
       resultado.erro("Erro ao consultar cliente");
       e.printStackTrace();
+    }  finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     
     return resultado;

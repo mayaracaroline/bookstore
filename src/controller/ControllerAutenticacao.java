@@ -28,7 +28,7 @@ import les.command.CommandExcluir;
 import les.command.CommandInativar;
 import les.command.CommandSalvar;
 import les.command.ICommand;
-import util.Conexao;
+import util.ConnectionFactory;
 import util.Resultado;
 import viewhelper.IViewHelper;
 import viewhelper.VHUsuario;
