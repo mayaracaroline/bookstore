@@ -184,7 +184,7 @@ public class VHEndereco implements IViewHelper {
     enderecos.get(1).setDescricao("ENDEREÇO ENTREGA");
     enderecos.get(2).setDescricao("ENDEREÇO COBRANÇA");
     
-    String cepEntrega = Formatter.formatString(request.getParameter("cep").trim().replace("-", ""));
+    String cepEntrega = Formatter.formatString(request.getParameter("cep1").trim().replace("-", ""));
     
     endereco.setCep(cepEntrega);
     

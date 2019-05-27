@@ -201,7 +201,7 @@
                                         <input type="hidden" name="formName" value="checkout">
                                         <div class="input-group">
                                           <span class="input-group-addon">CEP</span>
-                                          <input type="text" class="form-control" value="" name="cep" onchange="calcularFrete(this.value,'checkout')" >
+                                          <input type="text" class="form-control" value="" name="cep1" onchange="calcularFrete(this.value,'checkout')" >
                                         </div>                                                                
                                         <div class="input-group">
                                           <span class="input-group-addon">R$</span>

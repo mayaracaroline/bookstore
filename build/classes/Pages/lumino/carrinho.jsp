@@ -144,7 +144,7 @@
       <div class="col-sm-3">
           <div class="input-group">
             <span class="input-group-addon">CEP</span>
-            <input type="text" id="frete" class="form-control" value="" name="cep" onblur="calcularFrete(this.value, 'carrinho')">
+            <input type="text" id="frete" class="form-control" value="" name="cep1" onblur="calcularFrete(this.value, 'carrinho')">
           </div>                                                                
           <div class="input-group">
             <span class="input-group-addon">R$</span>

@@ -13,6 +13,10 @@ import dominio.Livro;
 import dominio.PedidoDeCompra;
 import dominio.Usuario;
 import les.command.CommandCalcularFrete;
+import les.command.CommandCarrinhoAdicionar;
+import les.command.CommandCarrinhoAlterar;
+import les.command.CommandCarrinhoExcluir;
+import les.command.CommandConfirmaEntrega;
 import les.command.ICommand;
 import les.dao.DAOCliente;
 import les.dao.DAOLivro;
@@ -48,10 +52,28 @@ import servico.CalcularFrete;
 import servico.CarrinhoServico;
 import servico.IServico;
 import servico.PedidoServico;
+import servico.carrinho.CarrinhoAdicionar;
+import servico.carrinho.CarrinhoAlterar;
+import servico.carrinho.CarrinhoExcluir;
 import util.Resultado;
 
 public class Fachada implements IFachada  {
-	
+  
+  /* *
+   * Mapa de regras de negocio que possui como chave 
+   * o nome da entidade e como valor um outro mapa o
+   * qual armazena em sua estrutura: operacao a ser
+   * realizada e regras de negocio por operacao 
+   * */
+  private Map<String, Map<String, List<IStrategy>>> rns;
+  
+  /* *
+   * Mapa de regras de negocio que possui como chave 
+   * a operacao a ser realizada e como valor uma 
+   * lista de regras de negócios representadas por
+   * Strategys  para cada operacao especifica. 
+   * */
+  
 	private Map<String, List<IStrategy>> rnsProduto;
 	private Map<String, List<IStrategy>> rnsCliente;
 	private Map<String, List<IStrategy>> rnsBloqueioProduto;
@@ -59,32 +81,51 @@ public class Fachada implements IFachada  {
 	private Map<String, List<IStrategy>> rnsValidarDadosCompra;
 	private Map<String, List<IStrategy>> rnsValidarEndereco;
 	private Map<String, List<IStrategy>> rnsGerenciarPedido;
-	private Map<String, Map<String, List<IStrategy>>> rns;
 	
-   private Map<String, IDAO> mapDAO;
-   private Map<String, IServico> mapServico;
-	
+	/* Listas de regras de negocio relacionadas a entidade
+	 * Produto: */
 	private List<IStrategy> listStrategySalvarProduto;
 	private List<IStrategy> listStrategyConsultarProduto;
 	private List<IStrategy> listStrategyExcluirProduto;
 	private List<IStrategy> listStrategyAlterarProduto;
 	private List<IStrategy> listStrategyInativarProduto;
-	
+
+	/* Listas de regras de negocio relacionadas a entidade
+   * Cliente: */
 	private List<IStrategy> listStrategySalvarCliente;
 	private List<IStrategy> listStrategyConsultarCliente;
+	
+  /* Listas de regras de negocio relacionadas a entidade
+   * Bloqueio: */	
 	private List<IStrategy> listStrategySalvarBloqueioProduto;
 	private List<IStrategy> listStrategyAlterarBloqueioProduto;
 	private List<IStrategy> listStrategyExcluirBloqueioProduto;
-	private List<IStrategy> listStrategyAlterarPedido;
 	
+	/* Listas de regras de negocio relacionadas a entidade
+	 * PedidoDeCompra: */
 	private List<IStrategy> listStrategySalvarCompra;
-	
-	 private List<IStrategy> listStrategyAutenticarUsuario;
-	 
-	 private List<IStrategy> listStrategyCalcularFrete; 
-	 private List<IStrategy> listStrategyConsultarCompra; 
+  private List<IStrategy> listStrategyConsultarCompra; 
+  private List<IStrategy> listStrategyAlterarPedido;  
+  
+  /* Listas de regras de negocio relacionadas a entidade
+   * Usuario: */
+  private List<IStrategy> listStrategyAutenticarUsuario;
+  
+  /* Listas de regras de negocio relacionadas a entidade
+   * Endereco: */	 
+	private List<IStrategy> listStrategyCalcularFrete; 
+
+	/* Mapa que possui com chave o nome da entidade 
+	 * e como valor a instancia da DAO especifica */
+  private Map<String, IDAO> mapDAO;
+  
+  /* Mapa que possui com chave o nome da command 
+   * e como valor a instancia do servico especifico */  
+  private Map<String, IServico> mapServico;
 	 
 	public Fachada() {
+	  
+    /* Regras de negócio por entidade */	  
 	  rns = new HashMap<String, Map<String, List<IStrategy>>>();
 		rnsProduto = new HashMap<String, List<IStrategy>>();
 		rnsCliente = new HashMap<String, List<IStrategy>>();
@@ -94,17 +135,7 @@ public class Fachada implements IFachada  {
     rnsValidarEndereco = new HashMap<String, List<IStrategy>>(); 
     rnsGerenciarPedido = new HashMap<String, List<IStrategy>>();
     
-		mapDAO = new HashMap<String, IDAO>();
-		
-		mapDAO.put("LIVRO", new DAOLivro());
-		mapDAO.put("CLIENTE", new DAOCliente());
-		mapDAO.put("USUARIO", new DAOUsuario());
-		mapDAO.put("PEDIDODECOMPRA", new DAOPedidoDeCompra());
-		
-		mapServico = new HashMap<String, IServico>();
-		
-		mapServico.put(CommandCalcularFrete.class.getSimpleName(), new CalcularFrete());	
-
+    /* Regras de negócio por operacao X entidade */
 		listStrategySalvarProduto = new ArrayList<IStrategy>();
 		listStrategyConsultarProduto = new ArrayList<IStrategy>();
 		listStrategyExcluirProduto = new ArrayList<IStrategy>();
@@ -114,42 +145,41 @@ public class Fachada implements IFachada  {
     listStrategyAlterarBloqueioProduto = new ArrayList<IStrategy>();
     listStrategyExcluirBloqueioProduto = new ArrayList<IStrategy>();
     listStrategyCalcularFrete = new ArrayList<IStrategy>();
-		
+    listStrategySalvarCliente = new ArrayList<IStrategy>();
+    listStrategyConsultarCliente = new ArrayList<IStrategy>();  
+    listStrategySalvarCompra = new ArrayList<IStrategy>();
+    listStrategyConsultarCompra = new ArrayList<IStrategy>();
+    listStrategyAlterarPedido = new ArrayList<IStrategy>();   
+    
+    /* Regras de negócio: PRODUTO */
 		listStrategySalvarProduto.add(new StValidarDadosObrigatoriosLivro());
 		listStrategySalvarProduto.add(new StValidarMotivoAtivacao());
 		listStrategySalvarProduto.add(new StComplementarGeneroLiterario());
-		listStrategySalvarProduto.add(new StValidarExistencia());
-		
+		listStrategySalvarProduto.add(new StValidarExistencia());		
 		listStrategyConsultarProduto.add(new StValidarIdInserido());
-		listStrategyConsultarProduto.add(new StValidarLivroExclusaoEAlteracao());
-		
+		listStrategyConsultarProduto.add(new StValidarLivroExclusaoEAlteracao());		
 		listStrategyExcluirProduto.add(new StValidarIdInserido());
-		listStrategyExcluirProduto.add(new StValidarLivroExclusaoEAlteracao());
-		
+		listStrategyExcluirProduto.add(new StValidarLivroExclusaoEAlteracao());		
 		listStrategyAlterarProduto.add(new StValidarIdInserido());
 		listStrategyAlterarProduto.add(new StValidarLivroExclusaoEAlteracao());
-		
 		listStrategyInativarProduto.add(new StValidarIdInserido());
 		listStrategyInativarProduto.add(new StValidarLivroExclusaoEAlteracao());
 		listStrategyInativarProduto.add(new StValidarMotivoCategoriaInativacao());
 		
+		/* Regras de negócio: BLOQUEIO (pedido) */
 		listStrategySalvarBloqueioProduto.add(new StConsultarQuantidadeEstoque());
 		listStrategySalvarBloqueioProduto.add(new StValidarExistenciaCarrinhoSessao());
-		
 		listStrategyAlterarBloqueioProduto.add(new StValidarQuantidadeAIncluirOuExcluirCarrinho());
 		
-		listStrategySalvarCliente = new ArrayList<IStrategy>();
-    listStrategySalvarCliente.add(new StValidarDadosObrigatoriosCliente());
-		
-    listStrategyConsultarCliente = new ArrayList<IStrategy>();				
+		/* Regras de negócio: CLIENTE */
+    listStrategySalvarCliente.add(new StValidarDadosObrigatoriosCliente());		
 		listStrategyConsultarCliente.add(new StValidarIdConsultaCliente());
 		
+		/* Regras de negócio: USUARIO */
 		listStrategyAutenticarUsuario = new ArrayList<IStrategy>();
 		listStrategyAutenticarUsuario.add(new StValidarUsuarioExistente());
 		
-		listStrategySalvarCompra = new ArrayList<IStrategy>();
-    listStrategyConsultarCompra = new ArrayList<IStrategy>();
-		
+		/* Regras de negócio: PEDIDO DE COMPRA */	
 		listStrategySalvarCompra.add(new StValidarClienteLogado());
 		listStrategySalvarCompra.add(new StValidarCarrinhoExpirado());
 		listStrategySalvarCompra.add(new StValidarDadosObrigatoriosCompra()); 
@@ -161,39 +191,62 @@ public class Fachada implements IFachada  {
     listStrategySalvarCompra.add(new StInativarCupom()); 
     listStrategySalvarCompra.add(new StGerarCodigoCompra());
 
+    /* Regras de negócio: ENDERECO */
 		listStrategyCalcularFrete.add(new StValidarCepInformado());
-
-		listStrategyAlterarPedido = new ArrayList<IStrategy>();		
 		
+		/* Regras de negócio por operacao: */
+		
+		/* PRODUTO */
 		rnsProduto.put("SALVAR", listStrategySalvarProduto);
 		rnsProduto.put("CONSULTAR", listStrategyConsultarProduto);
 		rnsProduto.put("EXCLUIR", listStrategyExcluirProduto);
 		rnsProduto.put("ALTERAR", listStrategyAlterarProduto);
 		rnsProduto.put("INATIVAR", listStrategyInativarProduto);
 		
+		/* BLOQUEIO PRODUTO */
 		rnsBloqueioProduto.put("SALVAR", listStrategySalvarBloqueioProduto);
 		rnsBloqueioProduto.put("ALTERAR", listStrategyAlterarBloqueioProduto);
 		rnsBloqueioProduto.put("EXCLUIR", listStrategyExcluirBloqueioProduto);
 		
+		/* CLIENTE */
 		rnsCliente.put("SALVAR", listStrategySalvarCliente);
 		rnsCliente.put("CONSULTAR", listStrategyConsultarCliente);
 		
+		/* USUARIO */
 		rnsAutenticarUsuario.put("CONSULTAR",listStrategyAutenticarUsuario);
 		
+		/* ENDERECO */
 		rnsValidarEndereco.put("CALCULARFRETE", listStrategyCalcularFrete);
 		
+		/* PEDIDO DE COMPRA */
 		rnsGerenciarPedido.put("SALVAR", listStrategySalvarCompra);
 		rnsGerenciarPedido.put("CONSULTAR", listStrategyConsultarCompra);
 		rnsGerenciarPedido.put("COLOCAREMTRANSPORTE", listStrategyAlterarPedido);
 		rnsGerenciarPedido.put("CONFIRMARENTREGA", listStrategyAlterarPedido);
 		
+		/* Regras de negócio por entidade */
     rns.put(Livro.class.getSimpleName().toUpperCase(), rnsProduto);
     rns.put(Cliente.class.getSimpleName().toUpperCase(), rnsCliente);
     rns.put(Bloqueio.class.getSimpleName().toUpperCase(), rnsBloqueioProduto);
     rns.put(Usuario.class.getSimpleName().toUpperCase(), rnsAutenticarUsuario);
     rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsGerenciarPedido);
-//    rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsValidarDadosCompra);
-    rns.put(Endereco.class.getSimpleName().toUpperCase(), rnsValidarEndereco);
+    rns.put(Endereco.class.getSimpleName().toUpperCase(), rnsValidarEndereco);  
+//  rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsValidarDadosCompra);    
+    
+    /* Mapa de servico por command */
+    mapServico = new HashMap<String, IServico>();
+    mapServico.put(CommandCalcularFrete.class.getSimpleName(), new CalcularFrete());
+    mapServico.put(CommandCarrinhoAdicionar.class.getSimpleName(), new CarrinhoAdicionar()); 
+    mapServico.put(CommandCarrinhoAlterar.class.getSimpleName(), new CarrinhoAlterar());
+    mapServico.put(CommandCarrinhoExcluir.class.getSimpleName(), new CarrinhoExcluir());
+    mapServico.put(CommandConfirmaEntrega.class.getSimpleName(), new CarrinhoAdicionar());
+    
+    /* Mapa de DAO por entidade */
+    mapDAO = new HashMap<String, IDAO>();
+    mapDAO.put("LIVRO", new DAOLivro());
+    mapDAO.put("CLIENTE", new DAOCliente());
+    mapDAO.put("USUARIO", new DAOUsuario());
+    mapDAO.put("PEDIDODECOMPRA", new DAOPedidoDeCompra());
 				
 	}
 	
@@ -380,13 +433,15 @@ public class Fachada implements IFachada  {
   }
 
   @Override
-  public Resultado chamarServico(EntidadeDominio entidade, String service) {
+  public Resultado chamarServico(EntidadeDominio entidade, String command) {
     
     Resultado resultado = new Resultado();
-    resultado = validarStrategys(entidade, service.toUpperCase().substring(7));
+    String operacao = command.toUpperCase().substring(7);
+    
+    resultado = validarStrategys(entidade, operacao );
     
     if (!resultado.getErro()) {
-      IServico servico = mapServico.get(service);
+      IServico servico = mapServico.get(command);
        resultado = servico.executarServico(entidade);
     }
     
