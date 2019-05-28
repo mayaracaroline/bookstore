@@ -228,16 +228,31 @@ async function excluirItemCarrinho(id) {
 	return dados;
 }
 
-async function calcularFrete(cep, formName) {
-	let dados = await fetch('/livraria/Pages/lumino/calcularFrete?operacao=CALCULARFRETE&cep='+cep+'&formName='+formName, {method: 'post'})
-	
-	if(formName === 'checkout') {
-		location.href="/livraria/Pages/lumino/checkout.jsp";		
-	} else {
-		location.href="/livraria/Pages/lumino/carrinho.jsp";
-	}
+async function buscarDadosEntrega(cep, formName) {
+	let url = '/livraria/Pages/lumino/calcularFrete?operacao=CALCULARFRETE&cep1='+cep+'&formName='+formName
 
-	return dados;
+	let dados = await fetch(url, {
+				method: 'post',      
+				headers: {
+		        Accept: 'application/json',
+		        'Content-Type': 'application/json',
+		      }})
+	
+	let JSONDados = await dados.json();
+
+	return JSONDados;
+}
+
+async function calcularFrete(cep, formName) {
+	
+	const inputFrete  = document.getElementById('frete')
+	
+	const dadosEntrega = await buscarDadosEntrega(cep, formName);	
+	
+	const { frete } = dadosEntrega;
+	
+	inputFrete.value = frete;
+		
 }
 
 let checkBoxStatus = document.getElementById('status');

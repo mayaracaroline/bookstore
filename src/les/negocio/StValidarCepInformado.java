@@ -2,6 +2,7 @@ package les.negocio;
 
 import dominio.Endereco;
 import dominio.EntidadeDominio;
+import util.Formatter;
 
 public class StValidarCepInformado implements IStrategy {
 
@@ -14,7 +15,10 @@ public class StValidarCepInformado implements IStrategy {
     if (cep.trim().replace("-", "").length() != 8) {
       mensagem = "Digite um CEP válido";
     }
-    System.out.println("Strategy" + mensagem);
+    if (Formatter.stringToInt(cep.trim().substring(0, 1)) < 0) {
+      mensagem = "Digite um CEP válido";
+    }
+
     return mensagem;
   }
 

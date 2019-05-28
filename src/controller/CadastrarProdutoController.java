@@ -46,6 +46,7 @@ import viewhelper.VHBloqueio;
 import viewhelper.VHCadastrarProduto;
 import viewhelper.VHCliente;
 import viewhelper.VHEndereco;
+import viewhelper.VHEnderecoEntrega;
 import viewhelper.VHPedidoDeCompra;
 
 /**
@@ -86,7 +87,7 @@ import viewhelper.VHPedidoDeCompra;
     	mapViewHelper.put("/livraria/Pages/lumino/ConsultaCliente", new VHCliente());
     	mapViewHelper.put("/livraria/Pages/lumino/carrinho", new VHBloqueio());
     	mapViewHelper.put("/livraria/Pages/lumino/finalizarCompra", new VHPedidoDeCompra());
-    	mapViewHelper.put("/livraria/Pages/lumino/calcularFrete", new VHEndereco());
+    	mapViewHelper.put("/livraria/Pages/lumino/calcularFrete", new VHEnderecoEntrega());
     	mapViewHelper.put("/livraria/Pages/lumino/pedido", new VHPedidoDeCompra());
     	
     	mapCommand = new HashMap<String, ICommand>();

@@ -43,5 +43,13 @@ public class Formatter {
       parsedNumber = BigInteger.valueOf(parsedToInt);
      return parsedNumber;
    }
+   
+   public static int stringToInt (String string) {
+     int parsedNumber = null != string && 
+         !"".equals(string) &&
+         isNumeric(string) ? 
+         Integer.parseInt(string) : -1;     
+     return parsedNumber;
+   }
 
 }

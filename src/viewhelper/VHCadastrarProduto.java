@@ -8,6 +8,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import dominio.EntidadeDominio;
 import dominio.GeneroLiterario;
 import dominio.Livro;
@@ -181,6 +183,13 @@ public class VHCadastrarProduto implements IViewHelper {
             Integer.parseInt(request.getParameter("codigo")) : 0;
 //            System.out.println("codigo" + codigo);
     String mensagem = resultado.getMensagem();
+    
+    Gson gson = new Gson();
+    
+    Livro livro = (Livro) resultado.getResultado();
+    
+    String json = gson.toJson(livro);
+    
     
 		if(resultado.getErro())
 			request.setAttribute("erro", (String) resultado.getMensagem());
