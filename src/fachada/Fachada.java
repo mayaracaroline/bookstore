@@ -17,7 +17,6 @@ import les.command.CommandCarrinhoAdicionar;
 import les.command.CommandCarrinhoAlterar;
 import les.command.CommandCarrinhoExcluir;
 import les.command.CommandConfirmaEntrega;
-import les.command.ICommand;
 import les.dao.DAOCliente;
 import les.dao.DAOLivro;
 import les.dao.DAOPedidoDeCompra;
@@ -25,6 +24,7 @@ import les.dao.DAOUsuario;
 import les.dao.IDAO;
 import les.negocio.IStrategy;
 import les.negocio.StComplementarCupom;
+import les.negocio.StComplementarEndereco;
 import les.negocio.StComplementarGeneroLiterario;
 import les.negocio.StConsultarQuantidadeEstoque;
 import les.negocio.StGerarCodigoCompra;
@@ -192,6 +192,7 @@ public class Fachada implements IFachada  {
     listStrategySalvarCompra.add(new StGerarCodigoCompra());
 
     /* Regras de negócio: ENDERECO */
+    listStrategyCalcularFrete.add(new StComplementarEndereco());    
 		listStrategyCalcularFrete.add(new StValidarCepInformado());
 		
 		/* Regras de negócio por operacao: */

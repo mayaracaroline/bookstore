@@ -6,6 +6,8 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import dominio.Cartao;
 import dominio.Cliente;
 import dominio.Cupom;
@@ -22,8 +24,10 @@ public class VHUsuario implements IViewHelper {
     
     Usuario usuario = new Usuario();
     String password = Formatter.formatString(request.getParameter("senha"));
-    String username = Formatter.formatString(request.getParameter("email")); 
+    String username = Formatter.formatString(request.getParameter("email"));
+    int id = Formatter.stringToInt(request.getParameter("id")); 
     
+    usuario.setId(id);
     usuario.setUsername(username);
     usuario.setPassword(password);
     
@@ -35,31 +39,36 @@ public class VHUsuario implements IViewHelper {
     String formName = Formatter.formatString(request.getParameter("formName"));
     String[] mensagem = resultado.getMensagem().split("\n");
     String operacao = Formatter.formatString(request.getParameter("operacao"));
-    HashMap<String, ArrayList<EntidadeDominio>> mapUsuario;
-    mapUsuario = resultado.getMapResultado();
-    ArrayList<EntidadeDominio> resultados =  mapUsuario.get("ENDERECO");
+    HashMap<String, ArrayList<EntidadeDominio>> mapDadosUsuario;
+    mapDadosUsuario = resultado.getMapResultado();
+    ArrayList<EntidadeDominio> resultados =  mapDadosUsuario.get("ENDERECO");
     ArrayList<Endereco> enderecos = new ArrayList<>();
     ArrayList<Cartao> cartoes = new ArrayList<>();
     ArrayList<Cupom> cuponsPromocionais = new ArrayList<>();
     ArrayList<Cupom> cuponsTroca = new ArrayList<>();
-
+    
+    Gson gson = new Gson();
+    
+    String JSONDadosUsuario = gson.toJson(mapDadosUsuario);
+    System.out.println(JSONDadosUsuario);
+    
     for(int i = 0; i < resultados.size(); i++) {
       enderecos.add((Endereco)resultados.get(i));    
     }
 
-    resultados =  mapUsuario.get("CARTAO");
+    resultados =  mapDadosUsuario.get("CARTAO");
 
-    for(int i = 0; i < resultados.size(); i++) {
-      cartoes.add((Cartao)resultados.get(i));    
-    }
+//    for(int i = 0; i < resultados.size(); i++) {
+//      cartoes.add((Cartao)resultados.get(i));    
+//    }
     
-    resultados =  mapUsuario.get("CUPOMPROMOCIONAL");
+    resultados =  mapDadosUsuario.get("cuponsPromocionais");
     
     for(int i = 0; i < resultados.size(); i++) {
       cuponsPromocionais.add((Cupom)resultados.get(i));    
     }
     
-    resultados =  mapUsuario.get("CUPOMTROCA");
+    resultados =  mapDadosUsuario.get("cuponsTroca");
     
 
     for(int i = 0; i < resultados.size(); i++) {
@@ -75,18 +84,28 @@ public class VHUsuario implements IViewHelper {
     
     if(operacao.equals("CONSULTAR") || operacao.equals("SALVAR") ){
         if(!resultado.getErro()){
-          request.getSession().setAttribute("clientes", (Cliente) cliente);
-          request.getSession().setAttribute("enderecos", (ArrayList<Endereco>) enderecos);
-          request.getSession().setAttribute("cartoes", (ArrayList<Cartao>) cartoes);
-          request.getSession().setAttribute("cuponsPromocionais", (ArrayList<Cupom>) cuponsPromocionais);
-          request.getSession().setAttribute("cuponsTroca",(ArrayList<Cupom>) cuponsTroca);
+//          request.getSession().setAttribute("clientes", (Cliente) cliente);
+//          request.getSession().setAttribute("enderecos", (ArrayList<Endereco>) enderecos);
+//          request.getSession().setAttribute("cartoes", (ArrayList<Cartao>) cartoes);
+//          request.getSession().setAttribute("cuponsPromocionais", (ArrayList<Cupom>) cuponsPromocionais);
+//          request.getSession().setAttribute("cuponsTroca",(ArrayList<Cupom>) cuponsTroca);
         } 
     }
     try {
       if(operacao.equals("CONSULTAR")){
-        if(formName.equals("loginCliente")){ // rever                 
-           response.sendRedirect("checkout.jsp");
-        } 
+        System.out.println("CONSULTAR");
+        if(formName.equals("loginCliente")){ // rever 
+          System.out.println("loginCliente");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(JSONDadosUsuario);
+            response.sendRedirect("checkout.jsp");
+        } else {
+          System.out.println("else");
+          response.setContentType("application/json");
+          response.setCharacterEncoding("UTF-8");
+          response.getWriter().write(JSONDadosUsuario);
+        }
       } 
     } catch (Exception e) {
       e.printStackTrace();

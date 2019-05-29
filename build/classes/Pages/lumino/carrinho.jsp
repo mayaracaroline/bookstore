@@ -124,7 +124,7 @@
               <p class="cart_total_price">R$${itemCarrinho.produto.preco * itemCarrinho.quantidade }</p>
             </td>
             <td class="cart_delete">
-              <button type="button" class="cart_quantity_delete" onclick="excluirItemCarrinho(${itemCarrinho.produto.id})"><i class="fa fa-times"></i></button>
+              <button id="buttonComprar" type="button" class="cart_quantity_delete" onclick="excluirItemCarrinho(${itemCarrinho.produto.id})"><i class="fa fa-times"></i></button>
             </td>
           </tr>
        </c:forEach>
@@ -177,9 +177,9 @@
 
       </div>
 
-
+    
 	<jsp:include page= "./footer.jsp" />
 	<jsp:include page= "./scripts.jsp" />
-
+    <script src="<c:url value="/js/checkout.js"/>"></script>
 </body>
 </html>

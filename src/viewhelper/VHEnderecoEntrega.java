@@ -1,5 +1,7 @@
 package viewhelper;
 
+import java.math.BigInteger;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +21,8 @@ public class VHEnderecoEntrega implements IViewHelper {
   @Override
   public EntidadeDominio getEntidade(HttpServletRequest request) {
     Endereco endEntrega = new Endereco();
-             
+    
+    int id = Formatter.stringToInt(request.getParameter("idEndereco"));
     String tipoResidencia = null != request.getParameter("tipo-residencia1") 
         && !"".equals(request.getParameter("tipo-residencia1"))
         ?  request.getParameter("tipo-residencia1") : "SELECIONE";
@@ -49,23 +52,24 @@ public class VHEnderecoEntrega implements IViewHelper {
         && !"".equals(request.getParameter("observacoes1"))
         ?  request.getParameter("observacoes1") : "";
         
-   String cep = Formatter.formatString(request.getParameter("cep1").trim().replace("-", ""));
+//   String cep = Formatter.formatString(request.getParameter("cep1").trim().replace("-", ""));
         
    String cidade = Formatter.formatString(request.getParameter("cidade1"));
     
    TipoLogradouro tipoLogradouro = new TipoLogradouro();
    tipoLogradouro.setId(idTipoLogradouro);              
     
-    endEntrega.setBairro(bairro);
-    endEntrega.setCep(cep);
-    endEntrega.setCidade(cidade);
-    endEntrega.setEstado(estado);
-    endEntrega.setLogradouro(logradouro);
-    endEntrega.setNumero(numero);
-    endEntrega.setObservacao(observacoes);
-    endEntrega.setPais(pais);
-    endEntrega.setTipoLogradouro(tipoLogradouro);
-    endEntrega.setTipoResidencia(TipoResidencia.valueOf(tipoResidencia));   
+   endEntrega.setId(id);
+   endEntrega.setBairro(bairro);
+//   endEntrega.setCep(cep);
+   endEntrega.setCidade(cidade);
+   endEntrega.setEstado(estado);
+   endEntrega.setLogradouro(logradouro);
+   endEntrega.setNumero(numero);
+   endEntrega.setObservacao(observacoes);
+   endEntrega.setPais(pais);
+   endEntrega.setTipoLogradouro(tipoLogradouro);
+   endEntrega.setTipoResidencia(TipoResidencia.valueOf(tipoResidencia));   
         
     return endEntrega;
   }
@@ -80,7 +84,7 @@ public class VHEnderecoEntrega implements IViewHelper {
     dadosEntrega = (DadosEntrega) resultado.getResultado();
     Gson gson = new Gson();
     
-    String JSONDadosEntrega = gson.toJson(dadosEntrega);    
+    String JSONDadosEntrega = gson.toJson(dadosEntrega);   
 
     try {
       

@@ -29,6 +29,7 @@ import les.command.CommandInativar;
 import les.command.CommandSalvar;
 import les.command.ICommand;
 import util.ConnectionFactory;
+import util.Formatter;
 import util.Resultado;
 import viewhelper.IViewHelper;
 import viewhelper.VHUsuario;
@@ -73,6 +74,9 @@ public class ControllerAutenticacao implements Filter  {
     HttpServletResponse res = (HttpServletResponse) response;
     boolean usuarioLogado = false;
     String vh = req.getRequestURI();
+    String email = Formatter.formatString(request.getParameter("email"));
+    String password = Formatter.formatString(request.getParameter("senha"));
+    String idCliente="-1";
     if(mapVHelper.containsKey(vh)) {
       
       String operacao = request.getParameter("operacao");
@@ -84,7 +88,7 @@ public class ControllerAutenticacao implements Filter  {
       Cliente cliente = (Cliente) resultado.getResultado();
       
       if(!resultado.getErro() && resultado.getContagem() > 0) {
-        String idCliente = cliente.getId().toString();
+        idCliente = cliente.getId().toString();
         Cookie logado = new Cookie("clienteLogado", idCliente);
         res.addCookie(logado);
         viewHelper.setView(resultado, req, res);
@@ -99,7 +103,8 @@ public class ControllerAutenticacao implements Filter  {
       for(Cookie cookie : req.getCookies()){
         if(cookie.getName().equals("clienteLogado")) {
           usuarioLogado = true;
-          res.sendRedirect("checkout.jsp");
+          System.out.println(cookie.getValue());
+          res.sendRedirect("autenticaCliente?operacao=CONSULTAR&formName=checkout&id="+cookie.getValue());
 
           break;
         }

@@ -228,8 +228,8 @@ async function excluirItemCarrinho(id) {
 	return dados;
 }
 
-async function buscarDadosEntrega(cep, formName) {
-	let url = '/livraria/Pages/lumino/calcularFrete?operacao=CALCULARFRETE&cep1='+cep+'&formName='+formName
+async function buscarDadosEntrega(id) {
+	let url = '/livraria/Pages/lumino/calcularFrete?operacao=CALCULARFRETE&idEndereco='+id
 
 	let dados = await fetch(url, {
 				method: 'post',      
@@ -243,11 +243,11 @@ async function buscarDadosEntrega(cep, formName) {
 	return JSONDados;
 }
 
-async function calcularFrete(cep, formName) {
+async function calcularFrete(id) {
 	
 	const inputFrete  = document.getElementById('frete')
 	
-	const dadosEntrega = await buscarDadosEntrega(cep, formName);	
+	const dadosEntrega = await buscarDadosEntrega(id);	
 	
 	const { frete } = dadosEntrega;
 	

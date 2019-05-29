@@ -1,6 +1,7 @@
 package les.dao;
 
 
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -33,14 +34,26 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
     Usuario usuario = (Usuario) entidade;
     conexao = ConnectionFactory.getConnection();
     PreparedStatement pst = null;
-
-    String sql = "SELECT cli_id FROM clientes WHERE cli_email = ?";
+    String sql;
+    
     HashMap<String, ArrayList<EntidadeDominio>> mapUsuario = new HashMap<>();
     ArrayList<EntidadeDominio> enderecos = new ArrayList<>();
+    ArrayList<EntidadeDominio> enderecosEntrega = new ArrayList<>();
+    ArrayList<EntidadeDominio> enderecosCobranca = new ArrayList<>();
+    ArrayList<EntidadeDominio> enderecosResidenciais = new ArrayList<>();
     
     try {
-      pst = conexao.prepareStatement(sql);
-      pst.setString(1, usuario.getUsername());
+      
+      if(!usuario.getId().equals(BigInteger.valueOf(-1))) {
+        sql = "SELECT cli_id FROM clientes WHERE cli_id = ?";
+        pst = conexao.prepareStatement(sql);
+        pst.setInt(1, usuario.getId().intValue());
+      } else {
+        sql = "SELECT cli_id FROM clientes WHERE cli_email = ?";
+        pst = conexao.prepareStatement(sql);
+        pst.setString(1, usuario.getUsername());
+      }
+      
       ResultSet rs = pst.executeQuery();
       int idCliente = -1;
       
@@ -69,7 +82,14 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
         novoEndereco = (Endereco) daoEndereco
             .consultar(end)
             .getResultado();
-        enderecos.set(i, novoEndereco);     
+        
+        if(novoEndereco.getTipoEndereco().equals("ENTREGA")) {
+          enderecosEntrega.add(novoEndereco);
+        } else if(novoEndereco.getTipoEndereco().equals("COBRANÇA")) {
+          enderecosCobranca.add(novoEndereco);
+        } else if(novoEndereco.getTipoEndereco().equals("RESIDENCIAL")) {
+          enderecosResidenciais.add(novoEndereco);
+        } 
       }
 
       DAOCartoesCliente daoCartoes = new DAOCartoesCliente();
@@ -104,9 +124,12 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
       
       pst.close();
       mapUsuario.put("ENDERECO", enderecos);
-      mapUsuario.put("CARTAO", cartoes);
-      mapUsuario.put("CUPOMPROMOCIONAL", cuponsPromocionais);
-      mapUsuario.put("CUPOMTROCA", cuponsTroca);
+      mapUsuario.put("enderecosEntrega", enderecosEntrega);
+      mapUsuario.put("enderecosResidenciais", enderecosResidenciais);
+      mapUsuario.put("enderecosCobranca", enderecosCobranca);
+      mapUsuario.put("cartoes", cartoes);
+      mapUsuario.put("cuponsPromocionais", cuponsPromocionais);
+      mapUsuario.put("cuponsTroca", cuponsTroca);
       
       resultado.setContagem(1);
       resultado.setMapResultado(mapUsuario);
