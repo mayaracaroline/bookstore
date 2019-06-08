@@ -3,7 +3,7 @@ package dominio;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Cartao extends EntidadeDominio implements IFormaDePagamento, Serializable {
+public class Cartao extends FormaDePagamento implements Serializable {
   
   /**
    * 
@@ -47,10 +47,5 @@ public class Cartao extends EntidadeDominio implements IFormaDePagamento, Serial
     this.nomeTitular = nomeTitular;
   }
     
-  @Override
-  public void processarPagamento() {
-    // TODO Auto-generated method stub
-    
-  }
 
 }

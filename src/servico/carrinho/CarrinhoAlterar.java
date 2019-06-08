@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
+import javax.sound.midi.Soundbank;
 
 import dominio.Bloqueio;
 import dominio.Carrinho;
@@ -19,6 +20,7 @@ public class CarrinhoAlterar implements IServico {
 
   @Override
   public Resultado executarServico(EntidadeDominio entidade) {
+    System.out.println("CarrinhoAltera");
     Resultado resultado = new Resultado(); 
     Bloqueio produtoBloqueado = (Bloqueio) entidade;  
     // Apenas um item é adicionado por vez (index sempre será 0)

@@ -28,8 +28,6 @@ public class StComplementarCupom implements IStrategy {
       cupomPromocional = (Cupom) resCupom.getListaResultado().get(0);      
     }
     
-    System.out.println("StComplementar: "+pedido.getCuponsTroca().size());
-    
     //Complementa lista de pedido de trocas
     ArrayList<Cupom> cuponsTrocaSelecionados = new ArrayList<>();
     for (int i = 0; i < pedido.getCuponsTroca().size(); i++) {

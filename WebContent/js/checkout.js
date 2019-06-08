@@ -7,7 +7,7 @@ window.onload = function() {
   const tituloCuponsTroca = document.getElementById('cuponsTroca')
   
   async function buscarDadosUsuario() {
-    let url = '/livraria/Pages/lumino/comprar'
+    let url = '/livraria/Pages/lumino/buscarDados'
   
     let dados = await fetch(url, {
           method: 'get',      
@@ -32,13 +32,15 @@ window.onload = function() {
             enderecosResidenciais, 
             enderecosCobranca, 
             cartoes, 
+            cuponsDiferenca,
             cuponsPromocionais, 
             cuponsTroca 
           } = dadosUsuario
   
           createEnderecosEntregaOptions(enderecosEntrega)
           createCartoesOptions1(cartoes) 
-          createCartoesOptions2(cartoes) 
+          createCartoesOptions2(cartoes)
+          createCuponsDiferenca(cuponsDiferenca)
           createCuponsTroca(cuponsTroca)
           createCuponsPromocionais(cuponsPromocionais)
   
@@ -64,39 +66,51 @@ window.onload = function() {
     });
   }
   
-  function createCuponsTroca(cuponsTroca) {
-    cuponsTroca.forEach( cupom => {
-      const {
-              id,
-              valor, 
-              codigo,
-              tipo,
-              dataDeValidade
-            } = cupom
-  
-      const {day, month, year } = dataDeValidade
-  
-      const ul = document.createElement('ul')
-      const li = document.createElement('li')
-      const text = document.createTextNode(    											
-        `<input type="checkbox" value="${id}" 
-          onclick="cupomTrocaSelecionado(this,${valor})" 
-          name="cupom-troca"
-        >
-        <strong>Tipo: </strong>${tipo}<br>
-        <strong>Código:</strong>${codigo}<br>
-        <strong>Valor:</strong>${valor}<br>
-        <label>Validade:</label> ${day}/${month}/${year}<br>`)
-  
-      ul.className = 'list-group'
-      li.className = 'list-group-item'
-      li.appendChild(text)
-      
-      tituloCuponsTroca.insertAdjacentElement('afterbegin', li)
-       
-    });
-  }
+  function createCuponsDiferenca(cuponsDiferenca) {
+	  cuponsDiferenca.forEach( cupom => {
+	      const {
+	              id,
+	              valor, 
+	              codigo,
+	              tipo,
+	              dataDeValidade
+	            } = cupom
+	  
+	      const {day, month, year } = dataDeValidade
+	  
+	      const ul = document.createElement('ul')
+	      const li = document.createElement('li')
+	      const input = document.createElement('input');
+	      const divTipo = document.createElement('div')
+	      const divCodigo = document.createElement('div')
+	      const divValor = document.createElement('div')
+	      const divValidade = document.createElement('div')
 
+	      input.addEventListener('click', () => {
+	        cupomTrocaSelecionado(this,codigo)
+	      })
+	      input.setAttribute('type','checkbox')
+	      input.setAttribute('name','cupom-troca')
+	      input.setAttribute('value',id)
+	      divTipo.innerText = `Tipo: ${tipo}` 
+	      divCodigo.innerText = `Código: ${codigo}`.toUpperCase() 
+	      divValor.innerText = `Valor: ${valor}`
+	      divValidade.innerText = `Validade: ${day}/${month}/${year}`
+	      
+	      li.className = 'list-group-item'
+	      ul.className = 'list-group'
+	      li.appendChild(input)
+	      li.appendChild(divTipo)
+	      li.appendChild(divCodigo)
+	      li.appendChild(divValor)
+	      li.appendChild(divValidade)
+	      ul.appendChild(li)
+	      
+	      tituloCuponsTroca.insertAdjacentElement('afterend', ul)
+	       
+	  });
+	}
+  
     function createCartoesOptions1(cartoes) {
     cartoes.forEach( cartao => {
       const {
@@ -149,21 +163,33 @@ window.onload = function() {
   
       const ul = document.createElement('ul')
       const li = document.createElement('li')
-      const text = document.createTextNode(    											
-        `<input type="checkbox" value="${id}" 
-          onclick="cupomTrocaSelecionado(this,${valor})" 
-          name="cupom-troca"
-        >
-        <strong>Tipo: </strong>${tipo}<br>
-        <strong>Código:</strong>${codigo}<br>
-        <strong>Valor:</strong>${valor}<br>
-        <label>Validade:</label> ${day}/${month}/${year}<br>`)
-  
-      ul.className = 'list-group'
-      li.className = 'list-group-item'
-      li.innerHTML = text;
+      const input = document.createElement('input');
+      const divTipo = document.createElement('div')
+      const divCodigo = document.createElement('div')
+      const divValor = document.createElement('div')
+      const divValidade = document.createElement('div')
+
+      input.addEventListener('click', () => {
+        cupomTrocaSelecionado(this,codigo)
+      })
+      input.setAttribute('type','checkbox')
+      input.setAttribute('name','cupom-troca')
+      input.setAttribute('value',id)
+      divTipo.innerText = `Tipo: ${tipo}` 
+      divCodigo.innerText = `Código: ${codigo}`.toUpperCase() 
+      divValor.innerText = `Valor: ${valor}`
+      divValidade.innerText = `Validade: ${day}/${month}/${year}`
       
-      tituloCuponsTroca.insertAdjacentElement('afterend', li)
+      li.className = 'list-group-item'
+      ul.className = 'list-group'
+      li.appendChild(input)
+      li.appendChild(divTipo)
+      li.appendChild(divCodigo)
+      li.appendChild(divValor)
+      li.appendChild(divValidade)
+      ul.appendChild(li)
+      
+      tituloCuponsTroca.insertAdjacentElement('afterend', ul)
        
     });
   }
@@ -182,21 +208,33 @@ window.onload = function() {
   
       const ul = document.createElement('ul')
       const li = document.createElement('li')
-      const text = document.createTextNode(    											
-        `<input type="checkbox" value="${id}" 
-          onclick="cupomPromocionalSelecionado(this,${valor})" 
-          name="cupom-troca"
-        >
-        <strong>Tipo: </strong>${tipo}<br>
-        <strong>Código:</strong>${codigo}<br>
-        <strong>Valor:</strong>${valor}<br>
-        <label>Validade:</label> ${day}/${month}/${year}<br>`)
-  
-      ul.className = 'list-group'
-      li.className = 'list-group-item'
-      li.appendChild(text)
+      const input = document.createElement('input');
+      const divTipo = document.createElement('div')
+      const divCodigo = document.createElement('div')
+      const divValor = document.createElement('div')
+      const divValidade = document.createElement('div')
+
+      input.addEventListener('click', () => {
+        cupomTrocaSelecionado(this,codigo)
+      })
+      input.setAttribute('type','radio')
+      input.setAttribute('value',id)
+      input.setAttribute('name','cupom-troca')
+      divTipo.innerText = `Tipo: ${tipo}` 
+      divCodigo.innerText = `Código: ${codigo}`.toUpperCase()
+      divValor.innerText = `Valor: ${valor}`
+      divValidade.innerText = `Validade: ${day}/${month}/${year}`
       
-      tituloCuponsPromocionais.insertAdjacentElement('afterend', li)
+      li.className = 'list-group-item'
+      ul.className = 'list-group'
+      li.appendChild(input)
+      li.appendChild(divTipo)
+      li.appendChild(divCodigo)
+      li.appendChild(divValor)
+      li.appendChild(divValidade)
+      ul.appendChild(li)
+      
+      tituloCuponsPromocionais.insertAdjacentElement('afterend', ul)
        
     });
   }  

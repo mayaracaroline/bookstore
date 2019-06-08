@@ -4,9 +4,10 @@ import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import dominio.Cliente;
+import dominio.DadosEntrega;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
-import dominio.Pais;
 import dominio.TipoLogradouro;
 import dominio.TipoResidencia;
 import util.ConnectionFactory;
@@ -137,6 +138,12 @@ public class DAOEndereco extends AbstractDAO implements IDAO {
 
   @Override
   public Resultado inativar(EntidadeDominio entidade) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
     // TODO Auto-generated method stub
     return null;
   }

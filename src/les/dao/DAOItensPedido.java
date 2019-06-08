@@ -26,15 +26,16 @@ public class DAOItensPedido extends AbstractDAO implements IDAO {
     try {
       pst = conexao.prepareStatement(sql);
       
-      for(ItemCarrinho item : itens) {
-        System.out.println(item.getProduto().getId().intValue());
-        pst.setInt(1,idPedido);
-        pst.setString(2,item.getProduto().getCodigoBarras());
-        pst.setInt(3, item.getQuantidade());
-        pst.setInt(4, 1);
-        pst.setDouble(5, item.getProduto().getPreco());
-        
-        pst.execute();
+      
+      for(ItemCarrinho item : itens) {  
+        for (int i = 0; i < item.getQuantidade(); i++) {
+          pst.setInt(1,idPedido);
+          pst.setString(2,item.getProduto().getCodigoBarras());
+          pst.setInt(3, 1);
+          pst.setInt(4, 1);
+          pst.setDouble(5, item.getProduto().getPreco());
+          pst.execute();         
+        } 
       }
       
       pst.close();
@@ -80,7 +81,9 @@ public class DAOItensPedido extends AbstractDAO implements IDAO {
         Livro livroEncontrado = (Livro) resultadoLivro.getResultado();
         
         item.setProduto(livroEncontrado);
+        item.setId(rs.getInt("itp_id"));
         item.setQuantidade(rs.getInt("itp_pro_quantidade"));
+        item.setStatus(rs.getInt("itp_status"));
         
         itens.add(item); 
         
@@ -112,7 +115,7 @@ public class DAOItensPedido extends AbstractDAO implements IDAO {
     try {
       pst = conexao.prepareStatement(sql);
       pst.setInt(1, pedido.getStatus());
-      pst.setInt(2, pedido.getId().intValue());
+      pst.setInt(2, pedido.getId().intValue()); 
       
       pst.executeUpdate();
       pst.close();
@@ -157,7 +160,7 @@ public class DAOItensPedido extends AbstractDAO implements IDAO {
       while(rs.next()) {       
         ItemCarrinho item = new ItemCarrinho();
         Produto produto = new Produto();
-        produto.setId(rs.getInt("itp_pro_cod_barras"));
+        produto.setId(rs.getInt("itp_ped_id"));
         item.setId(rs.getInt("itp_ped_id"));
         item.setProduto(produto);
         item.setQuantidade(rs.getInt("itp_pro_quantidade"));
@@ -165,6 +168,45 @@ public class DAOItensPedido extends AbstractDAO implements IDAO {
       }
       
       pst.close();
+      resultado.setListaResultado(itens);
+      resultado.sucesso("Consulta realizada com sucesso");
+    } catch (Exception e) {
+      resultado.erro("Erro ao consultar itens em processamento");
+      e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
+    }
+    return resultado;
+  }
+  
+  public Resultado consultarItensPorStatus(int statusId) {
+    Resultado resultado = new Resultado();
+    String sql = "SELECT * FROM  itens_pedido WHERE itp_status = ? ";
+    ArrayList<EntidadeDominio> itens = new ArrayList<>();
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
+    int contagem = 0;
+    
+    try {
+      pst = conexao.prepareStatement(sql);
+      pst.setInt(1, statusId);     
+      
+      ResultSet rs = pst.executeQuery();
+      
+      while(rs.next()) {       
+        ItemCarrinho item = new ItemCarrinho();
+        Produto produto = new Produto();
+        produto.setId(rs.getInt("itp_ped_id"));
+        item.setId(rs.getInt("itp_ped_id"));
+        item.setProduto(produto);
+        item.setQuantidade(rs.getInt("itp_pro_quantidade"));
+        itens.add(item);
+        contagem++;
+      }
+      
+      pst.close();
+      
+      resultado.setContagem(contagem);
       resultado.setListaResultado(itens);
       resultado.sucesso("Consulta realizada com sucesso");
     } catch (Exception e) {
@@ -216,7 +258,60 @@ public class DAOItensPedido extends AbstractDAO implements IDAO {
       e.printStackTrace();
     } finally {
       ConnectionFactory.closeConnection(pst, conexao);
+    } 
+  }
+  
+  public void colocarItemEmTroca(EntidadeDominio entidade) {
+    String sql = "UPDATE itens_pedido SET itp_status = ? WHERE itp_id = ?";
+    PedidoDeCompra pedido = (PedidoDeCompra) entidade;
+    ItemCarrinho itemPedido = pedido.getCarrinho().getItensCarrinho().get(0);
+    
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
+    
+    try {
+      
+      pst = conexao.prepareStatement(sql);
+      pst.setInt(1, 6);
+      pst.setInt(2, itemPedido.getId().intValue());
+      
+      pst.executeUpdate();
+      pst.close();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
     }
     
+  }
+  
+  public void aprovarTroca(EntidadeDominio entidade) {
+    String sql = "UPDATE itens_pedido SET itp_status = ? WHERE itp_id = ?";
+    PedidoDeCompra pedido = (PedidoDeCompra) entidade;
+    ItemCarrinho itemPedido = pedido.getCarrinho().getItensCarrinho().get(0);
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
+    
+    try {
+      pst = conexao.prepareStatement(sql);
+      pst.setInt(1, 8);
+      pst.setInt(2, itemPedido.getId().intValue());
+      
+      pst.executeUpdate();
+      pst.close();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
+    }
+    
+  }
+
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

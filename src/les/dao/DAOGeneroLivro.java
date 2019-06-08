@@ -122,6 +122,12 @@ public class DAOGeneroLivro extends AbstractDAO implements IDAO {
     // TODO Auto-generated method stub
     return null;
   }
+
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 	
 
 }

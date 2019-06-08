@@ -18,7 +18,6 @@ public class StValidarValorCompra implements IStrategy {
     
     valorTotalCupons += pedido.getCupomPromocional().getValor();
     
-    System.out.println("valorTotalCupons: " + valorTotalCupons);
     
     double valorCartao1 = pedido.getPagamento().get(0).getValor();
     double valorCartao2 = pedido.getPagamento().get(1).getValor();
@@ -27,7 +26,7 @@ public class StValidarValorCompra implements IStrategy {
     double valorTotalCompra = pedido.getValorTotal() + pedido.getFrete();
     
     if(valorTotalCompra > valorTotalPagamento) {
-      mensagem = "O valor informado para pagamento é inferior ao total do pedido";
+      mensagem = "O valor informado para pagamento é inferior ao total do pedido\n";
     }
 
     return mensagem;

@@ -22,14 +22,11 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">Pedidos</div>
 				<div class="panel-body">
-					<div class="col-sm-12">
+					<div class="col-sm-6">
           <table class="table">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">#</th>
                 <th scope="col">Pedido</th>
-                <th scope="col">Total</th>
-                <th scope="col">Itens</th>
                 <th scope="col">Status</th>
                 <th scope="col">Ações</th>
               </tr>
@@ -37,19 +34,7 @@
             <tbody>
               <c:forEach var="pedido" items="${pedidos}">
               <tr>
-                <th scope="row">1</th>
                   <td>${pedido.codigoIdentificador}</td>
-                  <td>${pedido.valorTotal}</td>
-                  <td>
-                    <%-- <c:forEach value="livro" items="${livros}"> --%>
-                    <c:forEach var="item" items="${pedido.carrinho.itensCarrinho}">
-                     <li>
-                      <strong>Título:</strong> ${item.produto.titulo}<br>
-                      <%-- <strong>Status:</strong> ${item.status} -  --%>
-                        <li><strong>Preço:</strong> ${item.produto.preco}0</li>
-                     </li> 
-                    </c:forEach>
-                  </td>
                   <td>
                     <c:choose>
                       <c:when test="${pedido.status == 1}">
@@ -71,10 +56,11 @@
                         Em troca
                       </c:when> 
                       <c:when test="${pedido.status == 7}">
-                        Troca autorizada
+                        Autorizar troca
+                        
                       </c:when> 
                       <c:when test="${pedido.status == 8}">
-                        Troca realizada
+                        Trocado
                       </c:when> 
                       <c:when test="${pedido.status == 9}">
                         Devolução solicitada
@@ -92,19 +78,21 @@
                   </td>
                   <td>
                     <c:choose>
-										  <c:when test="${pedido.status == 2}">
+					  <c:when test="${pedido.status == 2}">
                         <a href="/livraria/Pages/lumino/pedido?operacao=COLOCAREMTRANSPORTE&formName=gerenciarPedidos&codigoPedido=${pedido.id}"> Colocar em transporte</a> <br>
                       </c:when>
-											<c:when test="${pedido.status == 4}">
+					  <c:when test="${pedido.status == 4}">
                         <span> Entregue <span> <br>
                         <a href="/livraria/Pages/lumino/pedido?operacao=CONFIRMARENTREGA&formName=gerenciarPedidos&codigoPedido=${pedido.id}"> Confirmar entrega</a> <br>
                       </c:when>
                       <c:when test="${pedido.status == 5}">
-                        <a href="#"> Solicitar troca</a> <br>
-                        <a href="#"> Solicitar devolução</a> <br>
+                        -
+                      </c:when>
+                      <c:when test="${pedido.status == 6}">
+                        <a href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR&formName=gerenciarItemPedido&codigoPedido=${pedido.id}"> Ver detalhes </a>
                       </c:when>
                       <c:otherwise>
-                        <a href="#"> Ver detalhes </a>
+                        <a href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR&formName=gerenciarItemPedido&codigoPedido=${pedido.id}"> Ver detalhes </a>
                       </c:otherwise>
                     </c:choose>
                   </td>

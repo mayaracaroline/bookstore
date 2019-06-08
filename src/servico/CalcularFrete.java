@@ -52,7 +52,9 @@ public class CalcularFrete implements IServico {
   @Override
   public Resultado executarServico(EntidadeDominio entidade) {
     Resultado resultado = new Resultado();
-    Endereco endereco = (Endereco) entidade;
+    DadosEntrega dadosEntrega = (DadosEntrega) entidade;
+    Endereco endereco = dadosEntrega.getEnderecoEntrega();
+
     String cep = endereco.getCep();
     LocalDate dataEntrega;    
     int regiao = 0;
@@ -90,9 +92,10 @@ public class CalcularFrete implements IServico {
       dataEntrega = LocalDate.now().plusDays(7);
     }
     
-    DadosEntrega dadosEntrega = new DadosEntrega();
+
     dadosEntrega.setDataEntrega(dataEntrega);
     dadosEntrega.setFrete(frete);
+    dadosEntrega.setEnderecoEntrega(endereco);
     
     resultado.setResultado(dadosEntrega);
     

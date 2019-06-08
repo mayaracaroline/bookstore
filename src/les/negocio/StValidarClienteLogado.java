@@ -14,7 +14,7 @@ public class StValidarClienteLogado implements IStrategy {
     
     if (pedido.getIdCliente().equals(BigInteger.ZERO)) {
       
-      mensagem = "Por favor, efetuar login para seguir.";
+      mensagem = "Por favor, efetuar login para seguir.\n";
       
     }
     

@@ -25,7 +25,7 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
     Resultado resultado = new Resultado();
     Produto produto = (Produto) entidade;
     Estoque estoque = new Estoque();
-    String sql = "SELECT * FROM estoque WHERE est_pro_cod_barras = ?;";
+    String sql = "SELECT * FROM estoque WHERE est_pro_cod_barras = ? ;";
     conexao = ConnectionFactory.getConnection();
     PreparedStatement pst = null;
     
@@ -84,7 +84,7 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
     try {
      pst = conexao.prepareStatement(sql);
       pst.setInt(1, item.getQuantidade());
-      pst.setInt(2, item.getProduto().getId().intValue());
+      pst.setString(2, item.getProduto().getCodigoBarras());
       
       pst.executeUpdate();
       
@@ -114,6 +114,12 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
     } finally {
       ConnectionFactory.closeConnection(pst, conexao);
     }
+  }
+
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

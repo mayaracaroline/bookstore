@@ -38,17 +38,19 @@ public class VHPedidoDeCompra implements IViewHelper {
     int idCartao2 = Formatter.format(request.getParameter("numero-cartao2"));
     double valorCartao1 = Formatter.formatDouble(request.getParameter("valor1"));
     double valorCartao2 = Formatter.formatDouble(request.getParameter("valor2"));
+    int cod1 = Formatter.format(request.getParameter("cod-seguranca1")); 
+    int cod2 = Formatter.format(request.getParameter("cod-seguranca2")); 
     int parcelaCartao1 = Formatter.format(request.getParameter("parcela-cartao1"));
     int parcelaCartao2 = Formatter.format(request.getParameter("parcela-cartao2"));
     cartao1.setId(idCartao1);
+    cartao1.setCodSeguranca(cod1);
     cartao2.setId(idCartao2);  
-     
-    
+    cartao2.setCodSeguranca(cod2);
     Double frete = 0.0;
     frete = Formatter.formatDouble(request.getParameter("frete")); 
     
     Endereco endereco = new Endereco();
-    int idEnderecoEntrega = Formatter.format(request.getParameter("endereco-entrega"));
+    int idEnderecoEntrega = Formatter.format(request.getParameter("idEndereco"));
     endereco.setId(idEnderecoEntrega);    
     
     
@@ -59,7 +61,7 @@ public class VHPedidoDeCompra implements IViewHelper {
     if(request.getSession().getAttribute("carrinho") != null) {
       carrinho = (Carrinho) request.getSession().getAttribute("carrinho");
       
-      for( int i=0; i< carrinho.getItensCarrinho().size(); i++) {
+      for(int i=0; i< carrinho.getItensCarrinho().size(); i++) {
         
           ItemCarrinho item = new ItemCarrinho();
           item = (ItemCarrinho) carrinho.getItensCarrinho().get(i);
@@ -170,7 +172,6 @@ public class VHPedidoDeCompra implements IViewHelper {
     pedido.setCuponsTroca(cuponsSelecionados);
     pedido.setEnderecoDeEntrega(endereco);
     pedido.setFrete(frete);
-    pedido.setItens(itens);
     pedido.setValorTotal(subtotal);
     pedido.setIdCliente(id);
 
@@ -179,12 +180,11 @@ public class VHPedidoDeCompra implements IViewHelper {
 
   @Override
   public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) {
-     String[] mensagem = resultado.getMensagem().split(";");
+     String[] mensagem = resultado.getMensagem().split("\n");
      String operacao = request.getParameter("operacao");
      String formName = Formatter.formatString(request.getParameter("formName")) ;
      ArrayList<PedidoDeCompra> pedidos = new ArrayList<>();
      ArrayList<Livro> livros = new ArrayList<>();
-     System.out.println(operacao);
      if ( null != resultado.getListaResultado()) {
        for (EntidadeDominio pedido : resultado.getListaResultado() ) {
          pedidos.add((PedidoDeCompra) pedido);
@@ -198,11 +198,6 @@ public class VHPedidoDeCompra implements IViewHelper {
 //         livros.add(livro);       
 //       }
      }
-     
-     for (int i = 0; i < mensagem.length; i++) {
-       System.out.println(mensagem[i]);
-     }
-     
      
      if(resultado.getErro()) {
        request.getSession().setAttribute("erro", mensagem);
@@ -220,16 +215,24 @@ public class VHPedidoDeCompra implements IViewHelper {
            request.setAttribute("pedidos", pedidos);
            RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/gerenciarPedidos.jsp");
            rd.forward(request, response);
-         }  else {
+         } else if (formName.equals("meusPedidos")) {
+           request.setAttribute("pedidos", pedidos);
+           RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/detalhesPedido.jsp");
+           rd.forward(request, response);
+         } else if(formName.equals("gerenciarItemPedido")) {
+           request.setAttribute("pedidos", pedidos);
+           RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/gerenciarItemPedido.jsp");
+           rd.forward(request, response);
+         } 
+         else {
            request.setAttribute("pedidos", pedidos);
            RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/meusPedidos.jsp");
            rd.forward(request, response);
          } 
-
-//         request.setAttribute("livros", livros);
        } else if (operacao.equals("COLOCAREMTRANSPORTE") || operacao.equals("CONFIRMARENTREGA")) {
          request.setAttribute("pedidos", pedidos);
-         RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/meusPedidos.jsp");
+         
+         RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/pedido?operacao=CONSULTAR&formName=gerenciarPedidos");
          rd.forward(request, response);
        }
     } catch (Exception e) {

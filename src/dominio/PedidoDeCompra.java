@@ -9,7 +9,6 @@ public class PedidoDeCompra extends EntidadeDominio {
   Carrinho carrinho;
   List<Cupom> cuponsTroca;
   Cupom cupomPromocional;
-  List<ItemCarrinho> itens;
   Endereco enderecoDeEntrega;
   Double frete;
   ArrayList<Pagamento> pagamento;
@@ -31,12 +30,6 @@ public class PedidoDeCompra extends EntidadeDominio {
   }
   public void setCupomPromocional(Cupom cupomPromocional) {
     this.cupomPromocional = cupomPromocional;
-  }
-  public List<ItemCarrinho> getItens() {
-    return itens;
-  }
-  public void setItens(List<ItemCarrinho> itens) {
-    this.itens = itens;
   }
   public Endereco getEnderecoDeEntrega() {
     return enderecoDeEntrega;

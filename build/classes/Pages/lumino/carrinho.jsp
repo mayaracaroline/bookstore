@@ -110,14 +110,13 @@
             </td>
             <td class="cart_description">
               <h4><a href="">${itemCarrinho.produto.titulo}</a></h4>
-              <p>Web ID: 1089772</p>
             </td>
             <td class="cart_price">
               <p>${itemCarrinho.produto.preco}</p>
             </td>
             <td class="cart_quantity">
               <div class="cart_quantity_button">
-                <input class="cart_quantity_input" type="text" name="quantidade" min="1" autocomplete="off" size="2" value="${itemCarrinho.quantidade}" onchange="alterarQuantidadeItensCarrinho(${itemCarrinho.produto.id},this.value)">
+                <input class="cart_quantity_input" type="text" name="quantidade" min="1" autocomplete="off" size="2" value="${itemCarrinho.quantidade}" onchange="alterarQuantidadeItensCarrinho(${itemCarrinho.produto.id},this.value,${itemCarrinho.produto.codigoBarras} )">
               </div>
             </td>
             <td class="cart_total">
@@ -127,6 +126,12 @@
               <button id="buttonComprar" type="button" class="cart_quantity_delete" onclick="excluirItemCarrinho(${itemCarrinho.produto.id})"><i class="fa fa-times"></i></button>
             </td>
           </tr>
+       </c:forEach>
+       
+       <c:forEach var="erro" items="${sessionScope.errosBloqueio}">
+               <div class="alert alert-danger" role="alert">
+                  ${erro}
+                </div>  
        </c:forEach>
  
       </tbody>
@@ -138,13 +143,13 @@
 <section id="do_action">
   <div class="container">
     <div class="heading">
-      <h3>Calcular frete</h3>
+      <h3>Simular frete</h3>
     </div>
     <div class="row">
       <div class="col-sm-3">
           <div class="input-group">
             <span class="input-group-addon">CEP</span>
-            <input type="text" id="frete" class="form-control" value="" name="cep1" onblur="calcularFrete(this.value, 'carrinho')">
+            <input type="text" class="form-control" value="" name="cep1" onchange="simularFrete(this.value)">
           </div>                                                                
           <div class="input-group">
             <span class="input-group-addon">R$</span>
@@ -180,6 +185,5 @@
     
 	<jsp:include page= "./footer.jsp" />
 	<jsp:include page= "./scripts.jsp" />
-    <script src="<c:url value="/js/checkout.js"/>"></script>
 </body>
 </html>

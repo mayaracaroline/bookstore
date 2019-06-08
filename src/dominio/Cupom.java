@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.time.LocalDate;
 
-public class Cupom extends EntidadeDominio implements IFormaDePagamento, Serializable {
+public class Cupom extends FormaDePagamento implements Serializable {
   
   /**
    * 
@@ -16,12 +16,6 @@ public class Cupom extends EntidadeDominio implements IFormaDePagamento, Seriali
   LocalDate dataDeValidade; 
   boolean status;
   int idCliente;
-
-  @Override
-  public void processarPagamento() {
-    // TODO Auto-generated method stub
-    
-  }
 
   public Double getValor() {
     return valor;

@@ -46,28 +46,28 @@
 		<ul class="nav menu">
         <li class="active"><a href="areaCliente.jsp"><em class="fa fa-home">&nbsp;</em> Home</a></li>
 				<li class="parent "><a data-toggle="collapse" href="#sub-item-1">
-						<em class="fa fa-calendar">&nbsp;</em> Meus dados <span data-toggle="collapse" href="#sub-item-1" 
+						<em class="fa fa-user">&nbsp;</em> Meus dados <span data-toggle="collapse" href="#sub-item-1" 
 							class="icon pull-right"><em class="fa fa-plus"
 						></em></span>
 						</a>
 						<ul class="children collapse" id="sub-item-1">
 							<li><a class="" href="meusDados.jsp">
-								<span class="fa fa-arrow-right">&nbsp;</span>Dados Pessoais
+								<span class="fa fa-address-card-o">&nbsp;</span>Dados Pessoais
 							</a></li>
 							<li><a class="" href="alterarEndereco.jsp">
-									<span class="fa fa-arrow-right">&nbsp;</span> Endereço
+									<span class="fa fa-map-marker">&nbsp;</span> Endereço
 								</a></li>
 							<li><a class="" href="alterarSenha.jsp">
-								<span class="fa fa-arrow-right">&nbsp;</span> Alterar senha
+								<span class="fa fa-key">&nbsp;</span> Alterar senha
 							</a></li>
 							<li><a class="" href="meusCartoes.jsp">
-									<span class="fa fa-arrow-right">&nbsp;</span> Meus cartões
+									<span class="fa fa-credit-card-alt">&nbsp;</span> Meus cartões
 								</a>
 							</li>
 						</ul>
 					</li>
-				  <li class="parent"><a href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR"><em class="fa fa-dashboard">&nbsp;</em> Meus pedidos</a></li>
-						<li><a href="meusCupons.jsp"><em class="fa fa-dashboard">&nbsp;</em> Meus cupons</a></li>
+				  <li class="parent"><a href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR"><em class="fa fa-file-text-o">&nbsp;</em> Meus pedidos</a></li>
+						<li><a href="meusCupons.jsp"><em class="fa fa-credit-card">&nbsp;</em> Meus cupons</a></li>
 				<li><a href="loginCliente.jsp"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
 			</ul>
 	</div><!--/.sidebar-->

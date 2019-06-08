@@ -27,13 +27,16 @@ import dominio.Bloqueio;
 import dominio.Carrinho;
 import dominio.EntidadeDominio;
 import les.command.CommandAlterar;
+import les.command.CommandAprovarTroca;
 import les.command.CommandCalcularFrete;
 import les.command.CommandCarrinhoAdicionar;
 import les.command.CommandCarrinhoAlterar;
 import les.command.CommandCarrinhoExcluir;
 import les.command.CommandColocarEmTransporte;
+import les.command.CommandColocarItemEmTroca;
 import les.command.CommandConfirmaEntrega;
 import les.command.CommandConsultar;
+import les.command.CommandConsultarPorId;
 import les.command.CommandExcluir;
 import les.command.CommandInativar;
 import les.command.CommandSalvar;
@@ -45,8 +48,8 @@ import viewhelper.IViewHelper;
 import viewhelper.VHBloqueio;
 import viewhelper.VHCadastrarProduto;
 import viewhelper.VHCliente;
-import viewhelper.VHEndereco;
-import viewhelper.VHEnderecoEntrega;
+import viewhelper.VHDadosEntrega;
+import viewhelper.VHItemPedido;
 import viewhelper.VHPedidoDeCompra;
 
 /**
@@ -65,6 +68,7 @@ import viewhelper.VHPedidoDeCompra;
       "/Pages/lumino/finalizarCompra",
       "/Pages/lumino/calcularFrete",
       "/Pages/lumino/pedido",
+      "/Pages/lumino/detalhePedido"
     })
 
   public class CadastrarProdutoController extends HttpServlet implements ServletContextListener {
@@ -87,8 +91,9 @@ import viewhelper.VHPedidoDeCompra;
     	mapViewHelper.put("/livraria/Pages/lumino/ConsultaCliente", new VHCliente());
     	mapViewHelper.put("/livraria/Pages/lumino/carrinho", new VHBloqueio());
     	mapViewHelper.put("/livraria/Pages/lumino/finalizarCompra", new VHPedidoDeCompra());
-    	mapViewHelper.put("/livraria/Pages/lumino/calcularFrete", new VHEnderecoEntrega());
+    	mapViewHelper.put("/livraria/Pages/lumino/calcularFrete", new VHDadosEntrega());
     	mapViewHelper.put("/livraria/Pages/lumino/pedido", new VHPedidoDeCompra());
+    	mapViewHelper.put("/livraria/Pages/lumino/detalhePedido", new VHItemPedido());
     	
     	mapCommand = new HashMap<String, ICommand>();
     	mapCommand.put("SALVAR", new CommandSalvar());
@@ -96,12 +101,16 @@ import viewhelper.VHPedidoDeCompra;
     	mapCommand.put("EXCLUIR", new CommandExcluir());
     	mapCommand.put("ALTERAR", new CommandAlterar());
     	mapCommand.put("INATIVAR", new CommandInativar());
+    	mapCommand.put("CONSULTARPORID", new CommandConsultarPorId());
     	mapCommand.put("CARRINHOADICIONAR", new CommandCarrinhoAdicionar());
     	mapCommand.put("CARRINHOALTERAR", new CommandCarrinhoAlterar());
     	mapCommand.put("CARRINHOEXCLUIR", new CommandCarrinhoExcluir());
     	mapCommand.put("CALCULARFRETE", new CommandCalcularFrete());
     	mapCommand.put("COLOCAREMTRANSPORTE", new CommandColocarEmTransporte());
     	mapCommand.put("CONFIRMARENTREGA", new CommandConfirmaEntrega());
+    	mapCommand.put("COLOCARITEMEMTROCA", new CommandColocarItemEmTroca());
+    	mapCommand.put("APROVARTROCA", new CommandAprovarTroca());
+    	
     }
     
     
@@ -168,7 +177,7 @@ import viewhelper.VHPedidoDeCompra;
            Trigger trigger2 = TriggerBuilder.newTrigger()
                .withIdentity("validadorTRIGGER2","grupo02")
 //               .withSchedule(CronScheduleBuilder.cronSchedule("0 0/5 0 ? * * * "))
-             .withSchedule(CronScheduleBuilder.cronSchedule("0/60 * * * * ?"))
+             .withSchedule(CronScheduleBuilder.cronSchedule("0/30 * * * * ?"))
                .build();
            scheduler.scheduleJob(job, trigger);
            scheduler2.scheduleJob(jobAprovarOuReprovarCompra, trigger2);

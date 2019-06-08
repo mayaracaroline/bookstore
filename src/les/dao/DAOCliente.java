@@ -113,6 +113,7 @@ public class DAOCliente extends AbstractDAO implements IDAO {
     String sql = "SELECT * FROM clientes WHERE cli_id = ? ";
     
     try {
+      System.out.println(cliente.getId().intValue());
       pst = conexao.prepareStatement(sql);
       pst.setInt(1, cliente.getId().intValue());
       
@@ -184,6 +185,12 @@ public class DAOCliente extends AbstractDAO implements IDAO {
 
   @Override
   public Resultado inativar(EntidadeDominio entidade) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
     // TODO Auto-generated method stub
     return null;
   }

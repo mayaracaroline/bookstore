@@ -156,16 +156,32 @@
 				</ol>
 			</div><!--/breadcrums-->
 
-			<div class="step-one">
-				<h2 class="heading">Step1</h2>
-			</div>
-
 			<div class="shopper-informations">
-				<div class="review-payment">
-					<h2>Itens no Carrinho</h2>
-				</div>
+            <c:if test="${sessionScope.carrinho == null}">
+              <h4>Voce não colocou itens no carrinho ou o tempo expirou! </h4>
+               
+               <c:forEach var="entry" items="${applicationScope.desbloqueio}">
+                  <c:if test="${entry.key == sessionScope.sessionId}">
+                    <h5>Os itens abaixo foram retirados do carrinho:</h5>
+                    <p>
+                     <c:forEach var="item" items="${entry.value.itensCarrinho}">
+                        <li>${item.produto.titulo}</li>
+                      </c:forEach>
+                    </p>
+                  </c:if>
+                  
+               </c:forEach>
+              <a href="/livraria/Pages/lumino/produtos.jsp">Voltar</a>
+            </c:if>
+            <c:if test="${sessionScope.carrinho != null }">
              <form action="/livraria/Pages/lumino/finalizarCompra" method="POST">
-				<div class="table-responsive cart_info">
+				 <div class="step-one">
+                    <h2 class="heading">Step1</h2>
+                 </div>
+                 <div class="review-payment">
+                    <h2>Itens no Carrinho</h2>
+                 </div>
+                  <div class="table-responsive cart_info">
 					<table class="table table-condensed">
 						<thead>
 							<tr class="cart_menu">
@@ -173,7 +189,6 @@
 								<td class="description">Descrição</td>
 								<td class="price">Preço</td>
 								<td class="total">Total</td>
-								<td>${sessionScope.clientes.nome}</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -249,10 +264,7 @@
 									       </c:if>
                                       </c:forEach>
 									</select>
-									<!-- Fazer requisição para VHCliente com parametro Consultar e formName carrinho
-									Colocar um atributo na requisição ou sessão
-									Exemplo: endereço do cliente	-->	
-									<!-- Trigger the modal with a button -->
+
 									<a class="btn btn-primary" href="#" data-toggle="modal" data-target="#myModal">Escolher outro endereço</a>									
 								</div>
 
@@ -286,6 +298,10 @@
 								  <span class="input-group-addon"  id="basic-addon1">R$</span>
 								  <input name="valor1" type="text" class="form-control" aria-describedby="basic-addon1">
 								</div>
+                                <div class="input-group">
+                                  <span class="input-group-addon"  id="basic-addon1">Qtd parcelas</span>
+                                  <input name="parcela-cartao1" type="text" class="form-control" aria-describedby="basic-addon1">
+                                </div>
 							</div>
 						</div>
 						<div class="panel panel-warning">
@@ -303,12 +319,16 @@
 								</select>										
 								<div class="input-group">
 								  <span class="input-group-addon" id="basic-addon1">Cod. de segurança</span>
-								  <input name="cod-seguranca" type="text" class="form-control" aria-describedby="basic-addon1">
+								  <input name="cod-seguranca2" type="text" class="form-control" aria-describedby="basic-addon1">
 								</div>
 								<div class="input-group">
 								  <span class="input-group-addon" id="basic-addon1">R$</span>
 								  <input name="valor2" type="text" class="form-control" aria-describedby="basic-addon1">
 								</div>
+                                <div class="input-group">
+                                  <span class="input-group-addon"  id="basic-addon2">Qtd parcelas</span>
+                                  <input name="parcela-cartao2" type="text" class="form-control" aria-describedby="basic-addon1">
+                                </div>
 							</div>
 						</div>
 						<!-- Trigger the modal with a button -->
@@ -354,6 +374,7 @@
                            <i class="fa fa-shopping-cart"></i> Comprar
                         </button>
                         </form>
+                  </c:if>
 					</div>
 				</div>
 			</div>

@@ -214,9 +214,9 @@ async function buscarProdutosAtivos() {
 	return dados;
 }
 
-async function alterarQuantidadeItensCarrinho(id, quantidade) {
+async function alterarQuantidadeItensCarrinho(id, quantidade, codBarras) {
 	
-	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=CARRINHOALTERAR&codigo='+id+'&quantidade='+quantidade, {method: 'get'});
+	const dados = await fetch('/livraria/Pages/lumino/carrinho?operacao=CARRINHOALTERAR&codigo='+id+'&quantidade='+quantidade+"&codBarras="+codBarras, {method: 'put'});
 	return dados;
 }
 
@@ -241,6 +241,26 @@ async function buscarDadosEntrega(id) {
 	let JSONDados = await dados.json();
 
 	return JSONDados;
+}
+
+async function simularFrete(cep) {
+	
+	const inputFrete  = document.getElementById('frete')
+	
+	let url = '/livraria/Pages/lumino/calcularFrete?operacao=CALCULARFRETE&cep1='+cep
+
+	let dados = await fetch(url, {
+				method: 'post',      
+				headers: {
+		        Accept: 'application/json',
+		        'Content-Type': 'application/json',
+		      }})
+	
+	let JSONDados = await dados.json().then(res => {
+		const { frete } = res;
+		inputFrete.value = frete;
+	});
+		
 }
 
 async function calcularFrete(id) {

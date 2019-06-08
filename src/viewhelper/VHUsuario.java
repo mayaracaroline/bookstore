@@ -93,15 +93,13 @@ public class VHUsuario implements IViewHelper {
     }
     try {
       if(operacao.equals("CONSULTAR")){
-        System.out.println("CONSULTAR");
-        if(formName.equals("loginCliente")){ // rever 
+        if(formName.equals("loginCliente")){  
           System.out.println("loginCliente");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(JSONDadosUsuario);
             response.sendRedirect("checkout.jsp");
         } else {
-          System.out.println("else");
           response.setContentType("application/json");
           response.setCharacterEncoding("UTF-8");
           response.getWriter().write(JSONDadosUsuario);

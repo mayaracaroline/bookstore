@@ -1,16 +1,16 @@
 package dominio;
 
-public class Pagamento {
+public class Pagamento extends EntidadeDominio {
 
-  IFormaDePagamento formaDePagamento;
+  FormaDePagamento formaDePagamento;
   Double valor;
   Integer quantidadeParcelas;
   
-  public IFormaDePagamento getFormaDePagamento() {
+  public FormaDePagamento getFormaDePagamento() {
     return formaDePagamento;
   }
   
-  public void setFormaDePagamento(IFormaDePagamento formaDePagamento) {
+  public void setFormaDePagamento(FormaDePagamento formaDePagamento) {
     this.formaDePagamento = formaDePagamento;
   }
   public Double getValor() {

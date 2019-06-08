@@ -13,7 +13,7 @@
 		</div><!--/.row-->
 		
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-sm-6">
 				<h1 class="page-header">Área do cliente</h1>
 			</div>
 	  </div><!--/.row-->
@@ -25,10 +25,8 @@
           <table class="table">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">#</th>
                 <th scope="col">Pedido</th>
                 <th scope="col">Total</th>
-                <th scope="col">Itens</th>
                 <th scope="col">Status</th>
                 <th scope="col">Ações</th>
               </tr>
@@ -36,19 +34,8 @@
             <tbody>
               <c:forEach var="pedido" items="${pedidos}">
               <tr>
-                <th scope="row">1</th>
                   <td>${pedido.codigoIdentificador}</td>
                   <td>${pedido.valorTotal}</td>
-                  <td>
-                    <%-- <c:forEach value="livro" items="${livros}"> --%>
-                    <c:forEach var="item" items="${pedido.carrinho.itensCarrinho}">
-                     <li>
-                      <strong>Título:</strong> ${item.produto.titulo}<br>
-                      <%-- <strong>Status:</strong> ${item.status} -  --%>
-                        <li><strong>Preço:</strong> ${item.produto.preco}0</li>
-                     </li> 
-                    </c:forEach>
-                  </td>
                   <td>
                     <c:choose>
                       <c:when test="${pedido.status == 1}">
@@ -69,11 +56,8 @@
                       <c:when test="${pedido.status == 6}">
                         Em troca
                       </c:when> 
-                      <c:when test="${pedido.status == 7}">
-                        Troca autorizada
-                      </c:when> 
                       <c:when test="${pedido.status == 8}">
-                        Troca realizada
+                        Trocado
                       </c:when> 
                       <c:when test="${pedido.status == 9}">
                         Devolução solicitada
@@ -90,16 +74,7 @@
                     </c:choose>
                   </td>
                   <td>
-                    <c:choose>
-                      <c:when test="${pedido.status == 5}">
-                        <a href="#"> Solicitar troca</a> <br>
-                        <a href="#"> Solicitar devolução</a> <br>
-                      </c:when>
-                      <c:otherwise>
-                        <a href="#"> Ver detalhes </a>
-                      </c:otherwise>
-                    </c:choose>
-                  
+                     <a href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR&formName=meusPedidos&codigoPedido=${pedido.id}"> Ver detalhes </a>
                   </td>
                 </c:forEach>               
               </tr>        

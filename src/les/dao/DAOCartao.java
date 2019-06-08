@@ -121,4 +121,10 @@ public class DAOCartao extends AbstractDAO implements IDAO {
     return null;
   }
 
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

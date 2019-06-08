@@ -29,7 +29,6 @@ public class StConsultarQuantidadeEstoque implements IStrategy {
     Produto produto = itemCarrinho.getProduto();
     
     Integer quantidadeAInserir = itemCarrinho.getQuantidade();      
-    
     DAOEstoque daoEstoque = new DAOEstoque();
     Resultado resultado = daoEstoque.consultar(produto);
     
@@ -53,7 +52,6 @@ public class StConsultarQuantidadeEstoque implements IStrategy {
  
     Estoque estoque = (Estoque) resultado.getResultado();
     Integer quantidadeEmEstoque = estoque.getQuantidade();
-    System.out.println("Quantidade em estoque: " + quantidadeEmEstoque );
     Integer quantidadeDisponivel = quantidadeEmEstoque - quantidadeDeItensBloqueados ;
    
     if(quantidadeAInserir > quantidadeDisponivel) {

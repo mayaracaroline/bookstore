@@ -1,6 +1,6 @@
 package dominio;
 
 public enum TipoCupom {
-  PROMOCIONAL, TROCA, SELECIONE
+  PROMOCIONAL, TROCA, DIFERENCA, SELECIONE
   
 }

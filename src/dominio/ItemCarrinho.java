@@ -4,6 +4,7 @@ public class ItemCarrinho extends EntidadeDominio {
   
   private Produto produto;
   private int quantidade;
+  private int status;
   
 
   public int getQuantidade() {
@@ -23,6 +24,12 @@ public class ItemCarrinho extends EntidadeDominio {
     if(this.quantidade > 0 ) {
       this.quantidade -= 1;
     }   
+  }
+  public int getStatus() {
+    return status;
+  }
+  public void setStatus(int status) {
+    this.status = status;
   }
   
 }

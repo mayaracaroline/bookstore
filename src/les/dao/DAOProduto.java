@@ -22,7 +22,7 @@ public class DAOProduto extends AbstractDAO implements IDAO {
       pst = conexao.prepareStatement(sql);
       pst.setString(1, produto.getCodigoBarras());
       pst.setDouble(2, produto.getPreco());
-      
+      System.out.println(produto.getCodigoBarras());
       pst.execute();     
 
       resultado.setResultado(produto);
@@ -80,6 +80,12 @@ public class DAOProduto extends AbstractDAO implements IDAO {
 
   @Override
   public Resultado inativar(EntidadeDominio entidade) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
     // TODO Auto-generated method stub
     return null;
   }

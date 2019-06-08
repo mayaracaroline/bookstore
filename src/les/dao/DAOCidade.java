@@ -125,6 +125,12 @@ public class DAOCidade extends AbstractDAO implements IDAO {
   public Resultado inativar(EntidadeDominio entidade) {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
+    // TODO Auto-generated method stub
+    return null;
   }  
 
 }

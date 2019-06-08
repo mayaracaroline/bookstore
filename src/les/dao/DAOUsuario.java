@@ -111,6 +111,7 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
       List<EntidadeDominio> cupons = resultadoCupom.getListaResultado();
       ArrayList<EntidadeDominio> cuponsTroca = new ArrayList<>();
       ArrayList<EntidadeDominio> cuponsPromocionais = new ArrayList<>();
+      ArrayList<EntidadeDominio> cuponsDiferenca = new ArrayList<>();
       
       for(int i = 0; i < cupons.size(); i++) {
         Cupom cupom = (Cupom) cupons.get(i);
@@ -119,7 +120,9 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
           cuponsPromocionais.add(cupom);
         } else if (cupom.getTipo().equals(TipoCupom.TROCA)) {
           cuponsTroca.add(cupom);
-        }        
+        } else {
+          cuponsDiferenca.add(cupom);
+        }
       }
       
       pst.close();
@@ -130,6 +133,7 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
       mapUsuario.put("cartoes", cartoes);
       mapUsuario.put("cuponsPromocionais", cuponsPromocionais);
       mapUsuario.put("cuponsTroca", cuponsTroca);
+      mapUsuario.put("cuponsDiferenca", cuponsDiferenca);
       
       resultado.setContagem(1);
       resultado.setMapResultado(mapUsuario);
@@ -217,6 +221,12 @@ public class DAOUsuario extends AbstractDAO implements IDAO {
     }
         
     return novoUsuario;
+  }
+
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
+    // TODO Auto-generated method stub
+    return null;
   }
   
 }

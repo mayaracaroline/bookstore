@@ -1,5 +1,6 @@
 package les.negocio;
 
+import dominio.DadosEntrega;
 import dominio.Endereco;
 import dominio.EntidadeDominio;
 import util.Formatter;
@@ -9,7 +10,8 @@ public class StValidarCepInformado implements IStrategy {
   @Override
   public String processar(EntidadeDominio entidade) {
     String mensagem = "";
-    Endereco endereco = (Endereco) entidade;
+    DadosEntrega dadosEntrega = (DadosEntrega) entidade;
+    Endereco endereco  = dadosEntrega.getEnderecoEntrega();
     String cep = endereco.getCep();
     
     if (cep.trim().replace("-", "").length() != 8) {

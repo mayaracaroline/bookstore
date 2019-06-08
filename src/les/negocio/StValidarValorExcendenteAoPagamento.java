@@ -31,7 +31,7 @@ public class StValidarValorExcendenteAoPagamento implements IStrategy {
       double valorTotalEmCartoes = valorCartao1 + valorCartao2;
       
       if(valorTotalEmCartoes > totalAPagar) {
-        return "O valor do pagamento em cartão é superior ao total da compra";
+        return "O valor do pagamento em cartão é superior ao total da compra\n";
       }
       
       
@@ -61,7 +61,7 @@ public class StValidarValorExcendenteAoPagamento implements IStrategy {
         novoCupom.setCodigo(UUID.randomUUID().toString().substring(0,16));
         novoCupom.setDataDeValidade(dataValidade);
         novoCupom.setIdCliente(pedido.getIdCliente().intValue());
-        novoCupom.setTipo(TipoCupom.TROCA);
+        novoCupom.setTipo(TipoCupom.DIFERENCA);
         novoCupom.setStatus(true);
         novoCupom.setValor(diferencaCupons * -1);
         daoCupom.salvar(novoCupom);       

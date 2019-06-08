@@ -33,13 +33,13 @@ public class StValidarValorMinimoParaPagamentoComCartao implements IStrategy {
      
      if(totalComDesconto < 10 ) {
        if (valorCartao1 > 0 && valorCartao2 > 0) {
-         mensagem = "Apenas um cartão é aceito para essa operação";
+         mensagem = "Apenas um cartão é aceito para essa operação\n";
        }  
      } else {
        if(cartao2.getId().equals(BigInteger.ZERO) && valorCartao1 < 10) {
-         mensagem = "O valor minímo para pagamento em cartão é R$10.00";
+         mensagem = "O valor minímo para pagamento em cartão é R$10.00\n";
        } else if (cartao1.getId().equals(BigInteger.ZERO) && valorCartao2 < 10) {
-         mensagem = "O valor minímo para pagamento em cartão é R$10.00";
+         mensagem = "O valor minímo para pagamento em cartão é R$10.00\n";
        }
      }
        

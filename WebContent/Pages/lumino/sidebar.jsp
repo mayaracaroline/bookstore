@@ -44,9 +44,10 @@
 		</div>
 		<div class="divider"></div>
 		<ul class="nav menu">
-			<li class="active"><a href="index.html"><em class="fa fa-dashboard">&nbsp;</em> Relatório</a></li>
+			<li class="active"><a href="index.html"><em class="fa fa-line-chart">&nbsp;</em> Relatório</a></li>
+			<li class="parent"><a href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR&formName=gerenciarPedidos"><em class="fa fa-file-text-o">&nbsp;</em> Ger. Pedidos </a></li>
 			<li class="parent "><a data-toggle="collapse" href="#sub-item-1">
-					<em class="fa fa-calendar">&nbsp;</em> Ger. Clientes <span data-toggle="collapse" href="#sub-item-1" 
+					<em class="fa fa-users">&nbsp;</em> Ger. Clientes <span data-toggle="collapse" href="#sub-item-1" 
 						class="icon pull-right"><em class="fa fa-plus"
 					></em></span>
 					</a>
@@ -65,7 +66,7 @@
 			</li>
 			<li class="parent ">
                     <a data-toggle="collapse" href="#sub-item-2">
-  					 <em class="fa fa-navicon">&nbsp;</em> Ger. Produtos 
+  					 <em class="fa fa-book">&nbsp;</em> Ger. Produtos 
                      <span data-toggle="collapse" href="#sub-item-2" class="icon pull-right">
                        <em class="fa fa-plus"></em>
                      </span>
@@ -93,7 +94,7 @@
 					</ul>
 				</li>
 				<li class="parent "><a data-toggle="collapse" href="#sub-item-3">
-						<em class="fa fa-navicon">&nbsp;</em> Ger. Estoque <span data-toggle="collapse" href="#sub-item-3" 
+						<em class="fa fa fa-database">&nbsp;</em> Ger. Estoque <span data-toggle="collapse" href="#sub-item-3" 
 							class="icon pull-right"><em class="fa fa-plus"
 						></em></span>
 						</a>
@@ -109,37 +110,6 @@
 							</a></li>
 						</ul>
 					</li>
-					<li class="parent "><a data-toggle="collapse" href="#sub-item-4">
-						<em class="fa fa-navicon">&nbsp;</em> Ger. Pedidos <span data-toggle="collapse" href="#sub-item-4" 
-					class="icon pull-right"><em class="fa fa-plus"></em></span>
-				</a>
-				<ul class="children collapse" id="sub-item-4">
-					<li><a class="" href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR&formName=gerenciarPedidos">
-						<span class="fa fa-arrow-right">&nbsp;</span> Em proc.
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Aprovado
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Reprovado
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Em trânsito
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Entregue
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Em troca
-					</a></li>
-					<li><a class="" href="#">
-							<span class="fa fa-arrow-right">&nbsp;</span> Troca autorizada
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Trocado
-					</a></li>
-				</ul>
-			</li>
 			<li><a href="login.html"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
 		</ul>
 	</div><!--/.sidebar-->

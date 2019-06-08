@@ -51,8 +51,11 @@ public class VHEnderecoEntrega implements IViewHelper {
    String observacoes = null != request.getParameter("observacoes1") 
         && !"".equals(request.getParameter("observacoes1"))
         ?  request.getParameter("observacoes1") : "";
-        
-//   String cep = Formatter.formatString(request.getParameter("cep1").trim().replace("-", ""));
+        String cep = "";     
+        if(request.getParameter("cep1") != null) {
+          cep = Formatter.formatString(request.getParameter("cep1").trim().replace("-", ""));
+        }
+   
         
    String cidade = Formatter.formatString(request.getParameter("cidade1"));
     
@@ -61,7 +64,7 @@ public class VHEnderecoEntrega implements IViewHelper {
     
    endEntrega.setId(id);
    endEntrega.setBairro(bairro);
-//   endEntrega.setCep(cep);
+   endEntrega.setCep(cep);
    endEntrega.setCidade(cidade);
    endEntrega.setEstado(estado);
    endEntrega.setLogradouro(logradouro);

@@ -1,26 +1,25 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<jsp:include page = "./sidebar.jsp" />
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Alternativa | Bookstore </title>
+	<link href="<c:url value="/css/bootstrap.min.css" />" rel="stylesheet" type="text/css">
+	<link href="<c:url value="/css/font-awesome.min.css" />" rel="stylesheet">
+	<link href="<c:url value="/css/datepicker3.css" />" rel="stylesheet">
+	<link href="<c:url value="/css/styles.css" />" rel="stylesheet">
 		
-	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-		<div class="row">
-			<ol class="breadcrumb">
-				<li><a href="#">
-					<em class="fa fa-home"></em>
-				</a></li>
-				<li class="active">Gerenciar produtos</li>
-			</ol>
-		</div><!--/.row-->
-		
+	<div class="col-sm-9 col-sm-offset-3 col-lg-9 col-lg-offset-2 main">		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Exclus�o produto</h1>
+				<h1 class="page-header">Não foi possível finalizar a compra!</h1>
 			</div>
 		</div><!--/.row-->
 				
 				<div class="panel panel-default">
-					<div class="panel-heading">Livros</div>
+					<div class="panel-heading">Os seguintes erro ocorreram:</div>
 						<div class="panel-body">
 							<div class="col-md-6">							
 										
@@ -29,6 +28,8 @@
 									${mensagem}
 								</div>											
 							</c:forEach>
+                            
+                                 <a href="/livraria/Pages/lumino/checkout.jsp">Voltar</a>
 								</div>															
 							</div>
 						</div>

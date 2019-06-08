@@ -1,5 +1,6 @@
 package les.dao;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,6 @@ import dominio.Carrinho;
 import dominio.EntidadeDominio;
 import dominio.ItemCarrinho;
 import dominio.PedidoDeCompra;
-import dominio.Produto;
 import util.ConnectionFactory;
 import util.Resultado;
 
@@ -50,11 +50,17 @@ public class DAOPedidoDeCompra extends AbstractDAO implements IDAO {
       
       daoItens.salvar(pedido);
       
+      DAOEstoque daoEstoque = new DAOEstoque();
+      
       for (ItemCarrinho item : pedido.getCarrinho().getItensCarrinho()) {
-        DAOEstoque daoEstoque = new DAOEstoque();
-        
         daoEstoque.retirarDoEstoque(item);
       }
+      
+      DAOPagamentoCupom daoPagCupom = new DAOPagamentoCupom();
+      daoPagCupom.salvar(pedido);
+      
+      DAOPagamentosCartao daoPagCartoes = new DAOPagamentosCartao();
+      daoPagCartoes.salvar(pedido);
       
       resultado.setResultado(pedido);
       resultado.sucesso("Pedido salvo com sucesso");
@@ -70,17 +76,25 @@ public class DAOPedidoDeCompra extends AbstractDAO implements IDAO {
   }
 
   @Override
-  public Resultado consultar(EntidadeDominio entidade) {
-    String sql = "SELECT * FROM pedidos WHERE ped_cli_id = ? ";
+  public Resultado consultar(EntidadeDominio entidade) {  
     Resultado resultado = new Resultado();
     PedidoDeCompra pedido = (PedidoDeCompra) entidade;
     ArrayList<EntidadeDominio> pedidos = new ArrayList<>();
     conexao = ConnectionFactory.getConnection();
     PreparedStatement pst = null;
     
+    String sql = "";
+    
     try {
-      pst = conexao.prepareStatement(sql);
-      pst.setInt(1,pedido.getIdCliente().intValue());
+      if(!pedido.getId().equals(BigInteger.ZERO)) {
+        sql = "SELECT * FROM pedidos WHERE ped_id = ? ";
+        pst = conexao.prepareStatement(sql);
+        pst.setInt(1,pedido.getId().intValue());
+      } else {
+        sql = "SELECT * FROM pedidos WHERE ped_cli_id = ? ";
+        pst = conexao.prepareStatement(sql);
+        pst.setInt(1,pedido.getIdCliente().intValue());
+      }
       
       ResultSet rs = pst.executeQuery();
       
@@ -111,6 +125,61 @@ public class DAOPedidoDeCompra extends AbstractDAO implements IDAO {
       }
       
       resultado.setListaResultado(pedidos);
+      resultado.sucesso("Consulta realizada com sucesso");
+
+    } catch (Exception e) {
+      resultado.erro("Erro ao consultar pedido");
+      e.printStackTrace();
+    }   finally {
+      ConnectionFactory.closeConnection(pst, conexao);
+    }
+    
+    return resultado;
+  }
+  
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
+    Resultado resultado = new Resultado();
+    PedidoDeCompra pedido = (PedidoDeCompra) entidade;
+    ArrayList<EntidadeDominio> pedidos = new ArrayList<>();
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
+    PedidoDeCompra novoPedido = new PedidoDeCompra();
+    String sql = "SELECT * FROM pedidos WHERE ped_id = ? ";
+    
+    try {
+
+      pst = conexao.prepareStatement(sql);
+      pst.setInt(1,pedido.getId().intValue());
+
+      ResultSet rs = pst.executeQuery();
+      
+      while(rs.next()) {
+        pedido.setId(rs.getInt("ped_id"));
+        pedido.setCodigoIdentificador(rs.getString("ped_codigo_identificador"));
+        pedido.setStatus(rs.getInt("ped_status"));
+        String dataSolicitacao = rs.getDate("ped_data_solicitacao").toString();
+        pedido.setValorTotal(rs.getDouble("ped_valor_total"));
+        pedido.setIdCliente(BigInteger.valueOf(rs.getInt("ped_cli_id")));
+//        String dataConclusao = rs.getDate("ped_data_conclusao").toString();
+        pedido.setDataConclusao(LocalDate.parse(dataSolicitacao) ); 
+//        ped.setDataConclusao(LocalDate.parse(dataConclusao));
+        DAOItensPedido daoItemPedido = new  DAOItensPedido();
+        
+        Resultado resultadoItemPedido = daoItemPedido.consultar(pedido);
+        
+        ArrayList<ItemCarrinho> itens = new ArrayList<>();
+        
+        for (EntidadeDominio item : resultadoItemPedido.getListaResultado()) {
+          itens.add((ItemCarrinho)item);
+        }
+        Carrinho carrinho = new Carrinho();
+        carrinho.setItensCarrinho(itens);
+        pedido.setCarrinho(carrinho);
+        
+      }
+      
+      resultado.setResultado(pedido);
       resultado.sucesso("Consulta realizada com sucesso");
 
     } catch (Exception e) {
@@ -158,6 +227,7 @@ public class DAOPedidoDeCompra extends AbstractDAO implements IDAO {
       List<EntidadeDominio> itens = resultadoItens.getListaResultado();
       
       for(EntidadeDominio it : itens) {
+        
         PedidoDeCompra pedido = new PedidoDeCompra();
         ItemCarrinho item = (ItemCarrinho) it;
         pedido.setId(item.getId().intValue());
@@ -250,6 +320,49 @@ public class DAOPedidoDeCompra extends AbstractDAO implements IDAO {
       DAOItensPedido daoItens = new DAOItensPedido();
       
       daoItens.confirmarEntregaItens(pedido);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
+    }
+  }
+  
+  public void colocarEmTroca(EntidadeDominio entidade) {
+    String sql = "UPDATE pedidos set ped_status = ? WHERE ped_id = ? ";
+    PedidoDeCompra pedido = (PedidoDeCompra) entidade;
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
+    
+    try {
+      pst = conexao.prepareStatement(sql);
+      pst.setInt(1, 6);
+      pst.setInt(2, pedido.getId().intValue());
+      
+      
+      pst.executeUpdate();
+      
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      ConnectionFactory.closeConnection(pst, conexao);
+    }
+  }
+  
+  public void concluirTroca(EntidadeDominio entidade) {
+    String sql = "UPDATE pedidos set ped_status = ? WHERE ped_id = ? ";
+    PedidoDeCompra pedido = (PedidoDeCompra) entidade;
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
+    
+    try {
+      pst = conexao.prepareStatement(sql);
+      pst.setInt(1, 8);
+      pst.setInt(2, pedido.getId().intValue());
+      
+      pst.executeUpdate();
+      
     }
     catch (Exception e) {
       e.printStackTrace();

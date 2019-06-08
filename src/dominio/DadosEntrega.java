@@ -6,6 +6,7 @@ public class DadosEntrega extends EntidadeDominio {
   
   private double frete;
   private LocalDate dataEntrega;
+  private Endereco enderecoEntrega;
   
   public double getFrete() {
     return frete;
@@ -18,6 +19,13 @@ public class DadosEntrega extends EntidadeDominio {
   }
   public void setDataEntrega(LocalDate dataEntrega) {
     this.dataEntrega = dataEntrega;
+  }
+  
+  public Endereco getEnderecoEntrega() {
+    return enderecoEntrega;
+  }
+  public void setEnderecoEntrega(Endereco enderecoEntrega) {
+    this.enderecoEntrega = enderecoEntrega;
   }
   
 }

@@ -1,8 +1,8 @@
 <%@page import="dominio.Livro"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page = "./sidebar.jsp" />      
-
+<meta charset="utf-8">
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
   <div class="row">
     <ol class="breadcrumb">
@@ -32,7 +32,7 @@
 			<label>Código:</label>
 			<input name="codigo" class="form-control" >									
 			<label>Título</label>
-			<input value="${resultado.titulo}" id="titulo" name="titulo" class="form-control" >
+			<input  id="titulo" name="titulo" class="form-control" >
 			<label>Autor:</label>
 			<input name="autor" class="form-control" >
 			<label>Ano publicação:</label>

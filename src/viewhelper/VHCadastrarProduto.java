@@ -34,6 +34,9 @@ public class VHCadastrarProduto implements IViewHelper {
 		String ativoStr =  request.getParameter("ativo");
 		String motivoInativacao = request.getParameter("motivoInativacao");	
 		String motivoAtivacao = request.getParameter("motivoAtivacao");
+		String url = request.getParameter("img");
+		
+		System.out.println("url "+url);
 		
 		// Tratamento de números e bool
 		int codigo;

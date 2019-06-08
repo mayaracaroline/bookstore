@@ -43,7 +43,8 @@ import viewhelper.VHUsuario;
       "/Pages/lumino/loginCliente",
       "/Pages/lumino/loginAdmin", 
       "/Pages/lumino/comprar",
-      "/Pages/lumino/autenticaCliente" 
+      "/Pages/lumino/autenticaCliente",
+      "/Pages/lumino/buscarDados"
     })
 public class ControllerAutenticacao implements Filter  {
 	private static final long serialVersionUID = 1L;
@@ -87,6 +88,8 @@ public class ControllerAutenticacao implements Filter  {
       Resultado resultado = command.executar(entidade);
       Cliente cliente = (Cliente) resultado.getResultado();
       
+      req.getSession().setAttribute("sessionId", req.getSession().getId());
+      
       if(!resultado.getErro() && resultado.getContagem() > 0) {
         idCliente = cliente.getId().toString();
         Cookie logado = new Cookie("clienteLogado", idCliente);
@@ -98,13 +101,16 @@ public class ControllerAutenticacao implements Filter  {
       }      
     }
    
-    
+
     if(req.getCookies()!=null){
       for(Cookie cookie : req.getCookies()){
         if(cookie.getName().equals("clienteLogado")) {
           usuarioLogado = true;
-          System.out.println(cookie.getValue());
-          res.sendRedirect("autenticaCliente?operacao=CONSULTAR&formName=checkout&id="+cookie.getValue());
+          if(req.getRequestURI().equals("/livraria/Pages/lumino/comprar")) {
+            res.sendRedirect("checkout.jsp");
+          } else if (req.getRequestURI().equals("/livraria/Pages/lumino/buscarDados")) {
+            res.sendRedirect("autenticaCliente?operacao=CONSULTAR&formName=checkout&id="+cookie.getValue());
+          }          
 
           break;
         }

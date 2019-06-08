@@ -7,16 +7,19 @@ import java.util.Map;
 
 import dominio.Bloqueio;
 import dominio.Cliente;
-import dominio.Endereco;
+import dominio.DadosEntrega;
 import dominio.EntidadeDominio;
 import dominio.Livro;
 import dominio.PedidoDeCompra;
 import dominio.Usuario;
+import les.command.CommandAprovarTroca;
 import les.command.CommandCalcularFrete;
 import les.command.CommandCarrinhoAdicionar;
 import les.command.CommandCarrinhoAlterar;
 import les.command.CommandCarrinhoExcluir;
+import les.command.CommandColocarItemEmTroca;
 import les.command.CommandConfirmaEntrega;
+import les.command.CommandEnderecoAdicionar;
 import les.dao.DAOCliente;
 import les.dao.DAOLivro;
 import les.dao.DAOPedidoDeCompra;
@@ -26,12 +29,15 @@ import les.negocio.IStrategy;
 import les.negocio.StComplementarCupom;
 import les.negocio.StComplementarEndereco;
 import les.negocio.StComplementarGeneroLiterario;
+import les.negocio.StComplementarPedidoDeCompra;
 import les.negocio.StConsultarQuantidadeEstoque;
 import les.negocio.StGerarCodigoCompra;
+import les.negocio.StGerarCupomTroca;
 import les.negocio.StInativarCupom;
 import les.negocio.StValidarCarrinhoExpirado;
 import les.negocio.StValidarCepInformado;
 import les.negocio.StValidarClienteLogado;
+import les.negocio.StValidarCodigoSeguranca;
 import les.negocio.StValidarDadosObrigatoriosCliente;
 import les.negocio.StValidarDadosObrigatoriosCompra;
 import les.negocio.StValidarDadosObrigatoriosLivro;
@@ -48,6 +54,7 @@ import les.negocio.StValidarUsuarioExistente;
 import les.negocio.StValidarValorCompra;
 import les.negocio.StValidarValorExcendenteAoPagamento;
 import les.negocio.StValidarValorMinimoParaPagamentoComCartao;
+import les.negocio.itemPedido.StValidarCodigoItemPedido;
 import servico.CalcularFrete;
 import servico.CarrinhoServico;
 import servico.IServico;
@@ -55,6 +62,9 @@ import servico.PedidoServico;
 import servico.carrinho.CarrinhoAdicionar;
 import servico.carrinho.CarrinhoAlterar;
 import servico.carrinho.CarrinhoExcluir;
+import servico.carrinho.EnderecoAdicionar;
+import servico.itemCarrinho.ItemCarrinhoAprovarTroca;
+import servico.itemCarrinho.ItemCarrinhoColocarEmTroca;
 import util.Resultado;
 
 public class Fachada implements IFachada  {
@@ -108,6 +118,10 @@ public class Fachada implements IFachada  {
   private List<IStrategy> listStrategyAlterarPedido;  
   
   /* Listas de regras de negocio relacionadas a entidade
+   * ItemCarrinho: */
+  private List<IStrategy> listStrategyAlteraStatusItemPedido;
+  private List<IStrategy> listStrategyAprovarTrocaItemPedido;
+  /* Listas de regras de negocio relacionadas a entidade
    * Usuario: */
   private List<IStrategy> listStrategyAutenticarUsuario;
   
@@ -115,11 +129,11 @@ public class Fachada implements IFachada  {
    * Endereco: */	 
 	private List<IStrategy> listStrategyCalcularFrete; 
 
-	/* Mapa que possui com chave o nome da entidade 
+	/* Mapa que possui como chave o nome da entidade 
 	 * e como valor a instancia da DAO especifica */
   private Map<String, IDAO> mapDAO;
   
-  /* Mapa que possui com chave o nome da command 
+  /* Mapa que possui como chave o nome da command 
    * e como valor a instancia do servico especifico */  
   private Map<String, IServico> mapServico;
 	 
@@ -149,7 +163,9 @@ public class Fachada implements IFachada  {
     listStrategyConsultarCliente = new ArrayList<IStrategy>();  
     listStrategySalvarCompra = new ArrayList<IStrategy>();
     listStrategyConsultarCompra = new ArrayList<IStrategy>();
-    listStrategyAlterarPedido = new ArrayList<IStrategy>();   
+    listStrategyAlterarPedido = new ArrayList<IStrategy>();
+    listStrategyAlteraStatusItemPedido = new ArrayList<IStrategy>(); 
+    listStrategyAprovarTrocaItemPedido = new ArrayList<IStrategy>(); 
     
     /* Regras de negócio: PRODUTO */
 		listStrategySalvarProduto.add(new StValidarDadosObrigatoriosLivro());
@@ -169,6 +185,7 @@ public class Fachada implements IFachada  {
 		/* Regras de negócio: BLOQUEIO (pedido) */
 		listStrategySalvarBloqueioProduto.add(new StConsultarQuantidadeEstoque());
 		listStrategySalvarBloqueioProduto.add(new StValidarExistenciaCarrinhoSessao());
+		listStrategyAlterarBloqueioProduto.add(new StValidarCarrinhoExpirado());
 		listStrategyAlterarBloqueioProduto.add(new StValidarQuantidadeAIncluirOuExcluirCarrinho());
 		
 		/* Regras de negócio: CLIENTE */
@@ -182,6 +199,7 @@ public class Fachada implements IFachada  {
 		/* Regras de negócio: PEDIDO DE COMPRA */	
 		listStrategySalvarCompra.add(new StValidarClienteLogado());
 		listStrategySalvarCompra.add(new StValidarCarrinhoExpirado());
+		//listStrategySalvarCompra.add(new StValidarCodigoSeguranca());
 		listStrategySalvarCompra.add(new StValidarDadosObrigatoriosCompra()); 
     listStrategySalvarCompra.add(new StValidarFormaDePagamento());
     listStrategySalvarCompra.add(new StComplementarCupom());
@@ -190,7 +208,14 @@ public class Fachada implements IFachada  {
     listStrategySalvarCompra.add(new StValidarValorExcendenteAoPagamento());
     listStrategySalvarCompra.add(new StInativarCupom()); 
     listStrategySalvarCompra.add(new StGerarCodigoCompra());
-
+    
+    /* Regras de negócio: ITEM PEDIDO */ 
+    listStrategyAlteraStatusItemPedido.add(new StValidarCodigoItemPedido());
+    listStrategyAlteraStatusItemPedido.add(new StComplementarPedidoDeCompra());
+    listStrategyAprovarTrocaItemPedido.add(new StValidarCodigoItemPedido());
+    listStrategyAprovarTrocaItemPedido.add(new StComplementarPedidoDeCompra());
+    listStrategyAprovarTrocaItemPedido.add(new StGerarCupomTroca());
+    
     /* Regras de negócio: ENDERECO */
     listStrategyCalcularFrete.add(new StComplementarEndereco());    
 		listStrategyCalcularFrete.add(new StValidarCepInformado());
@@ -216,14 +241,17 @@ public class Fachada implements IFachada  {
 		/* USUARIO */
 		rnsAutenticarUsuario.put("CONSULTAR",listStrategyAutenticarUsuario);
 		
-		/* ENDERECO */
+		/* DADOS ENTREGA */
 		rnsValidarEndereco.put("CALCULARFRETE", listStrategyCalcularFrete);
+		rnsValidarEndereco.put("ENDERECOADICIONAR", listStrategyCalcularFrete);
 		
 		/* PEDIDO DE COMPRA */
 		rnsGerenciarPedido.put("SALVAR", listStrategySalvarCompra);
 		rnsGerenciarPedido.put("CONSULTAR", listStrategyConsultarCompra);
 		rnsGerenciarPedido.put("COLOCAREMTRANSPORTE", listStrategyAlterarPedido);
 		rnsGerenciarPedido.put("CONFIRMARENTREGA", listStrategyAlterarPedido);
+		rnsGerenciarPedido.put("COLOCARITEMEMTROCA",listStrategyAlteraStatusItemPedido);
+		rnsGerenciarPedido.put("APROVARTROCA",listStrategyAprovarTrocaItemPedido);
 		
 		/* Regras de negócio por entidade */
     rns.put(Livro.class.getSimpleName().toUpperCase(), rnsProduto);
@@ -231,7 +259,7 @@ public class Fachada implements IFachada  {
     rns.put(Bloqueio.class.getSimpleName().toUpperCase(), rnsBloqueioProduto);
     rns.put(Usuario.class.getSimpleName().toUpperCase(), rnsAutenticarUsuario);
     rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsGerenciarPedido);
-    rns.put(Endereco.class.getSimpleName().toUpperCase(), rnsValidarEndereco);  
+    rns.put(DadosEntrega.class.getSimpleName().toUpperCase(), rnsValidarEndereco);  
 //  rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsValidarDadosCompra);    
     
     /* Mapa de servico por command */
@@ -241,6 +269,9 @@ public class Fachada implements IFachada  {
     mapServico.put(CommandCarrinhoAlterar.class.getSimpleName(), new CarrinhoAlterar());
     mapServico.put(CommandCarrinhoExcluir.class.getSimpleName(), new CarrinhoExcluir());
     mapServico.put(CommandConfirmaEntrega.class.getSimpleName(), new CarrinhoAdicionar());
+    mapServico.put(CommandEnderecoAdicionar.class.getSimpleName(), new EnderecoAdicionar());
+    mapServico.put(CommandColocarItemEmTroca.class.getSimpleName(), new ItemCarrinhoColocarEmTroca());
+    mapServico.put(CommandAprovarTroca.class.getSimpleName(), new ItemCarrinhoAprovarTroca());
     
     /* Mapa de DAO por entidade */
     mapDAO = new HashMap<String, IDAO>();
@@ -368,7 +399,6 @@ public class Fachada implements IFachada  {
   public Resultado alterarItensCarrinho(EntidadeDominio entidade) {
       Resultado resultado = new Resultado();
       resultado = validarStrategys(entidade, "ALTERAR");
-      
       if (!resultado.getErro()) {
         
          CarrinhoServico servico = new CarrinhoServico();
@@ -444,6 +474,19 @@ public class Fachada implements IFachada  {
     if (!resultado.getErro()) {
       IServico servico = mapServico.get(command);
        resultado = servico.executarServico(entidade);
+    }
+    
+    return resultado; 
+  }
+
+  @Override
+  public Resultado consultarPorId(EntidadeDominio entidade) {
+    Resultado resultado = new Resultado();    
+    resultado = validarStrategys(entidade, "CONSULTARPORID");
+    
+    if (!resultado.getErro()) {
+      IDAO dao = mapDAO.get(entidade.getClass().getSimpleName().toUpperCase());
+      resultado = dao.consultarPorId(entidade);
     }
     
     return resultado; 

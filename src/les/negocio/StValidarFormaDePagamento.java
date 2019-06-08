@@ -37,7 +37,7 @@ public class StValidarFormaDePagamento implements IStrategy {
         && cartao2.getId().equals(BigInteger.ZERO) ? false : true;
     
     if(!usouCartao && !usouCupomPromocional && !usouCupomTroca) {
-      mensagem = "Selecione uma forma de pagamento";
+      mensagem = "Selecione uma forma de pagamento\n";
     }
     
     return mensagem;
