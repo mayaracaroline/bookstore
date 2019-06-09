@@ -9,8 +9,10 @@ import dominio.Bloqueio;
 import dominio.Cliente;
 import dominio.DadosEntrega;
 import dominio.EntidadeDominio;
+import dominio.Estoque;
 import dominio.Livro;
 import dominio.PedidoDeCompra;
+import dominio.Relatorio;
 import dominio.Usuario;
 import les.command.CommandAprovarTroca;
 import les.command.CommandCalcularFrete;
@@ -21,8 +23,10 @@ import les.command.CommandColocarItemEmTroca;
 import les.command.CommandConfirmaEntrega;
 import les.command.CommandEnderecoAdicionar;
 import les.dao.DAOCliente;
+import les.dao.DAOEstoque;
 import les.dao.DAOLivro;
 import les.dao.DAOPedidoDeCompra;
+import les.dao.DAORelatorio;
 import les.dao.DAOUsuario;
 import les.dao.IDAO;
 import les.negocio.IStrategy;
@@ -30,6 +34,7 @@ import les.negocio.StComplementarCupom;
 import les.negocio.StComplementarEndereco;
 import les.negocio.StComplementarGeneroLiterario;
 import les.negocio.StComplementarPedidoDeCompra;
+import les.negocio.StComplementarProduto;
 import les.negocio.StConsultarQuantidadeEstoque;
 import les.negocio.StGerarCodigoCompra;
 import les.negocio.StGerarCupomTroca;
@@ -37,9 +42,9 @@ import les.negocio.StInativarCupom;
 import les.negocio.StValidarCarrinhoExpirado;
 import les.negocio.StValidarCepInformado;
 import les.negocio.StValidarClienteLogado;
-import les.negocio.StValidarCodigoSeguranca;
 import les.negocio.StValidarDadosObrigatoriosCliente;
 import les.negocio.StValidarDadosObrigatoriosCompra;
+import les.negocio.StValidarDadosObrigatoriosEstoque;
 import les.negocio.StValidarDadosObrigatoriosLivro;
 import les.negocio.StValidarExistencia;
 import les.negocio.StValidarExistenciaCarrinhoSessao;
@@ -91,6 +96,8 @@ public class Fachada implements IFachada  {
 	private Map<String, List<IStrategy>> rnsValidarDadosCompra;
 	private Map<String, List<IStrategy>> rnsValidarEndereco;
 	private Map<String, List<IStrategy>> rnsGerenciarPedido;
+	private Map<String, List<IStrategy>> rnsEstoque;
+	private Map<String, List<IStrategy>> rnsRelatorio;
 	
 	/* Listas de regras de negocio relacionadas a entidade
 	 * Produto: */
@@ -128,6 +135,14 @@ public class Fachada implements IFachada  {
   /* Listas de regras de negocio relacionadas a entidade
    * Endereco: */	 
 	private List<IStrategy> listStrategyCalcularFrete; 
+	
+  /* Listas de regras de negocio relacionadas a entidade
+   * Estoque: */ 
+	private List<IStrategy> listStrategyEstoque;
+	    
+  /* Listas de regras de negocio relacionadas a entidade
+   * Relatorio: */ 
+  private List<IStrategy> listStrategyConsultarRelatorio;
 
 	/* Mapa que possui como chave o nome da entidade 
 	 * e como valor a instancia da DAO especifica */
@@ -148,6 +163,8 @@ public class Fachada implements IFachada  {
     rnsValidarDadosCompra = new HashMap<String, List<IStrategy>>();
     rnsValidarEndereco = new HashMap<String, List<IStrategy>>(); 
     rnsGerenciarPedido = new HashMap<String, List<IStrategy>>();
+    rnsEstoque = new HashMap<String, List<IStrategy>>();
+    rnsRelatorio = new HashMap<String, List<IStrategy>>();
     
     /* Regras de negócio por operacao X entidade */
 		listStrategySalvarProduto = new ArrayList<IStrategy>();
@@ -166,6 +183,8 @@ public class Fachada implements IFachada  {
     listStrategyAlterarPedido = new ArrayList<IStrategy>();
     listStrategyAlteraStatusItemPedido = new ArrayList<IStrategy>(); 
     listStrategyAprovarTrocaItemPedido = new ArrayList<IStrategy>(); 
+    listStrategyEstoque = new ArrayList<IStrategy>(); 
+    listStrategyConsultarRelatorio = new ArrayList<IStrategy>();
     
     /* Regras de negócio: PRODUTO */
 		listStrategySalvarProduto.add(new StValidarDadosObrigatoriosLivro());
@@ -220,7 +239,11 @@ public class Fachada implements IFachada  {
     listStrategyCalcularFrete.add(new StComplementarEndereco());    
 		listStrategyCalcularFrete.add(new StValidarCepInformado());
 		
-		/* Regras de negócio por operacao: */
+    /* Regras de negócio: ESTOQUE */
+    listStrategyEstoque.add(new StValidarDadosObrigatoriosEstoque()); 		
+    listStrategyEstoque.add(new StComplementarProduto());
+		
+    /* Regras de negócio por operacao: */
 		
 		/* PRODUTO */
 		rnsProduto.put("SALVAR", listStrategySalvarProduto);
@@ -245,6 +268,12 @@ public class Fachada implements IFachada  {
 		rnsValidarEndereco.put("CALCULARFRETE", listStrategyCalcularFrete);
 		rnsValidarEndereco.put("ENDERECOADICIONAR", listStrategyCalcularFrete);
 		
+    /* ESTOQUE */
+    rnsEstoque.put("SALVAR", listStrategyEstoque);
+    
+    /* RELATORIO */
+    rnsRelatorio.put("CONSULTAR", listStrategyConsultarRelatorio);
+		
 		/* PEDIDO DE COMPRA */
 		rnsGerenciarPedido.put("SALVAR", listStrategySalvarCompra);
 		rnsGerenciarPedido.put("CONSULTAR", listStrategyConsultarCompra);
@@ -259,7 +288,9 @@ public class Fachada implements IFachada  {
     rns.put(Bloqueio.class.getSimpleName().toUpperCase(), rnsBloqueioProduto);
     rns.put(Usuario.class.getSimpleName().toUpperCase(), rnsAutenticarUsuario);
     rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsGerenciarPedido);
-    rns.put(DadosEntrega.class.getSimpleName().toUpperCase(), rnsValidarEndereco);  
+    rns.put(DadosEntrega.class.getSimpleName().toUpperCase(), rnsValidarEndereco);
+    rns.put(Estoque.class.getSimpleName().toUpperCase(), rnsEstoque);
+    rns.put(Relatorio.class.getSimpleName().toUpperCase(), rnsRelatorio);
 //  rns.put(PedidoDeCompra.class.getSimpleName().toUpperCase(), rnsValidarDadosCompra);    
     
     /* Mapa de servico por command */
@@ -279,6 +310,8 @@ public class Fachada implements IFachada  {
     mapDAO.put("CLIENTE", new DAOCliente());
     mapDAO.put("USUARIO", new DAOUsuario());
     mapDAO.put("PEDIDODECOMPRA", new DAOPedidoDeCompra());
+    mapDAO.put("ESTOQUE", new DAOEstoque());
+    mapDAO.put("RELATORIO", new DAORelatorio());
 				
 	}
 	
@@ -296,6 +329,7 @@ public class Fachada implements IFachada  {
 			mensagem = iStrategy.processar(entidade);
 			
 			if(mensagem != null){
+			  System.out.println(mensagem);
 				mensagens += mensagem;
 			}
 		}

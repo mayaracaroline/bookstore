@@ -10,6 +10,7 @@ public class Resultado {
 
 	private List<EntidadeDominio> listaResultado;
 	private HashMap<String, ArrayList<EntidadeDominio>> mapResultado;
+	 private HashMap<Integer, Integer[]> mapResultadoInteger;
 	private EntidadeDominio resultado;
 	private boolean erro;
 	private String mensagem;
@@ -57,6 +58,15 @@ public class Resultado {
   }
   public void setMapResultado(HashMap<String, ArrayList<EntidadeDominio>> mapResultado) {
     this.mapResultado = mapResultado;
+  }
+  public HashMap<Integer, Integer[]> getMapResultadoInteger() {
+    return mapResultadoInteger;
+  }
+  public void setMapResultadoInteger(HashMap<Integer, Integer[]> mapResultadoInteger) {
+    this.mapResultadoInteger = mapResultadoInteger;
+  }
+  public void setMensagem(String mensagem) {
+    this.mensagem = mensagem;
   }
 	
 }

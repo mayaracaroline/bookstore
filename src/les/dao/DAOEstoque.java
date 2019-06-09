@@ -2,8 +2,6 @@ package les.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
 import dominio.EntidadeDominio;
 import dominio.Estoque;
@@ -16,8 +14,30 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
 
   @Override
   public Resultado salvar(EntidadeDominio entidade) {
-    // TODO Auto-generated method stub
-    return null;
+    Resultado resultado = new Resultado();
+    Estoque estoque = (Estoque) entidade;
+    
+    String sql = "UPDATE estoque SET est_quantidade = est_quantidade + ? WHERE est_pro_cod_barras = ? ";
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
+    
+    try {
+      pst = conexao.prepareStatement(sql);
+      pst.setInt(1, estoque.getQuantidade());
+      pst.setString(2, estoque.getProduto().getCodigoBarras());
+
+      pst.executeUpdate();
+      resultado.sucesso("Salvo com sucesso");
+      resultado.setResultado(estoque);   
+ 
+            
+    } catch(Exception e) {
+      
+      resultado.erro("Falha ao inserir produto no estoque");
+      e.printStackTrace();
+    }
+    
+    return resultado;
   }
 
   @Override
@@ -28,7 +48,7 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
     String sql = "SELECT * FROM estoque WHERE est_pro_cod_barras = ? ;";
     conexao = ConnectionFactory.getConnection();
     PreparedStatement pst = null;
-    
+
     try {
       pst = conexao.prepareStatement(sql);
 
@@ -59,8 +79,28 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
 
   @Override
   public Resultado alterar(EntidadeDominio entidade) {
-    // TODO Auto-generated method stub
-    return null;
+    Resultado resultado = new Resultado();
+    Estoque estoque = (Estoque) entidade;
+    String sql = "UPDATE estoque SET est_quantidade = est_quantidade + ? WHERE est_pro_cod_barras = ? ";
+    conexao = ConnectionFactory.getConnection();
+    PreparedStatement pst = null;
+
+    try {
+      pst = conexao.prepareStatement(sql);
+      pst.setInt(1, estoque.getQuantidade());
+      pst.setString(2, estoque.getProduto().getCodigoBarras());
+
+      pst.executeUpdate();
+      resultado.sucesso("Salvo com sucesso");
+      resultado.setResultado(estoque);
+            
+    } catch(Exception e) {
+      
+      resultado.erro("Falha ao inserir produto no estoque");
+      e.printStackTrace();
+    }
+    
+    return resultado;
   }
 
   @Override
@@ -121,5 +161,24 @@ public class DAOEstoque extends AbstractDAO implements IDAO {
     // TODO Auto-generated method stub
     return null;
   }
+  
+  
+//  String sql = "INSERT INTO estoque (est_pro_id, est_pro_cod_barras, est_quantidade) VALUES(?,?,?) ";
+//  
+//  conexao = ConnectionFactory.getConnection();
+//
+//  PreparedStatement pst = null;
+//
+//  try {
+//    pst = conexao.prepareStatement(sql);
+//    pst.setInt(1, estoque.getProduto().getId().intValue());
+//    pst.setString(2, estoque.getProduto().getCodigoBarras());
+//    pst.setInt(3, estoque.getQuantidade());
+//
+//
+//    pst.execute();
+//    
+//    resultado.sucesso("Salvo com sucesso");
+//    resultado.setResultado(estoque);
 
 }

@@ -61,10 +61,14 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 			statement.setDouble(16,livro.getPeso());
 			statement.setDouble(17,livro.getProfundidade());
 			
+			int idLivro = livro.getId().intValue();
+			
       DAOProduto daoProduto = new DAOProduto();
       daoProduto.salvar(livro);
       
 			statement.execute();
+			
+			livro.setId(idLivro);
 			
 			DAOGeneroLivro daoGenero = new DAOGeneroLivro();	
 			resultado = daoGenero.salvar(livro);	
@@ -104,10 +108,9 @@ public class DAOLivro extends AbstractDAO implements IDAO {
       } else {
         sql =  "SELECT * FROM livros A INNER JOIN produtos B  ON A.liv_cod_barras = B.pro_cod_barras WHERE liv_id = ?"; 
         statement = conexao.prepareStatement(sql);
-        System.out.println(livro.getId().intValue());
         statement.setInt(1, livro.getId().intValue());
       }
-			System.out.println(sql);
+
 			ResultSet resultadoConsulta = statement.executeQuery();
 			int contagem = 0;
 			
@@ -117,7 +120,6 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 				livroEncontrado.setCodigoBarras(resultadoConsulta.getString("liv_cod_barras"));
 				livroEncontrado.setAtivo(resultadoConsulta.getBoolean("liv_ativo"));
 
-				
 				GeneroLiterario genero = new GeneroLiterario();
 				genero.setId(resultadoConsulta.getInt("liv_categoria_ativacao_id"));
 				DAOGenerosLivro daoGenero = new DAOGenerosLivro();
@@ -156,13 +158,15 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 			resultado.setContagem(contagem);
 			
 			if( contagem == 1) {
+			  
         resultado.setResultado(listLivro.get(0)); 		  
 			} else {
+			  System.out.println("dao livro: " + "else");
         resultado.setListaResultado(listLivro); 		  
 			}
 
 			resultado.sucesso("Sucesso");
-			System.out.println(livro.getTitulo());
+
 			return resultado;
 			
 		} catch (Exception e) {
@@ -200,7 +204,6 @@ public class DAOLivro extends AbstractDAO implements IDAO {
 				+ "WHERE liv_id = ?";
 		
 		try {
-			System.out.println("getJustificativaAtivacao "+livro.getJustificativaAtivacao());
 			statement = conexao.prepareStatement(sql);
 			statement.setString(1, livro.getCodigoBarras());
 			statement.setBoolean(2, livro.isAtivo());

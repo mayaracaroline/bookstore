@@ -2,7 +2,6 @@ package les.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,24 +72,24 @@ public class DAOGeneroLivro extends AbstractDAO implements IDAO {
 		try {
 			statement = conexao.prepareStatement(sql);
 
-//			for (int i = 0; i < livro.getCategorias().size(); i++) {
-//				
-//				Resultado result = this.consultar(livro);
-//				
-//				livro = (Livro) result.getResultado();
-//				statement.setInt(1, livro.getId().intValue());
-//				statement.setInt(2, livro.getCategorias().get(i).getId().intValue());
-//				statement.setString(3, livro.getCategorias().get(i).getDescricao());
-//				statement.execute();
-//			}
-			
 			for (int i = 0; i < livro.getCategorias().size(); i++) {
-								
+				
+				Resultado result = this.consultar(livro);
+				
+				livro = (Livro) result.getResultado();
 				statement.setInt(1, livro.getId().intValue());
 				statement.setInt(2, livro.getCategorias().get(i).getId().intValue());
-				statement.setInt(3, livro.getCategorias().get(i).getId().intValue());
+				statement.setString(3, livro.getCategorias().get(i).getDescricao());
 				statement.execute();
 			}
+			
+//			for (int i = 0; i < livro.getCategorias().size(); i++) {
+//								
+//				statement.setInt(1, livro.getId().intValue());
+//				statement.setInt(2, livro.getCategorias().get(i).getId().intValue());
+//				statement.setInt(3, livro.getCategorias().get(i).getId().intValue());
+//				statement.execute();
+//			}
 			
 			resultado.setResultado(livro);
 			resultado.sucesso("Sucesso!");
@@ -127,6 +126,35 @@ public class DAOGeneroLivro extends AbstractDAO implements IDAO {
   public Resultado consultarPorId(EntidadeDominio entidade) {
     // TODO Auto-generated method stub
     return null;
+  }
+  
+  public List<EntidadeDominio> consultarTodos() {
+    Resultado resultado = new Resultado();
+    conexao = ConnectionFactory.getConnection();
+    String sql =  "SELECT * FROM GENEROS;";
+    PreparedStatement pst = null;
+    int contagem = 0;
+    List<EntidadeDominio> generos = new ArrayList<EntidadeDominio>();
+    
+    try {
+      pst = conexao.prepareStatement(sql);
+      ResultSet rs = pst.executeQuery();
+      
+      while(rs.next()) {
+        GeneroLiterario genero = new GeneroLiterario();
+        genero.setId(rs.getInt("gen_id"));
+        genero.setDescricao(rs.getString("gen_descricao"));
+        generos.add(genero);
+        contagem++;
+      }
+      
+      
+    } catch (Exception e) {
+      
+      e.printStackTrace();
+    }
+    
+    return generos;
   }
 	
 

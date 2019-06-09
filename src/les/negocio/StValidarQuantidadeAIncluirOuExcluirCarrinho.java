@@ -53,7 +53,7 @@ public class StValidarQuantidadeAIncluirOuExcluirCarrinho implements IStrategy {
         return mensagem;
       }     
     } else if ((quantidadeDeItensBloqueados - quantidade) < 0 ) {
-      mensagem = "A quantidade de ser maior ou igual a zero";
+      mensagem = "A quantidade deve ser maior ou igual a zero";
       
     }  
     
