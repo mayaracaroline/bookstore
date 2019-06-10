@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.UUID;
+
+import org.apache.catalina.tribes.util.UUIDGenerator;
 
 import dominio.Cliente;
 import dominio.Cupom;
@@ -22,12 +25,14 @@ public class DAOCupom extends AbstractDAO implements IDAO {
     Resultado resultado = new Resultado();
     conexao = ConnectionFactory.getConnection();
     PreparedStatement pst = null;
-    
+    UUID uuid = UUID.randomUUID();
+    String randomCode = uuid.toString();
+    String codigoCupom = randomCode.substring(0,16).toUpperCase();
     try {
       pst = conexao.prepareStatement(sql);
       pst.setInt(1, cupom.getIdCliente());
       pst.setBoolean(2, true);
-      pst.setString(3, cupom.getCodigo());
+      pst.setString(3, codigoCupom);
       pst.setString(4, cupom.getTipo().toString());
       pst.setDate(5, Date.valueOf(cupom.getDataDeValidade().toString()));
       pst.setDouble(6, cupom.getValor());

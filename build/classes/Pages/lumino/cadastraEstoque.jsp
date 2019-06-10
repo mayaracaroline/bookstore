@@ -31,9 +31,10 @@
                                     <label>Quantidade:</label>
                                     <input name="quantidade" class="form-control" >									
 								</div>
+                                <input type="hidden" name="operacao" value="ALTERAR">
 								<div class="form-group">
 									<button type="reset" class="btn btn-default">Cancelar</button>
-									<button name="operacao" value="SALVAR" type="submit" class="btn btn-primary">Salvar</button>
+									<button name="btn" value="SALVAR" type="submit" class="btn btn-primary">Salvar</button>
                                     																
 								</div>						
 									

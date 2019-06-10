@@ -113,7 +113,6 @@ public class DAOCliente extends AbstractDAO implements IDAO {
     String sql = "SELECT * FROM clientes WHERE cli_id = ? ";
     
     try {
-      System.out.println(cliente.getId().intValue());
       pst = conexao.prepareStatement(sql);
       pst.setInt(1, cliente.getId().intValue());
       
@@ -149,15 +148,19 @@ public class DAOCliente extends AbstractDAO implements IDAO {
       };
       
       DAOEndereco daoEndereco = new DAOEndereco();
-      Resultado rsEnderecoResidencial = daoEndereco.consultar(enderecos.get(0));
+      Resultado rsEnderecoResidencial;
+      Resultado rsEnderecoEntrega;
+      if(enderecos.size() > 0 ) {
+        rsEnderecoResidencial = daoEndereco.consultar(enderecos.get(0));
+        cliente.setEnderecoResidencial((Endereco)rsEnderecoResidencial.getResultado());
+        rsEnderecoEntrega = daoEndereco.consultar(enderecos.get(1));
+        Resultado rsEnderecoCobranca = daoEndereco.consultar(enderecos.get(2));      
+        
+        cliente.setEnderecoEntrega((Endereco)rsEnderecoEntrega.getResultado());
+        cliente.setEnderecoCobranca((Endereco)rsEnderecoCobranca.getResultado());
+      }
       
-      Resultado rsEnderecoEntrega = daoEndereco.consultar(enderecos.get(1));
       
-      Resultado rsEnderecoCobranca = daoEndereco.consultar(enderecos.get(2));      
-      
-      cliente.setEnderecoResidencial((Endereco)rsEnderecoResidencial.getResultado());
-      cliente.setEnderecoEntrega((Endereco)rsEnderecoEntrega.getResultado());
-      cliente.setEnderecoCobranca((Endereco)rsEnderecoCobranca.getResultado());
      
       resultado.sucesso("Consulta realizada com sucesso");
       resultado.setResultado(cliente);

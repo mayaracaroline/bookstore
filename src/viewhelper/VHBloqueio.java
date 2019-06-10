@@ -53,7 +53,10 @@ public class VHBloqueio implements IViewHelper {
     String operacao = request.getParameter("operacao");
     String page = null != request.getParameter("page") ? request.getParameter("page") : "product" ;
     int codigo = Formatter.format(request.getParameter("codigo"));   
-    String mensagem[] = resultado.getMensagem().split("\n");
+    String mensagem[] = {""} ;
+    if(resultado.getMensagem()!= null) {
+      mensagem = resultado.getMensagem().split("\n");      
+    }
     
     if(resultado.getErro())
       request.getSession().setAttribute("errosBloqueio", mensagem);

@@ -411,6 +411,8 @@ public class VHCliente implements IViewHelper {
   public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) {
     String operacao = request.getParameter("operacao");
     String mensagem[] = resultado.getMensagem().split("\n");
+    String formName = request.getParameter("formName");
+        
     
     if(resultado.getErro())
       request.setAttribute("erro", mensagem);
@@ -419,11 +421,12 @@ public class VHCliente implements IViewHelper {
     
     if(operacao.equals("SALVAR")){
       if(resultado.getErro()){
-        request.setAttribute("cliente", (Cliente) resultado.getListaResultado().get(0));
+        request.setAttribute("cliente", (Cliente) resultado.getResultado());
       }
     } else if(operacao.equals("CONSULTAR")){
       if(!resultado.getErro()){
         if(resultado.getResultado() != null){
+
           request.setAttribute("cliente", (Cliente) resultado.getResultado());
         }else{
           request.setAttribute("resultado",  resultado.getListaResultado());
@@ -441,19 +444,25 @@ public class VHCliente implements IViewHelper {
     try {
       if(operacao.equals("SALVAR")){
         request.setAttribute("cliente", (Cliente) resultado.getResultado());
-        RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/visualizar.jsp");
-        rd.forward(request, response);
+        RequestDispatcher rd = null;
+        if(formName != null && formName.equals("cadastroCliente")) {
+          rd = request.getRequestDispatcher("/Pages/lumino/areaCliente.jsp");
+          rd.forward(request, response);
+        } else {
+          rd = request.getRequestDispatcher("/Pages/lumino/visualizar.jsp");
+          rd.forward(request, response);
+        }
       }
       else if(operacao.equals("CONSULTAR")){
+        request.setAttribute("cliente", (Cliente) resultado.getResultado());
         if(resultado.getResultado() != null){         
-//          RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/cadastraProduto.jsp");
           RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/visualizarCliente.jsp");
           rd.forward(request, response);
         } else if(resultado.getListaResultado() != null){
-          RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/listaProduto.jsp");
+          RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/visualizarCliente.jsp");
           rd.forward(request, response);
         } else {
-          RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/listaProduto.jsp");
+          RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/visualizar.jsp");
           rd.forward(request, response);
         }
       } else if(operacao.equals("EXCLUIR")){
@@ -470,7 +479,6 @@ public class VHCliente implements IViewHelper {
         rd.forward(request, response);
       }
     } catch (Exception e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     

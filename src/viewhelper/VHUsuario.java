@@ -50,7 +50,7 @@ public class VHUsuario implements IViewHelper {
     Gson gson = new Gson();
     
     String JSONDadosUsuario = gson.toJson(mapDadosUsuario);
-    System.out.println(JSONDadosUsuario);
+//    System.out.println(JSONDadosUsuario);
     
     for(int i = 0; i < resultados.size(); i++) {
       enderecos.add((Endereco)resultados.get(i));    

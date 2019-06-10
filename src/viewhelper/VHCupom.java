@@ -34,7 +34,12 @@ public class VHCupom implements IViewHelper {
       dataDeValidade = dataDeEmissao.plusMonths(12);
     }
     
+    int idCliente = Formatter.format(request.getParameter("idCliente"));
+    
     Integer idCupom = -1;
+    
+    cupom.setTipo(tipo);
+    cupom.setIdCliente(idCliente);
     cupom.setId(idCupom);
     cupom.setDataDeValidade(dataDeValidade);
     cupom.setValor(valor);
@@ -44,7 +49,13 @@ public class VHCupom implements IViewHelper {
 
   @Override
   public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) {
-    // TODO Auto-generated method stub
+    try {
+      
+      response.sendRedirect("cadastrarCupom.jsp");
+      
+    } catch (Exception e) {
+      // TODO: handle exception
+    }
     
   }
 

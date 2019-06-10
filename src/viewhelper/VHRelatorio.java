@@ -35,22 +35,36 @@ public class VHRelatorio implements IViewHelper {
     DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDate dataFim = LocalDate.parse(strDataFim,formatter1);      
     
+    String tag =  request.getParameter("tag");
+    
     relatorio.setDataInicio(dataInicio);
     relatorio.setDataFim(dataFim);
+    relatorio.setTag(tag);
+    
     
     return relatorio;
   }
 
   @Override
   public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) {
-
+    String tag = request.getParameter("tag");
     HashMap<Integer, Integer[]> generosPorCategoria = new HashMap<>();
     
-    generosPorCategoria = resultado.getMapResultadoInteger();
-    request.setAttribute("grafico", generosPorCategoria);
-    RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/relatorios.jsp");
+
     try {
-      rd.forward(request, response);
+      if(tag.equals("categoria")) {
+        generosPorCategoria = resultado.getMapResultadoInteger();
+        request.setAttribute("categoria", generosPorCategoria);
+        RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/relatorios.jsp");
+        rd.forward(request, response);
+      } else if (tag.equals("idade")) {
+        generosPorCategoria = resultado.getMapResultadoInteger();
+        request.setAttribute("idade", generosPorCategoria);
+        RequestDispatcher rd = request.getRequestDispatcher("/Pages/lumino/relatorios.jsp");
+        rd.forward(request, response);
+        
+      }
+      
     } catch (ServletException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

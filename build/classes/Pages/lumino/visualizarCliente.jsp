@@ -102,15 +102,15 @@
                                   </label><br>
                                   <label>País: *</label>
                                   <select name="pais0" class="form-control" >
-                                    <option value="1" selected>${cliente.enderecoResidencial.pais.nome}</option>
+                                    <option value="1" selected>${cliente.enderecoResidencial.pais}</option>
                                   </select>   
                                   <label>UF: *</label>
                                   <select name="estado0" class="form-control" >
-                                    <option value="1" selected>${cliente.enderecoResidencial.cidade.estado.nome}</option>
+                                    <option value="1" selected>${cliente.enderecoResidencial.estado}</option>
                                   </select>
                                     <label>Cidade: *</label>
                                     <select name="cidade0" class="form-control" >
-                                      <option selected value="1">${cliente.enderecoResidencial.cidade.nome}</option>
+                                      <option selected value="1">${cliente.enderecoResidencial.cidade}</option>
                                     </select>                                  
                                   <label>Observações:</label>
                                   <input class="form-control" type="text" name="observacoes0" value="${cliente.enderecoResidencial.observacao}">
@@ -148,15 +148,15 @@
                                     </label>
                                     <label>País: *</label>
                                     <select name="pais1" class="form-control" >
-                                      <option value="1" selected>${cliente.enderecoEntrega.pais.nome}</option>
+                                      <option value="1" selected>${cliente.enderecoEntrega.pais}</option>
                                     </select>   
                                     <label>UF: *</label>
                                     <select name="estado1" class="form-control" >
-                                      <option value="1" selected>${cliente.enderecoEntrega.cidade.estado.nome}</option>
+                                      <option value="1" selected>${cliente.enderecoEntrega.estado}</option>
                                     </select>
                                     <label>Cidade: *</label>
                                     <select name="cidade1" class="form-control" >
-                                      <option  value="1"selected>${cliente.enderecoEntrega.cidade.nome}</option>
+                                      <option  value="1"selected>${cliente.enderecoEntrega.cidade}</option>
                                     </select>
                                     <label>Observações:</label>
                                     <input class="form-control" type="text" name="observacoes1" value="${cliente.enderecoEntrega.observacao}">
@@ -193,15 +193,15 @@
                                   </label>                                    
                                     <label>País: *</label>
                                     <select value="1" name="pais2" class="form-control" >
-                                      <option value="2" selected>${cliente.enderecoCobranca.pais.nome}</option>
+                                      <option value="2" selected>${cliente.enderecoCobranca.pais}</option>
                                     </select>   
                                     <label>UF: *</label>
                                     <select name="estado2" class="form-control" >
-                                      <option value="1" selected>${cliente.enderecoCobranca.cidade.estado.nome}</option>
+                                      <option value="1" selected>${cliente.enderecoCobranca.estado}</option>
                                     </select>
                                     <label>Cidade: *</label>
                                     <select name="cidade2" class="form-control" >
-                                      <option selected>${cliente.enderecoCobranca.cidade.nome}</option>
+                                      <option selected>${cliente.enderecoCobranca.cidade}</option>
                                     </select>                                    
                                     <label>Observações:</label>
                                     <input class="form-control" type="text" name="observacoes2" value="${cliente.enderecoCobranca.observacao}" >

@@ -213,11 +213,8 @@
 								<td colspan="2">
                                     <div class="col-sm-6">
                                         <h4>Frete</h4> 
-                                        <input type="hidden" name="formName" value="checkout">
-                                        <div class="input-group">
-                                          <span class="input-group-addon">CEP</span>
-                                          <input type="text" class="form-control" value="" name="cep1">
-                                        </div>                                                                
+                                        <input type="hidden" name="formName" value="checkout">                                        <div class="input-group">
+                                                              
                                         <div class="input-group">
                                           <span class="input-group-addon">R$</span>
                                           <input type="text" name="frete" id="frete" class="form-control" value="${sessionScope.frete}"readonly>

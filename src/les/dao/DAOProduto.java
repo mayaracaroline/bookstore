@@ -61,8 +61,9 @@ public class DAOProduto extends AbstractDAO implements IDAO {
     String sql = "SELECT * FROM produtos WHERE pro_cod_barras = ?";
     conexao = ConnectionFactory.getConnection();
     PreparedStatement pst = null;
+    int contagem = 0;
     try {
-      System.out.println("Cod barras " + produto.getCodigoBarras());
+
       pst = conexao.prepareStatement(sql);
       pst.setString(1, produto.getCodigoBarras());
       
@@ -73,10 +74,11 @@ public class DAOProduto extends AbstractDAO implements IDAO {
         produto.setId(rs.getInt("pro_id"));
         produto.setPreco(rs.getDouble("pro_preco"));
         produto.setAtivo(rs.getBoolean("pro_status"));
-        produto.setImagePath(rs.getString("pro_imagem_path"));       
+        produto.setImagePath(rs.getString("pro_imagem_path"));  
+        contagem++;
       }
       
-      
+      resultado.setContagem(contagem);
       resultado.setResultado(produto);
       resultado.sucesso("Consulta realizada com sucesso");
       

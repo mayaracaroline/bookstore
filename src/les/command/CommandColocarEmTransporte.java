@@ -7,8 +7,8 @@ public class CommandColocarEmTransporte extends AbstractCommand implements IComm
 
   @Override
   public Resultado executar(EntidadeDominio entidade) {
-    // TODO Auto-generated method stub
-    return fachada.colocarEmTransporte(entidade);
+    
+    return fachada.chamarServico(entidade,this.getClass().getSimpleName());
   }
 
 }

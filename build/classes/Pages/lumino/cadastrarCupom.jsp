@@ -33,6 +33,8 @@
                                   </select>
                                   <label>Valor:</label>
                                   <input type="text" name="valor" class="form-control">
+                                  <label>Id cliente:</label>
+                                  <input type="text" name="idCliente" class="form-control">
                               </div>
                            </div> <!-- Panel - Dados Pessoais -->
                           

@@ -112,13 +112,7 @@
 				</div>
 				<div class="col-sm-4">
 					<div class="signup-form"><!--sign up form-->
-						<h2>Cadastre-se</h2>
-						<form action="/livraria/Pages/lumino/loginCliente">
-							<input type="text" placeholder="Name"/>
-							<input type="email" placeholder="Email Address"/>
-							<input type="password" placeholder="Password"/>
-							<button type="submit" class="btn btn-default">Cadastre-se</button>
-						</form>
+						<a href="/livraria/Pages/lumino/cadastroCliente.jsp" type="submit" class="btn btn-default">Cadastre-se</a>
 					</div><!--/sign up form-->
 				</div>
 			</div>

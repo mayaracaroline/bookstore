@@ -44,22 +44,19 @@
 		</div>
 		<div class="divider"></div>
 		<ul class="nav menu">
-			<li class="active"><a href="index.html"><em class="fa fa-line-chart">&nbsp;</em> Relatório</a></li>
-			<li class="parent"><a href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR&formName=gerenciarPedidos"><em class="fa fa-file-text-o">&nbsp;</em> Ger. Pedidos </a></li>
+			<li class="active"><a href="relatorios.jsp"><em class="fa fa-line-chart">&nbsp;</em> Relatório</a></li>
+			<li class="parent"><a href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR&formName=gerenciarPedidos&codigoPedido=-2"><em class="fa fa-file-text-o">&nbsp;</em> Ger. Pedidos </a></li>
 			<li class="parent "><a data-toggle="collapse" href="#sub-item-1">
 					<em class="fa fa-users">&nbsp;</em> Ger. Clientes <span data-toggle="collapse" href="#sub-item-1" 
 						class="icon pull-right"><em class="fa fa-plus"
 					></em></span>
 					</a>
 					<ul class="children collapse" id="sub-item-1">
-						<li><a class="" href="alterar-clientes.html">
-							<span class="fa fa-arrow-right">&nbsp;</span> Alterar
-						</a></li>
-						<li><a class="" href="cadastrar-clientes.html">
+						<li><a class="" href="cadastrar-clientes.jsp">
 								<span class="fa fa-arrow-right">&nbsp;</span> Cadastrar
 							</a>
             </li>
-						<li><a class="" href="consultar-clientes.html">
+						<li><a class="" href="consultaCliente.jsp">
 							<span class="fa fa-arrow-right">&nbsp;</span> Consultar
 						</a></li>
 					</ul>
@@ -99,17 +96,12 @@
 						></em></span>
 						</a>
 						<ul class="children collapse" id="sub-item-3">
-							<li><a class="" href="alterar-estoque.html">
-								<span class="fa fa-arrow-right">&nbsp;</span> Alterar
-							</a></li>
-							<li><a class="" href="cadastrar-estoque.html">
-									<span class="fa fa-arrow-right">&nbsp;</span> Cadastrar
-								</a></li>
-							<li><a class="" href="consultar-estoque.html">
-								<span class="fa fa-arrow-right">&nbsp;</span> Consultar
+							<li><a class="" href="/livraria/Pages/lumino/cadastraEstoque.jsp">
+								<span class="fa fa-arrow-right">&nbsp;</span> Incluir
 							</a></li>
 						</ul>
 					</li>
+                    <li><a href="cadastrarCupom.jsp"><em class="fa fa-credit-card">&nbsp;</em> Cadastrar cupons</a></li>
 			<li><a href="login.html"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
 		</ul>
 	</div><!--/.sidebar-->

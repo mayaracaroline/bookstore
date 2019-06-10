@@ -67,7 +67,7 @@
 						</ul>
 					</li>
 				  <li class="parent"><a href="/livraria/Pages/lumino/pedido?operacao=CONSULTAR"><em class="fa fa-file-text-o">&nbsp;</em> Meus pedidos</a></li>
-						<li><a href="meusCupons.jsp"><em class="fa fa-credit-card">&nbsp;</em> Meus cupons</a></li>
+
 				<li><a href="loginCliente.jsp"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
 			</ul>
 	</div><!--/.sidebar-->

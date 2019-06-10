@@ -7,8 +7,9 @@ public class Relatorio extends EntidadeDominio {
   
   private LocalDate dataInicio;
   private LocalDate dataFim;
-  List<EntidadeDominio> variavel1;
-  List<EntidadeDominio> variavel2;
+  private List<EntidadeDominio> variavel1;
+  private List<EntidadeDominio> variavel2;
+  private String tag;
 
   
   public LocalDate getDataInicio() {
@@ -34,6 +35,12 @@ public class Relatorio extends EntidadeDominio {
   }
   public void setVariavel2(List<EntidadeDominio> variavel2) {
     this.variavel2 = variavel2;
+  }
+  public String getTag() {
+    return tag;
+  }
+  public void setTag(String tag) {
+    this.tag = tag;
   }
   
   

@@ -86,11 +86,18 @@ public class DAOPedidoDeCompra extends AbstractDAO implements IDAO {
     String sql = "";
     
     try {
-      if(!pedido.getId().equals(BigInteger.ZERO)) {
+      if(!pedido.getIdCliente().equals(BigInteger.ZERO) && pedido.getId().equals(BigInteger.ZERO)) {
+        sql = "SELECT * FROM pedidos WHERE ped_cli_id = ? ";
+        pst = conexao.prepareStatement(sql);
+        pst.setInt(1,pedido.getIdCliente().intValue());
+      } else if(pedido.getId().intValue() >= 0) {
         sql = "SELECT * FROM pedidos WHERE ped_id = ? ";
         pst = conexao.prepareStatement(sql);
         pst.setInt(1,pedido.getId().intValue());
-      } else {
+      } else if(pedido.getId().equals(BigInteger.valueOf(-2))) {
+        sql = "SELECT * FROM pedidos;";
+        pst = conexao.prepareStatement(sql);
+      }else {
         sql = "SELECT * FROM pedidos WHERE ped_cli_id = ? ";
         pst = conexao.prepareStatement(sql);
         pst.setInt(1,pedido.getIdCliente().intValue());

@@ -1,5 +1,7 @@
 package viewhelper;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,7 +35,12 @@ public class VHEstoque implements IViewHelper {
     String operacao = request.getParameter("operacao");
     String mensagem[] = resultado.getMensagem().split("\n");
     
-    if(operacao.equals("SALVAR")) {
+    if(operacao.equals("ALTERAR")) {
+      try {
+        response.sendRedirect("cadastraEstoque.jsp");
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
       
     }
     

@@ -20,9 +20,8 @@ public class CarrinhoAlterar implements IServico {
 
   @Override
   public Resultado executarServico(EntidadeDominio entidade) {
-    System.out.println("CarrinhoAltera");
-    Resultado resultado = new Resultado(); 
-    Bloqueio produtoBloqueado = (Bloqueio) entidade;  
+      Resultado resultado = new Resultado(); 
+      Bloqueio produtoBloqueado = (Bloqueio) entidade;  
     // Apenas um item é adicionado por vez (index sempre será 0)
     ItemCarrinho itemBloqueado = produtoBloqueado.getCarrinho().getItensCarrinho().get(0);
     Produto produto = itemBloqueado.getProduto();
